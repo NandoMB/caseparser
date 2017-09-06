@@ -1,0 +1,28 @@
+{
+  "name": "caseparser",
+  "version": "1.0.0",
+  "description": "Convert Strings/Arrays/Objects from 'snake_case' to 'camelCase' and vice-versa",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NandoMB/caseparser.git"
+  },
+  "keywords": [
+    "convert",
+    "parser",
+    "snake_case",
+    "camelCase"
+  ],
+  "author": "Fernando Machado Bernardino <fernandombernardino@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NandoMB/caseparser/issues"
+  },
+  "homepage": "https://github.com/NandoMB/caseparser#readme"
+}
