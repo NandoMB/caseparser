@@ -1,32 +1,37 @@
 'use strict';
 
-var caseparser = require('./lib/caseparser');;
+var caseparser = require('./lib/caseparser');
 
 var snakeClients = [
   {
     id: 1,
-    first_name: "Timothee",
-    last_name: "Clausner",
-    email: "tclausner0@economist.com",
+    is_under_age: false,
+    first_name: 'Timothee',
+    last_name: 'Clausner',
+    email: 'tclausner0@economist.com',
+    telephone_numbers: [
+      '(9999) 99999-9999',
+      '(8888) 88888-8888'
+    ],
     addresses: [
       {
-        country: "United States",
-        state: "Illinois",
-        city: "Rockford",
-        postal_code: "61105",
+        country: 'United States',
+        state: 'Illinois',
+        city: 'Rockford',
+        postal_code: '61105',
         street: {
-          street_name: "41 Forest Run Circle",
-          street_number: "539"
+          street_name: '41 Forest Run Circle',
+          street_number: '539'
         }
       },
       {
-        country: "United States",
-        state: "California",
-        city: "Inglewood",
-        postal_code: "90305",
+        country: 'United States',
+        state: 'California',
+        city: 'Inglewood',
+        postal_code: '90305',
         street: {
-          street_name: "456 Brown Center",
-          street_number: "550"
+          street_name: '456 Brown Center',
+          street_number: '550'
         }
       }
     ]
@@ -42,28 +47,33 @@ console.log('------------------------------------------------------');
 var camelClients = [
   {
     id: 1,
-    firstName: "Timothee",
-    lastName: "Clausner",
-    email: "tclausner0@economist.com",
+    isUnderAge: false,
+    firstName: 'Timothee',
+    lastName: 'Clausner',
+    email: 'tclausner0@economist.com',
+    telephoneNumbers: [
+      '(9999) 99999-9999',
+      '(8888) 88888-8888'
+    ],
     addresses: [
       {
-        country: "United_States",
-        state: "Illinois",
-        city: "Rockford",
-        postalCode: "61105",
+        country: 'United_States',
+        state: 'Illinois',
+        city: 'Rockford',
+        postalCode: '61105',
         street: {
-          streetName: "41 Forest Run Circle",
-          streetNumber: "539"
+          streetName: '41 Forest Run Circle',
+          streetNumber: '539'
         }
       },
       {
-        country: "United States",
-        state: "California",
-        city: "Inglewood",
-        postalCode: "90305",
+        country: 'United States',
+        state: 'California',
+        city: 'Inglewood',
+        postalCode: '90305',
         street: {
-          streetName: "456 Brown Center",
-          streetNumber: "550"
+          streetName: '456 Brown Center',
+          streetNumber: '550'
         }
       }
     ]
