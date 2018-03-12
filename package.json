@@ -1,6 +1,6 @@
 {
   "name": "caseparser",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Convert Strings/Arrays/Objects from 'snake_case' to 'camelCase' and vice-versa",
   "main": "index.js",
   "directories": {
