@@ -1,17 +1,23 @@
 # [CaseParser](https://github.com/NandoMB/caseparser)
 
-Convert **Strings**/**Arrays**/**Objects** from '**snake_case**' to '**camelCase**' and vice-versa.
+Convert **Strings**/**Arrays**/**Objects** from a type of case to another one.
 
-## Getting Started
+# Getting Started
 
-#### Installation
+### Suported case types convertions:
+ - **camelCase**
+ - **snake_case**
+ - **dash-case** (workin on...)
+ - **PascalCase** (workin on...)
+ - **UPPER_SNAKE_CASE** (workin on...)
+ - **UPPER-DASH-CASE** (workin on...)
 
+# Installation
 ```sh
 $ npm install caseparser --save
 ```
 
-#### How to use
-
+# How to use
 ##### caseparser.snakeToCamel(data)
 The variable data represents a string, an array or an object.
 
@@ -162,6 +168,56 @@ Result:
     ]
   }
 ]
+```
+
+# Methods:
+#### Converts from camelCase to ...
+```js
+caseparser.camelToSnake(data);
+// caseparser.camelToDash(data);
+// caseparser.camelToPascal(data);
+// caseparser.camelToUpperSnake(data);
+// caseparser.camelToUpperDash(data);
+```
+#### Converts from snakeCase to ...
+```js
+caseparser.snakeToCamel(data);
+// caseparser.snakeToDash(data);
+// caseparser.snakeToPascal(data);
+// caseparser.snakeToUpperSnake(data);
+// caseparser.snakeToUpperDash(data);
+```
+#### Converts from dashCase to ...
+```js
+// caseparser.dashToCamel(data);
+// caseparser.dashToSnake(data);
+// caseparser.dashToPascal(data);
+// caseparser.dashToUpperSnake(data);
+// caseparser.dashToUpperDash(data);
+```
+#### Converts from pascalCase to ...
+```js
+// caseparser.pascalToCamel(data);
+// caseparser.pascalToSnake(data);
+// caseparser.pascalToDash(data);
+// caseparser.pascalToUpperSnake(data);
+// caseparser.pascalToUpperDash(data);
+```
+#### Converts from upperSnakeCase to ...
+```js
+// caseparser.upperSnakeToCamel(data);
+// caseparser.upperSnakeToSnake(data);
+// caseparser.upperSnakeToDash(data);
+// caseparser.upperSnakeToPascal(data);
+// caseparser.upperSnakeToUpperDash(data);
+```
+#### Converts from upperDashCase to ...
+```js
+// caseparser.upperDashToCamel(data);
+// caseparser.upperDashToSnake(data);
+// caseparser.upperDashToDash(data);
+// caseparser.upperDashToPascal(data);
+// caseparser.upperDashToUpperSnake(data);
 ```
 
 ## License
