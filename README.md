@@ -174,50 +174,50 @@ Result:
 #### Converts from camelCase to ...
 ```js
 caseparser.camelToSnake(data);
-// caseparser.camelToDash(data);
-// caseparser.camelToPascal(data);
-// caseparser.camelToUpperSnake(data);
-// caseparser.camelToUpperDash(data);
+caseparser.camelToDash(data);
+caseparser.camelToPascal(data);
+caseparser.camelToUpperSnake(data);
+caseparser.camelToUpperDash(data);
 ```
 #### Converts from snakeCase to ...
 ```js
 caseparser.snakeToCamel(data);
-// caseparser.snakeToDash(data);
-// caseparser.snakeToPascal(data);
-// caseparser.snakeToUpperSnake(data);
-// caseparser.snakeToUpperDash(data);
+caseparser.snakeToDash(data);
+caseparser.snakeToPascal(data);
+caseparser.snakeToUpperSnake(data);
+caseparser.snakeToUpperDash(data);
 ```
 #### Converts from dashCase to ...
 ```js
-// caseparser.dashToCamel(data);
-// caseparser.dashToSnake(data);
-// caseparser.dashToPascal(data);
-// caseparser.dashToUpperSnake(data);
-// caseparser.dashToUpperDash(data);
+caseparser.dashToCamel(data);
+caseparser.dashToSnake(data);
+caseparser.dashToPascal(data);
+caseparser.dashToUpperSnake(data);
+caseparser.dashToUpperDash(data);
 ```
 #### Converts from pascalCase to ...
 ```js
-// caseparser.pascalToCamel(data);
-// caseparser.pascalToSnake(data);
-// caseparser.pascalToDash(data);
-// caseparser.pascalToUpperSnake(data);
-// caseparser.pascalToUpperDash(data);
+caseparser.pascalToCamel(data);
+caseparser.pascalToSnake(data);
+caseparser.pascalToDash(data);
+caseparser.pascalToUpperSnake(data);
+caseparser.pascalToUpperDash(data);
 ```
 #### Converts from upperSnakeCase to ...
 ```js
-// caseparser.upperSnakeToCamel(data);
-// caseparser.upperSnakeToSnake(data);
-// caseparser.upperSnakeToDash(data);
-// caseparser.upperSnakeToPascal(data);
-// caseparser.upperSnakeToUpperDash(data);
+caseparser.upperSnakeToCamel(data);
+caseparser.upperSnakeToSnake(data);
+caseparser.upperSnakeToDash(data);
+caseparser.upperSnakeToPascal(data);
+caseparser.upperSnakeToUpperDash(data);
 ```
 #### Converts from upperDashCase to ...
 ```js
-// caseparser.upperDashToCamel(data);
-// caseparser.upperDashToSnake(data);
-// caseparser.upperDashToDash(data);
-// caseparser.upperDashToPascal(data);
-// caseparser.upperDashToUpperSnake(data);
+caseparser.upperDashToCamel(data);
+caseparser.upperDashToSnake(data);
+caseparser.upperDashToDash(data);
+caseparser.upperDashToPascal(data);
+caseparser.upperDashToUpperSnake(data);
 ```
 
 ## License
