@@ -348,13 +348,13 @@ const camelToUpperDash = {
 };
 
 const testCamelCaseSuite = function () {
-  console.log('\tString:');
+  console.log('\tString');
   camelToSnake.string();
   camelToDash.string();
   camelToPascal.string();
   camelToUpperSnake.string();
   camelToUpperDash.string();
-  console.log('\tJSON:');
+  console.log('\tJSON');
   camelToSnake.json();
   camelToDash.json();
   camelToPascal.json();
