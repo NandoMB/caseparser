@@ -81,16 +81,6 @@ Result:
           "street_name": "41 Forest Run Circle",
           "street_number": "539"
         }
-      },
-      {
-        "country": "United States",
-        "state": "California",
-        "city": "Inglewood",
-        "postal_code": "90305",
-        "street": {
-          "street_name": "456 Brown Center",
-          "street_number": "550"
-        }
       }
     ]
   }
