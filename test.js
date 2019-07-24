@@ -6,20 +6,20 @@ const UpperDashCaseSuite = require('./test-upper-dash-case');
 const UpperSnakeCaseSuite = require('./test-upper-snake-case');
 
 
-// console.log('CamelCaseSuite:');
-// CamelCaseSuite.testCamelCaseSuite();
+console.log('CamelCaseSuite:');
+CamelCaseSuite.testCamelCaseSuite();
+
+console.log('SnakeCaseSuite:');
+SnakeCaseSuite.testSnakeCaseSuite();
 
 console.log('DashCaseSuite:');
 DashCaseSuite.testDashCaseSuite();
 
-// console.log('PascalCaseSuite:');
-// PascalCaseSuite.testPascalCaseSuite();
+console.log('PascalCaseSuite:');
+PascalCaseSuite.testPascalCaseSuite();
 
-// console.log('SnakeCaseSuite:');
-// SnakeCaseSuite.testSnakeCaseSuite();
+console.log('UpperDashCaseSuite:');
+UpperDashCaseSuite.testUpperDashCaseSuite();
 
-// console.log('UpperDashCaseSuite:');
-// UpperDashCaseSuite.testUpperDashCaseSuite();
-
-// console.log('UpperSnakeCaseSuite:');
-// UpperSnakeCaseSuite.testUpperSnakeCaseSuite();
+console.log('UpperSnakeCaseSuite:');
+UpperSnakeCaseSuite.testUpperSnakeCaseSuite();
