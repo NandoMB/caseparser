@@ -2,15 +2,21 @@
 
 Convert **Strings**/**Arrays**/**Objects** from a type of case to another one.
 
-# Getting Started
 
-### Suported case types convertions:
- - **camelCase**
- - **snake_case**
- - **dash-case**
- - **PascalCase**
- - **UPPER_SNAKE_CASE**
- - **UPPER-DASH-CASE**
+
+# Suported case types:
+
+**camelCase** :white_check_mark:
+
+**snake_case** :white_check_mark:
+
+**dash-case** :white_check_mark:
+
+**PascalCase** :white_check_mark:
+
+**UPPER_SNAKE_CASE** :white_check_mark:
+
+**UPPER-DASH-CASE** :white_check_mark:
 
 # Installation
 ```sh
@@ -18,89 +24,24 @@ $ npm install caseparser --save
 ```
 
 # How to use
-##### caseparser.snakeToCamel(data)
-The variable data represents a string, an array or an object.
 
+##### Example 1
+String:
 ```js
-var caseparser = require('caseparser');
-
-var data = [
-  {
-    id: 1,
-    first_name: "Timothee",
-    last_name: "Clausner",
-    email: "tclausner0@economist.com",
-    addresses: [
-      {
-        country: "United States",
-        state: "Illinois",
-        city: "Rockford",
-        postal_code: "61105",
-        street: {
-          street_name: "41 Forest Run Circle",
-          street_number: "539"
-        }
-      },
-      {
-        country: "United States",
-        state: "California",
-        city: "Inglewood",
-        postal_code: "90305",
-        street: {
-          street_name: "456 Brown Center",
-          street_number: "550"
-        }
-      }
-    ]
-  }
-];
-
-var result = caseparser.snakeToCamel(data);
-console.log(JSON.stringify(result, null, 2));
+const caseparser = require('caseparser');
+const result = caseparser.camelToSnake('firstNameIsBeforeLastName');
 ```
-
 Result:
-
 ```json
-[
-  {
-    "id": 1,
-    "firstName": "Timothee",
-    "lastName": "Clausner",
-    "email": "tclausner0@economist.com",
-    "addresses": [
-      {
-        "country": "United States",
-        "state": "Illinois",
-        "city": "Rockford",
-        "postalCode": "61105",
-        "street": {
-          "streetName": "41 Forest Run Circle",
-          "streetNumber": "539"
-        }
-      },
-      {
-        "country": "United States",
-        "state": "California",
-        "city": "Inglewood",
-        "postalCode": "90305",
-        "street": {
-          "streetName": "456 Brown Center",
-          "streetNumber": "550"
-        }
-      }
-    ]
-  }
-]
+'first_name_is_before_last_name'
 ```
 
-##### caseparser.camelToSnake(data)
-The variable data represents a string, an array or an object.
-
+##### Example 2
+JSON:
 ```js
-var caseparser = require('caseparser');
+const caseparser = require('caseparser');
 
-var data = [
+const data = [
   {
     id: 1,
     firstName: "Timothee",
@@ -116,27 +57,13 @@ var data = [
           streetName: "41 Forest Run Circle",
           streetNumber: "539"
         }
-      },
-      {
-        country: "United States",
-        state: "California",
-        city: "Inglewood",
-        postalCode: "90305",
-        street: {
-          streetName: "456 Brown Center",
-          streetNumber: "550"
-        }
       }
     ]
   }
 ];
-
-var result = caseparser.camelToSnake(data);
-console.log(JSON.stringify(result, null, 2));
+const result = caseparser.camelToSnake(data);
 ```
-
 Result:
-
 ```json
 [
   {
