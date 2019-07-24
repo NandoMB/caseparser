@@ -8,10 +8,10 @@ const pascalToCamel = {
     const expected = 'firstNameIsBeforeLastName';
     const result = caseparser.pascalToCamel(data);
     const isFailed = result !== expected;
-    console.log('\t\tpascalToCamel', '=>', isFailed ? 'FAILED' : 'PASSED');
+    console.log('    pascalToCamel', isFailed ? '✗' : '✓');
     if (isFailed) {
-      console.error('expected: ', expected);
-      console.error('received: ', result);
+       console.error('      expected: ', JSON.stringify(expected, null, 2));
+      console.error('      received: ', JSON.stringify(result, null, 2));
     }
   },
   json: function () {
@@ -63,10 +63,10 @@ const pascalToCamel = {
     };
     const result = caseparser.pascalToCamel(data);
     const isFailed = JSON.stringify(result) !== JSON.stringify(expected);
-    console.log('\t\tpascalToCamel', '=>', isFailed ? 'FAILED' : 'PASSED');
+    console.log('    pascalToCamel', isFailed ? '✗' : '✓');
     if (isFailed) {
-      console.error('expected: ', expected);
-      console.error('received: ', result);
+       console.error('      expected: ', JSON.stringify(expected, null, 2));
+      console.error('      received: ', JSON.stringify(result, null, 2));
     }
   }
 };
@@ -77,10 +77,10 @@ const pascalToSnake = {
     const expected = 'first_name_is_before_last_name';
     const result = caseparser.pascalToSnake(data);
     const isFailed = result !== expected;
-    console.log('\t\tpascalToSnake', '=>', isFailed ? 'FAILED' : 'PASSED');
+    console.log('    pascalToSnake', isFailed ? '✗' : '✓');
     if (isFailed) {
-      console.error('expected: ', expected);
-      console.error('received: ', result);
+       console.error('      expected: ', JSON.stringify(expected, null, 2));
+      console.error('      received: ', JSON.stringify(result, null, 2));
     }
   },
   json: function () {
@@ -132,10 +132,10 @@ const pascalToSnake = {
     };
     const result = caseparser.pascalToSnake(data);
     const isFailed = JSON.stringify(result) !== JSON.stringify(expected);
-    console.log('\t\tpascalToSnake', '=>', isFailed ? 'FAILED' : 'PASSED');
+    console.log('    pascalToSnake', isFailed ? '✗' : '✓');
     if (isFailed) {
-      console.error('expected: ', expected);
-      console.error('received: ', result);
+       console.error('      expected: ', JSON.stringify(expected, null, 2));
+      console.error('      received: ', JSON.stringify(result, null, 2));
     }
   }
 };
@@ -146,10 +146,10 @@ const pascalToDash = {
     const expected = 'first-name-is-before-last-name';
     const result = caseparser.pascalToDash(data);
     const isFailed = result !== expected;
-    console.log('\t\tpascalToDash', '=>', isFailed ? 'FAILED' : 'PASSED');
+    console.log('    pascalToDash', isFailed ? '✗' : '✓');
     if (isFailed) {
-      console.error('expected: ', expected);
-      console.error('received: ', result);
+       console.error('      expected: ', JSON.stringify(expected, null, 2));
+      console.error('      received: ', JSON.stringify(result, null, 2));
     }
   },
   json: function () {
@@ -201,10 +201,10 @@ const pascalToDash = {
     };
     const result = caseparser.pascalToDash(data);
     const isFailed = JSON.stringify(result) !== JSON.stringify(expected);
-    console.log('\t\tpascalToDash', '=>', isFailed ? 'FAILED' : 'PASSED');
+    console.log('    pascalToDash', isFailed ? '✗' : '✓');
     if (isFailed) {
-      console.error('expected: ', expected);
-      console.error('received: ', result);
+       console.error('      expected: ', JSON.stringify(expected, null, 2));
+      console.error('      received: ', JSON.stringify(result, null, 2));
     }
   }
 };
@@ -215,10 +215,10 @@ const pascalToUpperSnake = {
     const expected = 'FIRST_NAME_IS_BEFORE_LAST_NAME';
     const result = caseparser.pascalToUpperSnake(data);
     const isFailed = result !== expected;
-    console.log('\t\tpascalToUpperSnake', '=>', isFailed ? 'FAILED' : 'PASSED');
+    console.log('    pascalToUpperSnake', isFailed ? '✗' : '✓');
     if (isFailed) {
-      console.error('expected: ', expected);
-      console.error('received: ', result);
+       console.error('      expected: ', JSON.stringify(expected, null, 2));
+      console.error('      received: ', JSON.stringify(result, null, 2));
     }
   },
   json: function () {
@@ -270,10 +270,10 @@ const pascalToUpperSnake = {
     };
     const result = caseparser.pascalToUpperSnake(data);
     const isFailed = JSON.stringify(result) !== JSON.stringify(expected);
-    console.log('\t\tpascalToUpperSnake', '=>', isFailed ? 'FAILED' : 'PASSED');
+    console.log('    pascalToUpperSnake', isFailed ? '✗' : '✓');
     if (isFailed) {
-      console.error('expected: ', expected);
-      console.error('received: ', result);
+       console.error('      expected: ', JSON.stringify(expected, null, 2));
+      console.error('      received: ', JSON.stringify(result, null, 2));
     }
   }
 };
@@ -284,10 +284,10 @@ const pascalToUpperDash = {
     const expected = 'FIRST-NAME-IS-BEFORE-LAST-NAME';
     const result = caseparser.pascalToUpperDash(data);
     const isFailed = result !== expected;
-    console.log('\t\tpascalToUpperDash', '=>', isFailed ? 'FAILED' : 'PASSED');
+    console.log('    pascalToUpperDash', isFailed ? '✗' : '✓');
     if (isFailed) {
-      console.error('expected: ', expected);
-      console.error('received: ', result);
+       console.error('      expected: ', JSON.stringify(expected, null, 2));
+      console.error('      received: ', JSON.stringify(result, null, 2));
     }
   },
   json: function () {
@@ -339,23 +339,27 @@ const pascalToUpperDash = {
     };
     const result = caseparser.pascalToUpperDash(data);
     const isFailed = JSON.stringify(result) !== JSON.stringify(expected);
-    console.log('\t\tpascalToUpperDash', '=>', isFailed ? 'FAILED' : 'PASSED');
+    console.log('    pascalToUpperDash', isFailed ? '✗' : '✓');
     if (isFailed) {
-      console.error('expected: ', expected);
-      console.error('received: ', result);
+      console.error('      expected: ', JSON.stringify(expected, null, 2));
+      console.error('      received: ', JSON.stringify(result, null, 2));
     }
   }
 };
 
 const testPascalCaseSuite = function () {
-  console.log('======================= String =======================');
+  console.log('  String:');
   pascalToCamel.string();
   pascalToSnake.string();
   pascalToDash.string();
   pascalToUpperSnake.string();
   pascalToUpperDash.string();
-  console.log('======================== JSON ========================');
-  console.log('------------------------------------------------------');
+  console.log('  JSON:');
+  pascalToCamel.json();
+  pascalToSnake.json();
+  pascalToDash.json();
+  pascalToUpperSnake.json();
+  pascalToUpperDash.json();
 };
 
 module.exports = { testPascalCaseSuite };
