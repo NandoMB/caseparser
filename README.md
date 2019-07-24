@@ -7,10 +7,10 @@ Convert **Strings**/**Arrays**/**Objects** from a type of case to another one.
 ### Suported case types convertions:
  - **camelCase**
  - **snake_case**
- - **dash-case** (workin on...)
- - **PascalCase** (workin on...)
- - **UPPER_SNAKE_CASE** (workin on...)
- - **UPPER-DASH-CASE** (workin on...)
+ - **dash-case**
+ - **PascalCase**
+ - **UPPER_SNAKE_CASE**
+ - **UPPER-DASH-CASE**
 
 # Installation
 ```sh
