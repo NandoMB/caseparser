@@ -1,4 +1,4 @@
-import caseparser from './dist';
+import caseparser from './src';
 
 const stringTest = caseparser.camelToDash('loremIpsumIsSimplyDummyTextOfThePrintingAndTypesettingIndustry');
 //    ^?
