@@ -1,0 +1,15 @@
+type CamelConversionType = 'camelToSnake' | 'camelToDash' | 'camelToPascal' | 'camelToUpperSnake' | 'camelToUpperDash';
+type DashConversionType = 'dashToCamel' | 'dashToSnake' | 'dashToPascal' | 'dashToUpperSnake' | 'dashToUpperDash';
+type PascalConversionType = 'pascalToCamel' | 'pascalToSnake' | 'pascalToDash' | 'pascalToUpperSnake' | 'pascalToUpperDash';
+type SnakeConversionType = 'snakeToCamel' | 'snakeToDash' | 'snakeToPascal' | 'snakeToUpperSnake' | 'snakeToUpperDash';
+type UpperDashConversionType = 'upperDashToCamel' | 'upperDashToSnake' | 'upperDashToDash' | 'upperDashToPascal' | 'upperDashToUpperSnake';
+type UpperSnakeConversionType = 'upperSnakeToCamel' | 'upperSnakeToSnake' | 'upperSnakeToDash' | 'upperSnakeToPascal' | 'upperSnakeToUpperDash';
+export type ConversionType = CamelConversionType | DashConversionType | PascalConversionType | SnakeConversionType | UpperDashConversionType | UpperSnakeConversionType;
+export type StringParser = { [key in ConversionType]: (str: string) => string; };
+export type Parser = (data: CaseParserInput) => CaseParserOutput;
+export type JsonValue = boolean | number | string | null | JsonObject | JsonArray;
+export type JsonObject = { [key: string]: JsonValue };
+export type JsonArray = JsonValue[];
+export type Json = JsonObject | JsonArray;
+export type CaseParserInput = string | Json;
+export type CaseParserOutput = string | Json;

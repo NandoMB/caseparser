@@ -1,61 +1,113 @@
-# [CaseParser](https://github.com/NandoMB/caseparser)
-
-Convert **Strings**/**Arrays**/**Objects** from a type of case to another one.
-
+# [CaseParser](https://github.com/NandoMB/caseparser) Version 2.x.x
+Convert **Strings** and **JSON (Object Keys)** from a ```case type``` to another one.
 
 
-# Suported case types:
+###### Note:
+>  This is the version 2.x.x that supports Typescript. If you're looking for 1.x.x version, [here](https://github.com/NandoMB/caseparser/tree/v1.x.x) is the docs.
 
-**camelCase** :white_check_mark:
 
-**snake_case** :white_check_mark:
+## Installation
 
-**dash-case** :white_check_mark:
-
-**PascalCase** :white_check_mark:
-
-**UPPER_SNAKE_CASE** :white_check_mark:
-
-**UPPER-DASH-CASE** :white_check_mark:
-
-# Installation
 ```sh
-$ npm install caseparser --save
+$ yarn add caseparser
+
+# or
+
+$ npm add caseparser
+
+# or
+
+$ pnpm add caseparser
 ```
 
-# How to use
+## Supported conversion types
+
+##### Converts from camelCase to ...
+```js
+caseparser.camelToDash(data);
+caseparser.camelToPascal(data);
+caseparser.camelToSnake(data);
+caseparser.camelToUpperDash(data);
+caseparser.camelToUpperSnake(data);
+```
+##### Converts from snakeCase to ...
+```js
+caseparser.snakeToCamel(data);
+caseparser.snakeToDash(data);
+caseparser.snakeToPascal(data);
+caseparser.snakeToUpperDash(data);
+caseparser.snakeToUpperSnake(data);
+```
+##### Converts from dashCase to ...
+```js
+caseparser.dashToCamel(data);
+caseparser.dashToPascal(data);
+caseparser.dashToSnake(data);
+caseparser.dashToUpperDash(data);
+caseparser.dashToUpperSnake(data);
+```
+##### Converts from pascalCase to ...
+```js
+caseparser.pascalToCamel(data);
+caseparser.pascalToDash(data);
+caseparser.pascalToSnake(data);
+caseparser.pascalToUpperDash(data);
+caseparser.pascalToUpperSnake(data);
+```
+##### Converts from upperSnakeCase to ...
+```js
+caseparser.upperSnakeToCamel(data);
+caseparser.upperSnakeToDash(data);
+caseparser.upperSnakeToPascal(data);
+caseparser.upperSnakeToSnake(data);
+caseparser.upperSnakeToUpperDash(data);
+```
+##### Converts from upperDashCase to ...
+```js
+caseparser.upperDashToCamel(data);
+caseparser.upperDashToDash(data);
+caseparser.upperDashToPascal(data);
+caseparser.upperDashToSnake(data);
+caseparser.upperDashToUpperSnake(data);
+```
+
+
+
+## How to use
+
 
 ##### Example 1
-String:
-```js
-const caseparser = require('caseparser');
-const result = caseparser.camelToSnake('firstNameIsBeforeLastName');
-```
-Result:
-```json
-'first_name_is_before_last_name'
-```
+Passing **String** as parameter:
+```ts
+import caseparser from 'caseparser';
 
-##### Example 2
-JSON:
+caseparser.camelToSnake('loremIpsumIsSimplyDummyTextOfThePrintingAndTypesettingIndustry');
+```
+Will result:
+```json
+'lorem_ipsum_is_simply_dummy_text_of_the_printing_and_typesetting_industry'
+```
+---
+#### Example 2
+Passing **JSON** as parameter:
 ```js
-const caseparser = require('caseparser');
+import caseparser from 'caseparser';
 
 const data = [
   {
     id: 1,
-    firstName: "Timothee",
-    lastName: "Clausner",
-    email: "tclausner0@economist.com",
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@example.com',
     addresses: [
       {
-        country: "United_States",
-        state: "Illinois",
-        city: "Rockford",
-        postalCode: "61105",
+        country: 'United States',
+        state: 'Illinois',
+        city: 'Rockford',
+        postalCode: '61105',
         street: {
-          streetName: "41 Forest Run Circle",
-          streetNumber: "539"
+          streetName: '41 Forest Run Circle',
+          streetNumber: '539'
         }
       }
     ]
@@ -68,12 +120,12 @@ Result:
 [
   {
     "id": 1,
-    "first_name": "Timothee",
-    "last_name": "Clausner",
-    "email": "tclausner0@economist.com",
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john.doe@example.com",
     "addresses": [
       {
-        "country": "United_States",
+        "country": "United States",
         "state": "Illinois",
         "city": "Rockford",
         "postal_code": "61105",
@@ -85,56 +137,6 @@ Result:
     ]
   }
 ]
-```
-
-# Methods:
-#### Converts from camelCase to ...
-```js
-caseparser.camelToSnake(data);
-caseparser.camelToDash(data);
-caseparser.camelToPascal(data);
-caseparser.camelToUpperSnake(data);
-caseparser.camelToUpperDash(data);
-```
-#### Converts from snakeCase to ...
-```js
-caseparser.snakeToCamel(data);
-caseparser.snakeToDash(data);
-caseparser.snakeToPascal(data);
-caseparser.snakeToUpperSnake(data);
-caseparser.snakeToUpperDash(data);
-```
-#### Converts from dashCase to ...
-```js
-caseparser.dashToCamel(data);
-caseparser.dashToSnake(data);
-caseparser.dashToPascal(data);
-caseparser.dashToUpperSnake(data);
-caseparser.dashToUpperDash(data);
-```
-#### Converts from pascalCase to ...
-```js
-caseparser.pascalToCamel(data);
-caseparser.pascalToSnake(data);
-caseparser.pascalToDash(data);
-caseparser.pascalToUpperSnake(data);
-caseparser.pascalToUpperDash(data);
-```
-#### Converts from upperSnakeCase to ...
-```js
-caseparser.upperSnakeToCamel(data);
-caseparser.upperSnakeToSnake(data);
-caseparser.upperSnakeToDash(data);
-caseparser.upperSnakeToPascal(data);
-caseparser.upperSnakeToUpperDash(data);
-```
-#### Converts from upperDashCase to ...
-```js
-caseparser.upperDashToCamel(data);
-caseparser.upperDashToSnake(data);
-caseparser.upperDashToDash(data);
-caseparser.upperDashToPascal(data);
-caseparser.upperDashToUpperSnake(data);
 ```
 
 ## License

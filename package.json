@@ -1,28 +1,52 @@
 {
   "name": "caseparser",
-  "version": "1.1.0",
+  "version": "2.0.0-rc0.0.1",
   "description": "Convert Strings/Arrays/Objects from a type of case to another one.",
-  "main": "index.js",
-  "directories": {
-    "lib": "lib"
-  },
-  "scripts": {
-    "test": "node test.js"
+  "author": "Fernando Machado Bernardino <fernandombernardino@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/NandoMB/caseparser#readme",
+  "bugs": {
+    "url": "https://github.com/NandoMB/caseparser/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NandoMB/caseparser.git"
   },
-  "keywords": [
-    "convert",
-    "parser",
-    "snake_case",
-    "camelCase"
-  ],
-  "author": "Fernando Machado Bernardino <fernandombernardino@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/NandoMB/caseparser/issues"
+  "private": false,
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "vitest",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage",
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "lint": "tsc",
+    "ci": "pnpm run lint && pnpm run test && pnpm run build"
   },
-  "homepage": "https://github.com/NandoMB/caseparser#readme"
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "@vitest/coverage-istanbul": "^0.29.8",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.3",
+    "vitest": "^0.29.8"
+  },
+  "keywords": [
+    "caseparser",
+    "case parser",
+    "parser",
+    "convert",
+    "camel case",
+    "snake case",
+    "dash case",
+    "pascal case",
+    "upper snake case",
+    "upper dash case",
+    "camelCase",
+    "snake_case",
+    "dash-case",
+    "PascalCase",
+    "UPPER_SNAKE_CASE",
+    "UPPER-DASH-CASE"
+  ]
 }
