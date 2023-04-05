@@ -1,5 +1,11 @@
 # caseparser
 
+## 2.0.2
+
+### Patch Changes
+
+- 7835aa8: Cleaning some unnecessary files
+
 ## 2.0.1
 
 ### Patch Changes
