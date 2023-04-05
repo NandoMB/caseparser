@@ -1,28 +1,29 @@
-# [CaseParser](https://github.com/NandoMB/caseparser) Version 2.x.x
-Convert **Strings** and **JSON (Object Keys)** from a ```case type``` to another one.
+# [CaseParser 2](https://github.com/NandoMB/caseparser)
+Convert **Strings** and **JSON (Object Keys)** from a **case type** to another one.
 
 
-###### Notes:
->  This is the version 2.x.x that supports Typescript. If you're looking for 1.x.x version, [here](https://github.com/NandoMB/caseparser/tree/v1.x.x) is the docs.
+###### Note:
+>  This is the **version 2.x.x** that supports **Typescript**. If you're looking for version 1.x.x, [click here](https://github.com/NandoMB/caseparser/tree/v1.x.x) to see the docs.
 
 
 ## Installation
 
+###### Yarn
 ```sh
-$ yarn add caseparser
-
-# or
-
-$ npm add caseparser
-
-# or
-
-$ pnpm add caseparser
+yarn add caseparser
+```
+###### NPM
+```sh
+npm add caseparser
+```
+###### PNPM
+```sh
+pnpm add caseparser
 ```
 
-## Supported conversion types
+## Conversion Types
 
-##### Converts from camelCase to ...
+###### camelCase to ...
 ```js
 caseparser.camelToDash(data);
 caseparser.camelToPascal(data);
@@ -30,7 +31,7 @@ caseparser.camelToSnake(data);
 caseparser.camelToUpperDash(data);
 caseparser.camelToUpperSnake(data);
 ```
-##### Converts from snakeCase to ...
+###### snakeCase to ...
 ```js
 caseparser.snakeToCamel(data);
 caseparser.snakeToDash(data);
@@ -38,7 +39,7 @@ caseparser.snakeToPascal(data);
 caseparser.snakeToUpperDash(data);
 caseparser.snakeToUpperSnake(data);
 ```
-##### Converts from dashCase to ...
+###### dashCase to ...
 ```js
 caseparser.dashToCamel(data);
 caseparser.dashToPascal(data);
@@ -46,7 +47,7 @@ caseparser.dashToSnake(data);
 caseparser.dashToUpperDash(data);
 caseparser.dashToUpperSnake(data);
 ```
-##### Converts from pascalCase to ...
+###### pascalCase to ...
 ```js
 caseparser.pascalToCamel(data);
 caseparser.pascalToDash(data);
@@ -54,7 +55,7 @@ caseparser.pascalToSnake(data);
 caseparser.pascalToUpperDash(data);
 caseparser.pascalToUpperSnake(data);
 ```
-##### Converts from upperSnakeCase to ...
+###### upperSnakeCase to ...
 ```js
 caseparser.upperSnakeToCamel(data);
 caseparser.upperSnakeToDash(data);
@@ -62,7 +63,7 @@ caseparser.upperSnakeToPascal(data);
 caseparser.upperSnakeToSnake(data);
 caseparser.upperSnakeToUpperDash(data);
 ```
-##### Converts from upperDashCase to ...
+###### upperDashCase to ...
 ```js
 caseparser.upperDashToCamel(data);
 caseparser.upperDashToDash(data);
@@ -76,7 +77,7 @@ caseparser.upperDashToUpperSnake(data);
 ## How to use
 
 
-##### Example 1
+###### Example 1
 Passing **String** as parameter:
 ```ts
 import caseparser from 'caseparser';
@@ -87,8 +88,9 @@ Will result:
 ```json
 'lorem_ipsum_is_simply_dummy_text_of_the_printing_and_typesetting_industry'
 ```
----
-#### Example 2
+<br/>
+
+###### Example 2
 Passing **JSON** as parameter:
 ```js
 import caseparser from 'caseparser';
@@ -115,7 +117,7 @@ const data = [
 ];
 const result = caseparser.camelToSnake(data);
 ```
-Result:
+Will Result:
 ```json
 [
   {
