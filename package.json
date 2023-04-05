@@ -1,6 +1,6 @@
 {
   "name": "caseparser",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Convert Strings/Arrays/Objects from a type of case to another one.",
   "author": "Fernando Machado Bernardino <fernandombernardino@gmail.com>",
   "license": "MIT",
