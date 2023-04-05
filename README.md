@@ -2,7 +2,7 @@
 Convert **Strings** and **JSON (Object Keys)** from a ```case type``` to another one.
 
 
-###### Note:
+###### Notes:
 >  This is the version 2.x.x that supports Typescript. If you're looking for 1.x.x version, [here](https://github.com/NandoMB/caseparser/tree/v1.x.x) is the docs.
 
 
