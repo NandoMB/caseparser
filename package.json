@@ -12,7 +12,9 @@
     "type": "git",
     "url": "git+https://github.com/NandoMB/caseparser.git"
   },
-  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
