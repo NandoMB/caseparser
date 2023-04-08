@@ -1,3 +1,4 @@
+import { ParserType } from '../types';
 import { Capitalize, Uppercase, Uncapitalize, Lowercase } from '../utils';
 
 const CamelToDash = (str: string) => str.replace(/([A-Z])/g, (g) => '-' + g[0].toLowerCase());
@@ -36,35 +37,37 @@ const UpperSnakeToPascal = (str: string) => SnakeToPascal(Lowercase(str));
 const UpperSnakeToSnake = (str: string) => Lowercase(str);
 const UpperSnakeToUpperDash = (str: string) => Uppercase(UpperSnakeToDash(str));
 
-export default {
-  CamelToDash,
-  CamelToPascal,
-  CamelToSnake,
-  CamelToUpperDash,
-  CamelToUpperSnake,
-  DashToCamel,
-  DashToSnake,
-  DashToPascal,
-  DashToUpperSnake,
-  DashToUpperDash,
-  PascalToCamel,
-  PascalToSnake,
-  PascalToDash,
-  PascalToUpperSnake,
-  PascalToUpperDash,
-  SnakeToCamel,
-  SnakeToDash,
-  SnakeToPascal,
-  SnakeToUpperSnake,
-  SnakeToUpperDash,
-  UpperSnakeToCamel,
-  UpperSnakeToSnake,
-  UpperSnakeToDash,
-  UpperSnakeToPascal,
-  UpperSnakeToUpperDash,
-  UpperDashToCamel,
-  UpperDashToSnake,
-  UpperDashToDash,
-  UpperDashToPascal,
-  UpperDashToUpperSnake
-};
+export default function parse(input: string, type: ParserType) {
+  return {
+    CamelToDash,
+    CamelToPascal,
+    CamelToSnake,
+    CamelToUpperDash,
+    CamelToUpperSnake,
+    DashToCamel,
+    DashToSnake,
+    DashToPascal,
+    DashToUpperSnake,
+    DashToUpperDash,
+    PascalToCamel,
+    PascalToSnake,
+    PascalToDash,
+    PascalToUpperSnake,
+    PascalToUpperDash,
+    SnakeToCamel,
+    SnakeToDash,
+    SnakeToPascal,
+    SnakeToUpperSnake,
+    SnakeToUpperDash,
+    UpperSnakeToCamel,
+    UpperSnakeToSnake,
+    UpperSnakeToDash,
+    UpperSnakeToPascal,
+    UpperSnakeToUpperDash,
+    UpperDashToCamel,
+    UpperDashToSnake,
+    UpperDashToDash,
+    UpperDashToPascal,
+    UpperDashToUpperSnake
+  }[type](input);
+}
