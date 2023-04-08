@@ -1,5 +1,11 @@
 # caseparser
 
+## 2.0.3
+
+### Patch Changes
+
+- a3ebdbd: Code impovements
+
 ## 2.0.2
 
 ### Patch Changes
