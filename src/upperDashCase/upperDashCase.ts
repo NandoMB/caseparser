@@ -1,34 +1,22 @@
-import { convertStringKey, convertJson } from '../parser';
-import { CaseParserInput } from '../types';
-import { isString } from '../utils';
+import { converter } from '../parser';
 
 
-export function upperDashToCamel(input: CaseParserInput) {
-  if (input === null || input === undefined) return null;
-  if (isString(input)) return convertStringKey(input, 'upperDashToCamel');
-  return convertJson(input, upperDashToCamel);
+export function upperDashToCamel<T extends object | string>(input: T) {
+  return converter(input, 'UpperDashToCamel');
 }
 
-export function upperDashToSnake(input: CaseParserInput) {
-  if (input === null || input === undefined) return null;
-  if (isString(input)) return convertStringKey(input, 'upperDashToSnake');
-  return convertJson(input, upperDashToSnake);
+export function upperDashToSnake<T extends object | string>(input: T) {
+  return converter(input, 'UpperDashToSnake');
 }
 
-export function upperDashToDash(input: CaseParserInput) {
-  if (input === null || input === undefined) return null;
-  if (isString(input)) return convertStringKey(input, 'upperDashToDash');
-  return convertJson(input, upperDashToDash);
+export function upperDashToDash<T extends object | string>(input: T) {
+  return converter(input, 'UpperDashToDash');
 }
 
-export function upperDashToPascal(input: CaseParserInput) {
-  if (input === null || input === undefined) return null;
-  if (isString(input)) return convertStringKey(input, 'upperDashToPascal');
-  return convertJson(input, upperDashToPascal);
+export function upperDashToPascal<T extends object | string>(input: T) {
+  return converter(input, 'UpperDashToPascal');
 }
 
-export function upperDashToUpperSnake(input: CaseParserInput) {
-  if (input === null || input === undefined) return null;
-  if (isString(input)) return convertStringKey(input, 'upperDashToUpperSnake');
-  return convertJson(input, upperDashToUpperSnake);
+export function upperDashToUpperSnake<T extends object | string>(input: T) {
+  return converter(input, 'UpperDashToUpperSnake');
 }

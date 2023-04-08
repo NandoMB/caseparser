@@ -1,14 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ES2016",
+    "target": "ES2020",
     "module": "CommonJS",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "noEmit": true,
-    // "rootDir": "src",
-    "outDir": "build",
   },
-  "include": ["./src", "playground.ts"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
 }
