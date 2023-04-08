@@ -1,34 +1,22 @@
-import { convertStringKey, convertJson } from '../parser';
-import { CaseParserInput } from '../types';
-import { isString } from '../utils';
+import { converter } from '../parser';
 
 
-export function upperSnakeToCamel(input: CaseParserInput) {
-  if (input === null || input === undefined) return null;
-  if (isString(input)) return convertStringKey(input, 'upperSnakeToCamel');
-  return convertJson(input, upperSnakeToCamel);
+export function upperSnakeToCamel<T extends object | string>(input: T) {
+  return converter(input, 'UpperSnakeToCamel');
 }
 
-export function upperSnakeToSnake(input: CaseParserInput) {
-  if (input === null || input === undefined) return null;
-  if (isString(input)) return convertStringKey(input, 'upperSnakeToSnake');
-  return convertJson(input, upperSnakeToSnake);
+export function upperSnakeToSnake<T extends object | string>(input: T) {
+  return converter(input, 'UpperSnakeToSnake');
 }
 
-export function upperSnakeToDash(input: CaseParserInput) {
-  if (input === null || input === undefined) return null;
-  if (isString(input)) return convertStringKey(input, 'upperSnakeToDash');
-  return convertJson(input, upperSnakeToDash);
+export function upperSnakeToDash<T extends object | string>(input: T) {
+  return converter(input, 'UpperSnakeToDash');
 }
 
-export function upperSnakeToPascal(input: CaseParserInput) {
-  if (input === null || input === undefined) return null;
-  if (isString(input)) return convertStringKey(input, 'upperSnakeToPascal');
-  return convertJson(input, upperSnakeToPascal);
+export function upperSnakeToPascal<T extends object | string>(input: T) {
+  return converter(input, 'UpperSnakeToPascal');
 }
 
-export function upperSnakeToUpperDash(input: CaseParserInput) {
-  if (input === null || input === undefined) return null;
-  if (isString(input)) return convertStringKey(input, 'upperSnakeToUpperDash');
-  return convertJson(input, upperSnakeToUpperDash);
+export function upperSnakeToUpperDash<T extends object | string>(input: T) {
+  return converter(input, 'UpperSnakeToUpperDash');
 }

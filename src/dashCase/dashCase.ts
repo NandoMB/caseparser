@@ -1,34 +1,21 @@
-import { convertStringKey, convertJson } from '../parser';
-import { CaseParserInput } from '../types';
-import { isString } from '../utils';
+import { converter } from '../parser';
 
-
-export function dashToSnake(input: CaseParserInput) {
-  if (input === null || input === undefined) return null;
-  if (isString(input)) return convertStringKey(input, 'dashToSnake');
-  return convertJson(input, dashToSnake);
+export function dashToSnake<T extends object | string>(input: T) {
+  return converter(input, 'DashToSnake');
 }
 
-export function dashToCamel(input: CaseParserInput) {
-  if (input === null || input === undefined) return null;
-  if (isString(input)) return convertStringKey(input, 'dashToCamel');
-  return convertJson(input, dashToCamel);
+export function dashToCamel<T extends object | string>(input: T) {
+  return converter(input, 'DashToCamel');
 }
 
-export function dashToPascal(input: CaseParserInput) {
-  if (input === null || input === undefined) return null;
-  if (isString(input)) return convertStringKey(input, 'dashToPascal');
-  return convertJson(input, dashToPascal);
+export function dashToPascal<T extends object | string>(input: T) {
+  return converter(input, 'DashToPascal');
 }
 
-export function dashToUpperSnake(input: CaseParserInput) {
-  if (input === null || input === undefined) return null;
-  if (isString(input)) return convertStringKey(input, 'dashToUpperSnake');
-  return convertJson(input, dashToUpperSnake);
+export function dashToUpperSnake<T extends object | string>(input: T) {
+  return converter(input, 'DashToUpperSnake');
 }
 
-export function dashToUpperDash(input: CaseParserInput) {
-  if (input === null || input === undefined) return null;
-  if (isString(input)) return convertStringKey(input, 'dashToUpperDash');
-  return convertJson(input, dashToUpperDash);
+export function dashToUpperDash<T extends object | string>(input: T) {
+  return converter(input, 'DashToUpperDash');
 }
