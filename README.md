@@ -1,5 +1,5 @@
 # [CaseParser 2](https://github.com/NandoMB/caseparser)
-Convert **Strings** and **JSON (Object Keys)** from a **case type** to another one.
+Convert **Strings** and **JSON (Object Keys)** from a **case type** to another one with **type inference** based on parameter's type.
 
 
 ###### Note:
@@ -21,61 +21,7 @@ npm add caseparser
 pnpm add caseparser
 ```
 
-## Conversion Types
-
-###### camelCase to ...
-```js
-caseparser.camelToDash(data);
-caseparser.camelToPascal(data);
-caseparser.camelToSnake(data);
-caseparser.camelToUpperDash(data);
-caseparser.camelToUpperSnake(data);
-```
-###### snakeCase to ...
-```js
-caseparser.snakeToCamel(data);
-caseparser.snakeToDash(data);
-caseparser.snakeToPascal(data);
-caseparser.snakeToUpperDash(data);
-caseparser.snakeToUpperSnake(data);
-```
-###### dashCase to ...
-```js
-caseparser.dashToCamel(data);
-caseparser.dashToPascal(data);
-caseparser.dashToSnake(data);
-caseparser.dashToUpperDash(data);
-caseparser.dashToUpperSnake(data);
-```
-###### pascalCase to ...
-```js
-caseparser.pascalToCamel(data);
-caseparser.pascalToDash(data);
-caseparser.pascalToSnake(data);
-caseparser.pascalToUpperDash(data);
-caseparser.pascalToUpperSnake(data);
-```
-###### upperSnakeCase to ...
-```js
-caseparser.upperSnakeToCamel(data);
-caseparser.upperSnakeToDash(data);
-caseparser.upperSnakeToPascal(data);
-caseparser.upperSnakeToSnake(data);
-caseparser.upperSnakeToUpperDash(data);
-```
-###### upperDashCase to ...
-```js
-caseparser.upperDashToCamel(data);
-caseparser.upperDashToDash(data);
-caseparser.upperDashToPascal(data);
-caseparser.upperDashToSnake(data);
-caseparser.upperDashToUpperSnake(data);
-```
-
-
-
 ## How to use
-
 
 ###### Example 1
 Passing **String** as parameter:
@@ -85,7 +31,7 @@ import caseparser from 'caseparser';
 caseparser.camelToSnake('loremIpsumIsSimplyDummyTextOfThePrintingAndTypesettingIndustry');
 ```
 Will result:
-```json
+```ts
 'lorem_ipsum_is_simply_dummy_text_of_the_printing_and_typesetting_industry'
 ```
 <br/>
@@ -139,6 +85,57 @@ Will Result:
     ]
   }
 ]
+```
+
+## Conversion Types
+
+###### camelCase to ...
+```js
+caseparser.camelToDash(data);
+caseparser.camelToPascal(data);
+caseparser.camelToSnake(data);
+caseparser.camelToUpperDash(data);
+caseparser.camelToUpperSnake(data);
+```
+###### snakeCase to ...
+```js
+caseparser.snakeToCamel(data);
+caseparser.snakeToDash(data);
+caseparser.snakeToPascal(data);
+caseparser.snakeToUpperDash(data);
+caseparser.snakeToUpperSnake(data);
+```
+###### dashCase to ...
+```js
+caseparser.dashToCamel(data);
+caseparser.dashToPascal(data);
+caseparser.dashToSnake(data);
+caseparser.dashToUpperDash(data);
+caseparser.dashToUpperSnake(data);
+```
+###### pascalCase to ...
+```js
+caseparser.pascalToCamel(data);
+caseparser.pascalToDash(data);
+caseparser.pascalToSnake(data);
+caseparser.pascalToUpperDash(data);
+caseparser.pascalToUpperSnake(data);
+```
+###### upperSnakeCase to ...
+```js
+caseparser.upperSnakeToCamel(data);
+caseparser.upperSnakeToDash(data);
+caseparser.upperSnakeToPascal(data);
+caseparser.upperSnakeToSnake(data);
+caseparser.upperSnakeToUpperDash(data);
+```
+###### upperDashCase to ...
+```js
+caseparser.upperDashToCamel(data);
+caseparser.upperDashToDash(data);
+caseparser.upperDashToPascal(data);
+caseparser.upperDashToSnake(data);
+caseparser.upperDashToUpperSnake(data);
 ```
 
 ## License
