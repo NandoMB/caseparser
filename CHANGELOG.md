@@ -1,5 +1,11 @@
 # caseparser
 
+## 2.1.0
+
+### Minor Changes
+
+- c48dd7a: Adding typing inference based on parameter's type
+
 ## 2.0.3
 
 ### Patch Changes
