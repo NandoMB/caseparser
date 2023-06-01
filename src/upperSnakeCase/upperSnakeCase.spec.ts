@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import caseparser from '../index';
+import * as caseparser from '../index';
 
 
 describe('UPPER_SNAKE_CASE', () => {

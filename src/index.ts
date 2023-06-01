@@ -1,15 +1,6 @@
-import * as camelCase from './camelCase';
-import * as dashCase from './dashCase';
-import * as pascalCase from './pascalCase';
-import * as snakeCase from './snakeCase';
-import * as upperDashCase from './upperDashCase';
-import * as upperSnakeCase from './upperSnakeCase';
-
-export default {
-  ...camelCase,
-  ...dashCase,
-  ...pascalCase,
-  ...snakeCase,
-  ...upperDashCase,
-  ...upperSnakeCase
-};
+export * from './camelCase';
+export * from './dashCase';
+export * from './pascalCase';
+export * from './snakeCase';
+export * from './upperDashCase';
+export * from './upperSnakeCase';
