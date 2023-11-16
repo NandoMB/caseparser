@@ -3550,5 +3550,5 @@ packages:
     dev: true
 
 settings:
-  autoInstallPeers: true
+  autoInstallPeers: false
   excludeLinksFromLockfile: false
