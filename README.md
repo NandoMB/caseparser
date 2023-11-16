@@ -26,9 +26,9 @@ pnpm add caseparser
 ###### Example 1
 Passing **String** as parameter:
 ```ts
-import caseparser from 'caseparser';
+import { camelToSnake } from 'caseparser';
 
-caseparser.camelToSnake('loremIpsumIsSimplyDummyTextOfThePrintingAndTypesettingIndustry');
+camelToSnake('loremIpsumIsSimplyDummyTextOfThePrintingAndTypesettingIndustry');
 ```
 Will result:
 ```ts
@@ -39,7 +39,7 @@ Will result:
 ###### Example 2
 Passing **JSON** as parameter:
 ```js
-import caseparser from 'caseparser';
+import { camelToSnake } from 'caseparser';
 
 const data = [
   {
@@ -61,7 +61,7 @@ const data = [
     ]
   }
 ];
-const result = caseparser.camelToSnake(data);
+const result = camelToSnake(data);
 ```
 Will Result:
 ```json
@@ -91,51 +91,51 @@ Will Result:
 
 ###### camelCase to ...
 ```js
-caseparser.camelToDash(data);
-caseparser.camelToPascal(data);
-caseparser.camelToSnake(data);
-caseparser.camelToUpperDash(data);
-caseparser.camelToUpperSnake(data);
+camelToDash(data);
+camelToPascal(data);
+camelToSnake(data);
+camelToUpperDash(data);
+camelToUpperSnake(data);
 ```
 ###### snakeCase to ...
 ```js
-caseparser.snakeToCamel(data);
-caseparser.snakeToDash(data);
-caseparser.snakeToPascal(data);
-caseparser.snakeToUpperDash(data);
-caseparser.snakeToUpperSnake(data);
+snakeToCamel(data);
+snakeToDash(data);
+snakeToPascal(data);
+snakeToUpperDash(data);
+snakeToUpperSnake(data);
 ```
 ###### dashCase to ...
 ```js
-caseparser.dashToCamel(data);
-caseparser.dashToPascal(data);
-caseparser.dashToSnake(data);
-caseparser.dashToUpperDash(data);
-caseparser.dashToUpperSnake(data);
+dashToCamel(data);
+dashToPascal(data);
+dashToSnake(data);
+dashToUpperDash(data);
+dashToUpperSnake(data);
 ```
 ###### pascalCase to ...
 ```js
-caseparser.pascalToCamel(data);
-caseparser.pascalToDash(data);
-caseparser.pascalToSnake(data);
-caseparser.pascalToUpperDash(data);
-caseparser.pascalToUpperSnake(data);
+pascalToCamel(data);
+pascalToDash(data);
+pascalToSnake(data);
+pascalToUpperDash(data);
+pascalToUpperSnake(data);
 ```
 ###### upperSnakeCase to ...
 ```js
-caseparser.upperSnakeToCamel(data);
-caseparser.upperSnakeToDash(data);
-caseparser.upperSnakeToPascal(data);
-caseparser.upperSnakeToSnake(data);
-caseparser.upperSnakeToUpperDash(data);
+upperSnakeToCamel(data);
+upperSnakeToDash(data);
+upperSnakeToPascal(data);
+upperSnakeToSnake(data);
+upperSnakeToUpperDash(data);
 ```
 ###### upperDashCase to ...
 ```js
-caseparser.upperDashToCamel(data);
-caseparser.upperDashToDash(data);
-caseparser.upperDashToPascal(data);
-caseparser.upperDashToSnake(data);
-caseparser.upperDashToUpperSnake(data);
+upperDashToCamel(data);
+upperDashToDash(data);
+upperDashToPascal(data);
+upperDashToSnake(data);
+upperDashToUpperSnake(data);
 ```
 
 ## License
