@@ -3,8 +3,10 @@
   "version": "3.0.0",
   "description": "Convert Strings/Arrays/Objects from a type of case to another one.",
   "author": "Fernando Machado Bernardino <fernandombernardino@gmail.com>",
-  "license": "MIT",
   "homepage": "https://github.com/NandoMB/caseparser#readme",
+  "type": "module",
+  "license": "MIT",
+  "packageManager": "pnpm@12.5.1",
   "bugs": {
     "url": "https://github.com/NandoMB/caseparser/issues"
   },
@@ -13,27 +15,46 @@
     "url": "git+https://github.com/NandoMB/caseparser.git"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vitest",
     "test": "vitest run",
     "coverage": "vitest run --coverage",
-    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "build": "tsdown",
     "lint": "tsc",
     "ci": "pnpm run lint && pnpm run test && pnpm run build",
-    "release": "pnpm run lint && pnpm run test && pnpm run build && changeset publish"
+    "release": "node scripts/release.js",
+    "changeset:version": "changeset version && node scripts/sync-jsr-version.js"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.26.1",
-    "@types/node": "^18.15.11",
-    "@vitest/coverage-istanbul": "^0.29.8",
-    "tsup": "^6.7.0",
-    "typescript": "^5.0.3",
-    "vitest": "^0.29.8"
+    "@changesets/cli": "^3.0.3",
+    "@types/node": "^24.13.6",
+    "@vitest/coverage-istanbul": "^5.0.1",
+    "tsdown": "^0.23.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.1"
   },
   "keywords": [
     "caseparser",

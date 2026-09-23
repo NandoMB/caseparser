@@ -1,1 +1,1 @@
-export * from './dashCase';
+export * from './dashCase.ts';

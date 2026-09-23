@@ -1,6 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import * as caseparser from '../index';
-
+import * as caseparser from '../index.ts';
 
 describe('PascalCase', () => {
   const input = {

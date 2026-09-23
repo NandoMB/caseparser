@@ -40,12 +40,19 @@ type ParserPascalType = 'PascalToCamel' | 'PascalToDash' | 'PascalToSnake' | 'Pa
 type ParserSnakeType = 'SnakeToCamel' | 'SnakeToDash' | 'SnakeToPascal' | 'SnakeToUpperDash' | 'SnakeToUpperSnake';
 type ParserUpperDashType = 'UpperDashToCamel' | 'UpperDashToDash' | 'UpperDashToPascal' | 'UpperDashToSnake' | 'UpperDashToUpperSnake';
 type ParserUpperSnakeType = 'UpperSnakeToCamel' | 'UpperSnakeToDash' | 'UpperSnakeToPascal' | 'UpperSnakeToSnake' | 'UpperSnakeToUpperDash';
+
+/** Identifies a conversion, e.g. `'CamelToSnake'`. */
 export type ParserType = ParserCamelType | ParserDashType | ParserPascalType | ParserSnakeType | ParserUpperDashType | ParserUpperSnakeType;
 
+/** Flattens an intersection/mapped type so editors show the resulting keys. */
 export type Prettify<T> = {
   [K in keyof T]: T[K];
 } & {};
 
+/**
+ * The type returned by a conversion: strings stay `string`, and object keys
+ * (deeply, including inside arrays) are renamed according to the conversion `P`.
+ */
 export type Result<T, P> =
   T extends string ? string :
   T extends Array<unknown> ? {

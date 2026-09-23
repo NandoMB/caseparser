@@ -10,15 +10,18 @@ export function isArray(input: unknown): input is Array<unknown> {
   return Array.isArray(input);
 }
 
-export function Lowercase(str: string) {
+export function Lowercase(str: string): string {
   return str.toLowerCase();
 }
-export function Uppercase(str: string) {
+
+export function Uppercase(str: string): string {
   return str.toUpperCase();
 }
-export function Capitalize(str: string) {
+
+export function Capitalize(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
-export function Uncapitalize(str: string) {
+
+export function Uncapitalize(str: string): string {
   return str.charAt(0).toLowerCase() + str.slice(1);
 }

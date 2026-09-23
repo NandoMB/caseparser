@@ -1,9 +1,22 @@
-# [CaseParser 2](https://github.com/NandoMB/caseparser)
+# [CaseParser](https://github.com/NandoMB/caseparser)
+
+[![npm version](https://img.shields.io/npm/v/caseparser.svg)](https://www.npmjs.com/package/caseparser)
+[![JSR](https://jsr.io/badges/@nandomb/caseparser)](https://jsr.io/@nandomb/caseparser)
+[![JSR Score](https://jsr.io/badges/@nandomb/caseparser/score)](https://jsr.io/@nandomb/caseparser)
+[![CI](https://github.com/NandoMB/caseparser/actions/workflows/main.yml/badge.svg)](https://github.com/NandoMB/caseparser/actions/workflows/main.yml)
+[![npm downloads](https://img.shields.io/npm/dm/caseparser.svg)](https://www.npmjs.com/package/caseparser)
+[![license](https://img.shields.io/npm/l/caseparser.svg)](./LICENSE)
+
 Convert **Strings** and **JSON (Object Keys)** from a **case type** to another one with **type inference** based on parameter's type.
+
+- Zero dependencies
+- Written in TypeScript, published as ESM and CommonJS with type declarations
+- Available on [npm](https://www.npmjs.com/package/caseparser) and [JSR](https://jsr.io/@nandomb/caseparser)
+- Tree-shakeable
 
 
 ###### Note:
->  This is the **version 2.x.x** that supports **Typescript**. If you're looking for version 1.x.x, [click here](https://github.com/NandoMB/caseparser/tree/v1.x.x) to see the docs.
+>  If you're looking for version 1.x.x, [click here](https://github.com/NandoMB/caseparser/tree/v1.x.x) to see the docs.
 
 
 ## Installation
@@ -19,6 +32,32 @@ npm add caseparser
 ###### PNPM
 ```sh
 pnpm add caseparser
+```
+###### Deno (JSR)
+```sh
+deno add jsr:@nandomb/caseparser
+```
+```ts
+import { camelToSnake } from '@nandomb/caseparser';
+```
+###### Bun / Node.js from JSR
+```sh
+bunx jsr add @nandomb/caseparser
+npx jsr add @nandomb/caseparser
+```
+
+## Compatibility
+
+| Environment | Supported |
+| --- | --- |
+| ESM (`import`) | Node.js 12.22+, Deno, Bun, bundlers |
+| CommonJS (`require`) | Node.js 8+ |
+| TypeScript | 4.1+ (any `moduleResolution`: `node`, `node16`/`nodenext`, `bundler`) |
+| Browsers | Any ES2015 browser (via bundler) |
+
+```js
+// CommonJS
+const { camelToSnake } = require('caseparser');
 ```
 
 ## How to use
@@ -137,6 +176,14 @@ upperDashToPascal(data);
 upperDashToSnake(data);
 upperDashToUpperSnake(data);
 ```
+
+## Security
+
+caseparser is safe to use with untrusted input (e.g. request bodies or `JSON.parse` output): keys such as `__proto__` are copied as regular keys and never change an object's prototype, and only the object's own properties are converted.
+
+Releases are built and published from GitHub Actions without long-lived tokens (OIDC), with [npm provenance](https://docs.npmjs.com/generating-provenance-statements), so every published version can be traced back to the exact commit and workflow that built it. On npm, new versions are [staged](https://docs.npmjs.com/staged-publishing/) and only go live after a maintainer approves them with 2FA.
+
+Found a vulnerability? Please report it privately, see [SECURITY.md](./SECURITY.md).
 
 ## License
 The MIT License (MIT)

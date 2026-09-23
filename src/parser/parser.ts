@@ -1,9 +1,8 @@
-import { ParserType, Result } from '../types';
-import { isArray, isObject, isString } from '../utils';
-import arrayParser from './arrayParser';
-import objectParser from './objectParser';
-import stringParser from './stringParser';
-
+import type { ParserType, Result } from '../types.ts';
+import { isArray, isObject, isString } from '../utils.ts';
+import arrayParser from './arrayParser.ts';
+import objectParser from './objectParser.ts';
+import stringParser from './stringParser.ts';
 
 export function converter<T extends object | string, P extends ParserType>(input: T, type: P) {
   let result;

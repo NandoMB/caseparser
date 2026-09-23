@@ -1,1 +1,1 @@
-export * from './snakeCase';
+export * from './snakeCase.ts';
