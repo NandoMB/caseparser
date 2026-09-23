@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.3",
-    "@types/node": "^24.13.6",
+    "@types/node": "^26.6.2",
     "@vitest/coverage-istanbul": "^5.0.1",
     "tsdown": "^0.23.0",
     "typescript": "^7.0.2",
