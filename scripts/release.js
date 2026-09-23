@@ -14,7 +14,8 @@ if (remoteTag) {
 run('pnpm run lint');
 run('pnpm run test');
 run('pnpm run build');
-run('npm stage publish --provenance');
+console.log(`GitHub OIDC available: ${Boolean(process.env.ACTIONS_ID_TOKEN_REQUEST_URL && process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN)}`);
+run('npm stage publish --provenance --loglevel verbose');
 run('pnpm changeset git-tag');
 
 console.log(`\n${tag} staged on npm. Approve it at https://www.npmjs.com/package/caseparser (Staged Packages tab) to publish it.`);
