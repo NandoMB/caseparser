@@ -1,6 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import * as caseparser from '../index';
-
+import * as caseparser from '../index.ts';
 
 describe('snake_case', () => {
   const input = {
@@ -240,4 +239,3 @@ describe('snake_case', () => {
     `);
   });
 });
-

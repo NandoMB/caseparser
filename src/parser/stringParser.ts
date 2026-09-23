@@ -1,5 +1,5 @@
-import { ParserType } from '../types';
-import { Capitalize, Uppercase, Uncapitalize, Lowercase } from '../utils';
+import type { ParserType } from '../types.ts';
+import { Capitalize, Uppercase, Uncapitalize, Lowercase } from '../utils.ts';
 
 const CamelToDash = (str: string) => str.replace(/([A-Z])/g, (g) => '-' + g[0].toLowerCase());
 const CamelToPascal = (str: string) => Capitalize(str);
@@ -37,7 +37,7 @@ const UpperSnakeToPascal = (str: string) => SnakeToPascal(Lowercase(str));
 const UpperSnakeToSnake = (str: string) => Lowercase(str);
 const UpperSnakeToUpperDash = (str: string) => Uppercase(UpperSnakeToDash(str));
 
-export default function parse(input: string, type: ParserType) {
+export default function parse(input: string, type: ParserType): string {
   return {
     CamelToDash,
     CamelToPascal,

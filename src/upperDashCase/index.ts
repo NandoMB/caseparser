@@ -1,1 +1,1 @@
-export * from './upperDashCase';
+export * from './upperDashCase.ts';

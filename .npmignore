@@ -1,8 +1,0 @@
-src
-.changeset
-.github
-.editorconfig
-.prettierrc
-pnpm-lock.yaml
-tsconfig.json
-vite.config.ts

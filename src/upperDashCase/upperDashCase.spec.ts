@@ -1,6 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import * as caseparser from '../index';
-
+import * as caseparser from '../index.ts';
 
 describe('UPPER-DASH-CASE', () => {
   const input = {
@@ -240,4 +239,3 @@ describe('UPPER-DASH-CASE', () => {
     `);
   });
 });
-
