@@ -65,20 +65,35 @@ toSnake({ firstName: 'John', addresses: [{ postalCode: '61105' }] });
 
 Objects are converted deeply, including objects inside arrays. The input is never mutated: a new object is returned.
 
-There is one function per target case, and the input can be in any case (see [From any case](#from-any-case)):
+There is one function per target case, and the input can be in any case (see [From any case](#from-any-case)). Converting `'helloWorld'`:
+
+| Function | Result | Also known as |
+| --- | --- | --- |
+| `toCamel` | `helloWorld` | lowerCamelCase |
+| `toPascal` | `HelloWorld` | UpperCamelCase |
+| `toSnake` | `hello_world` | |
+| `toKebab` | `hello-world` | dash-case, param-case |
+| `toUpperSnake` | `HELLO_WORLD` | CONSTANT_CASE, SCREAMING_SNAKE_CASE |
+| `toUpperKebab` | `HELLO-WORLD` | COBOL-CASE, SCREAMING-KEBAB-CASE |
+| `toTrain` | `Hello-World` | Header-Case |
+| `toDot` | `hello.World` | dot.notation |
+| `toTitle` | `Hello World` | Capital Case |
+| `toSentence` | `Hello world` | |
+| `toPascalSnake` | `Hello_World` | Ada_Case, Title_Snake_Case |
+| `toPath` | `hello/World` | |
+| `toSpace` | `hello World` | |
+| `toLower` | `hello world` | no case |
+| `toUpper` | `HELLO WORLD` | |
+
+`toSpace`, `toPath` and `toDot` keep the original case of each word (`toPath('UserProfile')` → `'User/Profile'`); all the others lowercase the words first. To change the case of a whole string, use `toLowerCase()` or `toUpperCase()` on the result:
 
 ```ts
-toCamel('helloWorld');      // 'helloWorld'
-toPascal('helloWorld');     // 'HelloWorld'
-toSnake('helloWorld');      // 'hello_world'
-toDash('helloWorld');       // 'hello-world'
-toUpperSnake('helloWorld'); // 'HELLO_WORLD'
-toUpperDash('helloWorld');  // 'HELLO-WORLD'
-toTrain('helloWorld');      // 'Hello-World'
-toDot('helloWorld');        // 'hello.world'
-toTitle('helloWorld');      // 'Hello World'
-toSentence('helloWorld');   // 'Hello world'
+toPath('helloWorld');               // 'hello/World'
+toPath('helloWorld').toLowerCase(); // 'hello/world'
+toPath('helloWorld').toUpperCase(); // 'HELLO/WORLD'
 ```
+
+Don't chain `toX` functions for this (`toUpper(toPath(...))`): each one splits its input into words again, so `/` and `.` would be treated as separators or symbols.
 
 ### Typical use: API responses
 
@@ -181,9 +196,9 @@ All 90 functions:
 
 ## Migrating to `toX`
 
-Replace each `<from>To<To>` function with the `toX` function for its target case, whatever the source case: `camelToSnake`, `dashToSnake`, `titleToSnake`... all become `toSnake`.
+Replace each `<from>To<To>` function with the `toX` function for its target case, whatever the source case: `camelToSnake`, `dashToSnake`, `titleToSnake`... all become `toSnake`. The dash cases were renamed: `<from>ToDash` becomes `toKebab`, and `<from>ToUpperDash` becomes `toUpperKebab`.
 
-For well-formed keys (`firstName`, `first_name`) the result is the same. It differs when a key has consecutive uppercase letters or doesn't match the source case:
+For well-formed keys (`firstName`, `first_name`) the result is the same. It differs when a key has consecutive uppercase letters or doesn't match the source case, and `toDot` keeps the original case of each word:
 
 | Call | `<from>To<To>` result | `toX` result |
 | --- | --- | --- |
@@ -191,6 +206,7 @@ For well-formed keys (`firstName`, `first_name`) the result is the same. It diff
 | `camelToSnake('XMLHttpRequest')` / `toSnake('XMLHttpRequest')` | `'_x_m_l_http_request'` | `'xml_http_request'` |
 | `camelToSnake('HelloWorld')` / `toSnake('HelloWorld')` | `'_hello_world'` | `'hello_world'` |
 | `snakeToCamel('user_ID')` / `toCamel('user_ID')` | `'userID'` | `'userId'` |
+| `camelToDot('helloWorld')` / `toDot('helloWorld')` | `'hello.world'` | `'hello.World'` |
 
 If your code reads keys like `user_i_d` produced by the old functions, update those reads when migrating. The inferred types follow the new results, so TypeScript points out every place to change.
 
@@ -199,7 +215,7 @@ If your code reads keys like `user_i_d` produced by the old functions, update th
 - **Only keys are converted, never values.** In `{ userName: 'johnDoe' }`, `userName` becomes `user_name` but `'johnDoe'` is kept. Strings inside arrays are kept too.
 - **Only plain objects are traversed.** `Date`, `Map`, `Set` and class instances are returned as they are (same reference), without converting their contents.
 - **Acronyms are kept together, but not restored:** `toSnake('userID')` → `'user_id'`, and back `toCamel('user_id')` → `'userId'`.
-- **Words are lowercased** before converting, so `toCamel('X-API-Key')` → `'xApiKey'` and `toCamel('First Name')` → `'firstName'`.
+- **Words are lowercased** before converting (except by `toSpace`, `toPath` and `toDot`), so `toCamel('X-API-Key')` → `'xApiKey'` and `toCamel('First Name')` → `'firstName'`.
 - **Title Case capitalizes every word**, including short ones: `toTitle('termsOfUse')` → `'Terms Of Use'`.
 - **Digits stay attached to the previous word:** `toSnake('html5Parser')` → `'html5_parser'`, `toSnake('user1Name')` → `'user1_name'`.
 - **Type inference has a key length limit.** TypeScript limits how deeply a type can recurse, and keys are converted character by character at the type level. With TypeScript 4.5+, the `toX` functions infer keys up to ~120 characters; with TypeScript 4.1 to 4.4, only up to ~15 characters. Longer keys fail to compile with `Type instantiation is excessively deep and possibly infinite`. The runtime conversion has no limit.

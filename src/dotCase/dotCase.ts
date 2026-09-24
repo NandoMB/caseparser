@@ -58,7 +58,7 @@ export function dotToSnake<T extends object | string>(input: T): Result<T, 'DotT
  * dotToDash({ 'first.name': 'John' }); // { 'first-name': 'John' }
  * ```
  *
- * @deprecated Use `toDash` instead, which converts from any case. It keeps acronyms together,
+ * @deprecated Use `toKebab` instead, which converts from any case. It keeps acronyms together,
  * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function dotToDash<T extends object | string>(input: T): Result<T, 'DotToDash'> {
@@ -90,7 +90,7 @@ export function dotToUpperSnake<T extends object | string>(input: T): Result<T, 
  * dotToUpperDash({ 'first.name': 'John' }); // { 'FIRST-NAME': 'John' }
  * ```
  *
- * @deprecated Use `toUpperDash` instead, which converts from any case. It keeps acronyms together,
+ * @deprecated Use `toUpperKebab` instead, which converts from any case. It keeps acronyms together,
  * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function dotToUpperDash<T extends object | string>(input: T): Result<T, 'DotToUpperDash'> {

@@ -29,6 +29,27 @@ describe('words', () => {
   });
 });
 
+describe('words keeping the original case', () => {
+  test.each([
+    ['XMLHttpRequest', false, ['XML', 'Http', 'Request']],
+    ['Hello World', false, ['Hello', 'World']],
+    ['HELLO_WORLD', false, ['HELLO', 'WORLD']],
+    ['userID', false, ['user', 'ID']],
+    ['$catDog', true, ['$cat', 'Dog']],
+  ] as const)('Should split %j keeping the case (keepSymbols %j)', (input, keep, expected) => {
+    expect(words(input, keep, false)).toEqual(expected);
+  });
+  test('Should keep the original case in toSpace, toPath and toDot only', () => {
+    expect(caseparser.toSpace('XMLHttpRequest')).toBe('XML Http Request');
+    expect(caseparser.toPath('UserProfile')).toBe('User/Profile');
+    expect(caseparser.toDot('UserProfile')).toBe('User.Profile');
+    expect(caseparser.toPath('helloWorld').toLowerCase()).toBe('hello/world');
+    expect(caseparser.toSnake('UserProfile')).toBe('user_profile');
+    expect(caseparser.toLower('XMLHttpRequest')).toBe('xml http request');
+    expect(caseparser.toSpace('$catDog', true)).toBe('$cat Dog');
+  });
+});
+
 describe('toX (from any case)', () => {
   const input = {
     string: 'grand_rapids-charter.townshipID',
@@ -56,13 +77,18 @@ describe('toX (from any case)', () => {
     expect(caseparser.toCamel(input.string)).toMatchInlineSnapshot('"grandRapidsCharterTownshipId"');
     expect(caseparser.toPascal(input.string)).toMatchInlineSnapshot('"GrandRapidsCharterTownshipId"');
     expect(caseparser.toSnake(input.string)).toMatchInlineSnapshot('"grand_rapids_charter_township_id"');
-    expect(caseparser.toDash(input.string)).toMatchInlineSnapshot('"grand-rapids-charter-township-id"');
+    expect(caseparser.toKebab(input.string)).toMatchInlineSnapshot('"grand-rapids-charter-township-id"');
     expect(caseparser.toUpperSnake(input.string)).toMatchInlineSnapshot('"GRAND_RAPIDS_CHARTER_TOWNSHIP_ID"');
-    expect(caseparser.toUpperDash(input.string)).toMatchInlineSnapshot('"GRAND-RAPIDS-CHARTER-TOWNSHIP-ID"');
+    expect(caseparser.toUpperKebab(input.string)).toMatchInlineSnapshot('"GRAND-RAPIDS-CHARTER-TOWNSHIP-ID"');
     expect(caseparser.toTrain(input.string)).toMatchInlineSnapshot('"Grand-Rapids-Charter-Township-Id"');
-    expect(caseparser.toDot(input.string)).toMatchInlineSnapshot('"grand.rapids.charter.township.id"');
+    expect(caseparser.toDot(input.string)).toMatchInlineSnapshot('"grand.rapids.charter.township.ID"');
     expect(caseparser.toTitle(input.string)).toMatchInlineSnapshot('"Grand Rapids Charter Township Id"');
     expect(caseparser.toSentence(input.string)).toMatchInlineSnapshot('"Grand rapids charter township id"');
+    expect(caseparser.toPascalSnake(input.string)).toBe('Grand_Rapids_Charter_Township_Id');
+    expect(caseparser.toPath(input.string)).toBe('grand/rapids/charter/township/ID');
+    expect(caseparser.toSpace(input.string)).toBe('grand rapids charter township ID');
+    expect(caseparser.toLower(input.string)).toBe('grand rapids charter township id');
+    expect(caseparser.toUpper(input.string)).toBe('GRAND RAPIDS CHARTER TOWNSHIP ID');
   });
   test('Should convert a json from any case to camelCase', () => {
     expect(caseparser.toCamel(input.json)).toMatchInlineSnapshot(`
@@ -192,6 +218,8 @@ describe('toX types', () => {
     expectTypeOf(caseparser.toCamel(data, true)).toEqualTypeOf<{ $ref: number; '@type': string; userId: number }>();
     expectTypeOf(caseparser.toCamel(data, ['$'])).toEqualTypeOf<{ $ref: number; type: string; userId: number }>();
     expectTypeOf(caseparser.toPascal({ $first_name: 1 }, true)).toEqualTypeOf<{ $FirstName: number }>();
+    expectTypeOf(caseparser.toPath({ UserProfile: 1, userID: 2 })).toEqualTypeOf<{ 'User/Profile': number; 'user/ID': number }>();
+    expectTypeOf(caseparser.toDot({ UserProfile: 1 })).toEqualTypeOf<{ 'User.Profile': number }>();
     expectTypeOf(caseparser.toSentence({ '@first_name': 1 }, ['@'])).toEqualTypeOf<{ '@First name': number }>();
     expectTypeOf(caseparser.toPascal({ $$hello$World$$hi: 1 })).toEqualTypeOf<{ HelloWorldHi: number }>();
     expectTypeOf(caseparser.toSnake({ $$hello$World$$hi: 1, 'total%': 2 }, true)).toEqualTypeOf<{ $$hello_$world_$$hi: number; 'total%': number }>();
@@ -242,7 +270,7 @@ describe('toX types', () => {
       billingAddress: { postalCode: string; streetName: string };
       recentOrders: { orderId: number; totalAmount: number }[];
     }>();
-    expectTypeOf(caseparser.toDash(response)).toEqualTypeOf<{
+    expectTypeOf(caseparser.toKebab(response)).toEqualTypeOf<{
       'user-id': number;
       'first-name': string;
       'last-name': string;
@@ -291,7 +319,7 @@ describe('toX types', () => {
       'Billing-Address': { 'Postal-Code': string; 'Street-Name': string };
       'Recent-Orders': { 'Order-Id': number; 'Total-Amount': number }[];
     }>();
-    expectTypeOf(caseparser.toUpperDash(response)).toEqualTypeOf<{
+    expectTypeOf(caseparser.toUpperKebab(response)).toEqualTypeOf<{
       'USER-ID': number;
       'FIRST-NAME': string;
       'LAST-NAME': string;
@@ -305,10 +333,45 @@ describe('toX types', () => {
       BILLING_ADDRESS: { POSTAL_CODE: string; STREET_NAME: string };
       RECENT_ORDERS: { ORDER_ID: number; TOTAL_AMOUNT: number }[];
     }>();
+    expectTypeOf(caseparser.toPascalSnake(response)).toEqualTypeOf<{
+      User_Id: number;
+      First_Name: string;
+      Last_Name: string;
+      Billing_Address: { Postal_Code: string; Street_Name: string };
+      Recent_Orders: { Order_Id: number; Total_Amount: number }[];
+    }>();
+    expectTypeOf(caseparser.toPath(response)).toEqualTypeOf<{
+      'user/id': number;
+      'first/name': string;
+      'last/name': string;
+      'billing/address': { 'postal/code': string; 'street/name': string };
+      'recent/orders': { 'order/id': number; 'total/amount': number }[];
+    }>();
+    expectTypeOf(caseparser.toSpace(response)).toEqualTypeOf<{
+      'user id': number;
+      'first name': string;
+      'last name': string;
+      'billing address': { 'postal code': string; 'street name': string };
+      'recent orders': { 'order id': number; 'total amount': number }[];
+    }>();
+    expectTypeOf(caseparser.toLower(response)).toEqualTypeOf<{
+      'user id': number;
+      'first name': string;
+      'last name': string;
+      'billing address': { 'postal code': string; 'street name': string };
+      'recent orders': { 'order id': number; 'total amount': number }[];
+    }>();
+    expectTypeOf(caseparser.toUpper(response)).toEqualTypeOf<{
+      'USER ID': number;
+      'FIRST NAME': string;
+      'LAST NAME': string;
+      'BILLING ADDRESS': { 'POSTAL CODE': string; 'STREET NAME': string };
+      'RECENT ORDERS': { 'ORDER ID': number; 'TOTAL AMOUNT': number }[];
+    }>();
   });
   test('Should split words in types the same way as at runtime', () => {
     const keys = { userID: 1, getHTTPResponseCode: 1, 'X-API-Key': 1, html5Parser: 1, v2Api: 1, '__leading--double..sep  ': 1 };
-    expectTypeOf(caseparser.toDash(keys)).toEqualTypeOf<{
+    expectTypeOf(caseparser.toKebab(keys)).toEqualTypeOf<{
       'user-id': number;
       'get-http-response-code': number;
       'x-api-key': number;

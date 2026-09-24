@@ -18,13 +18,14 @@ const isKept = (c: string, keep: KeepSymbols) =>
  * Symbols (ASCII punctuation) also start a new word. They are removed, unless `keep` is
  * `true` or lists them: a kept symbol sticks to the start of the next word (`hello$World`
  * → `hello`, `$world`), or to the end of the previous one when no word follows (`total%`).
+ * Words keep their original case when `lowercase` is `false`.
  */
-export function words(str: string, keep: KeepSymbols = false): string[] {
+export function words(str: string, keep: KeepSymbols = false, lowercase = true): string[] {
   const result: string[] = [];
   let word = '';
   let prev = '';
   const push = () => {
-    if (word) result.push(word.toLowerCase());
+    if (word) result.push(lowercase ? word.toLowerCase() : word);
     word = '';
   };
   for (let i = 0; i < str.length; i++) {
@@ -68,10 +69,15 @@ type Formatter = (str: string, keep?: KeepSymbols) => string;
 export const ToCamel: Formatter = (str, keep) => words(str, keep).map((w, i) => (i ? capitalize(w) : w)).join('');
 export const ToPascal: Formatter = (str, keep) => words(str, keep).map(capitalize).join('');
 export const ToSnake: Formatter = (str, keep) => words(str, keep).join('_');
-export const ToDash: Formatter = (str, keep) => words(str, keep).join('-');
+export const ToKebab: Formatter = (str, keep) => words(str, keep).join('-');
 export const ToUpperSnake: Formatter = (str, keep) => words(str, keep).join('_').toUpperCase();
-export const ToUpperDash: Formatter = (str, keep) => words(str, keep).join('-').toUpperCase();
+export const ToUpperKebab: Formatter = (str, keep) => words(str, keep).join('-').toUpperCase();
 export const ToTrain: Formatter = (str, keep) => words(str, keep).map(capitalize).join('-');
-export const ToDot: Formatter = (str, keep) => words(str, keep).join('.');
+export const ToDot: Formatter = (str, keep) => words(str, keep, false).join('.');
 export const ToTitle: Formatter = (str, keep) => words(str, keep).map(capitalize).join(' ');
 export const ToSentence: Formatter = (str, keep) => capitalize(words(str, keep).join(' '));
+export const ToPascalSnake: Formatter = (str, keep) => words(str, keep).map(capitalize).join('_');
+export const ToPath: Formatter = (str, keep) => words(str, keep, false).join('/');
+export const ToSpace: Formatter = (str, keep) => words(str, keep, false).join(' ');
+export const ToLower: Formatter = (str, keep) => words(str, keep).join(' ');
+export const ToUpper: Formatter = (str, keep) => words(str, keep).join(' ').toUpperCase();

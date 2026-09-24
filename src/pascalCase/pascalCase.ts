@@ -42,7 +42,7 @@ export function pascalToSnake<T extends object | string>(input: T): Result<T, 'P
  * pascalToDash({ FirstName: 'John' }); // { 'first-name': 'John' }
  * ```
  *
- * @deprecated Use `toDash` instead, which converts from any case. It keeps acronyms together,
+ * @deprecated Use `toKebab` instead, which converts from any case. It keeps acronyms together,
  * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function pascalToDash<T extends object | string>(input: T): Result<T, 'PascalToDash'> {
@@ -74,7 +74,7 @@ export function pascalToUpperSnake<T extends object | string>(input: T): Result<
  * pascalToUpperDash({ FirstName: 'John' }); // { 'FIRST-NAME': 'John' }
  * ```
  *
- * @deprecated Use `toUpperDash` instead, which converts from any case. It keeps acronyms together,
+ * @deprecated Use `toUpperKebab` instead, which converts from any case. It keeps acronyms together,
  * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function pascalToUpperDash<T extends object | string>(input: T): Result<T, 'PascalToUpperDash'> {

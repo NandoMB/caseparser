@@ -1,6 +1,6 @@
 import type { CaseResult, KeepSymbols } from './types.ts';
 import { convert } from '../parser/index.ts';
-import { ToCamel, ToDash, ToDot, ToPascal, ToSentence, ToSnake, ToTitle, ToTrain, ToUpperDash, ToUpperSnake } from './words.ts';
+import { ToCamel, ToDot, ToKebab, ToLower, ToPascal, ToPascalSnake, ToPath, ToSentence, ToSnake, ToSpace, ToTitle, ToTrain, ToUpper, ToUpperKebab, ToUpperSnake } from './words.ts';
 
 /**
  * Converts a string, or the keys of an object/array (deeply), from any case to camelCase.
@@ -54,20 +54,20 @@ export function toSnake<T extends object | string, S extends boolean | string = 
 }
 
 /**
- * Converts a string, or the keys of an object/array (deeply), from any case to dash-case.
+ * Converts a string, or the keys of an object/array (deeply), from any case to kebab-case.
  *
  * @example
  * ```ts
- * toDash('HELLO_WORLD'); // 'hello-world'
- * toDash({ FIRST_NAME: 'John', userID: 1 }); // { 'first-name': 'John', 'user-id': 1 }
- * toDash('$hello-world', true); // '$hello-world'
+ * toKebab('HELLO_WORLD'); // 'hello-world'
+ * toKebab({ FIRST_NAME: 'John', userID: 1 }); // { 'first-name': 'John', 'user-id': 1 }
+ * toKebab('$hello-world', true); // '$hello-world'
  * ```
  *
  * @param keepSymbols Symbols (ASCII punctuation, like `$` or `@`) are removed by default.
  * Pass `true` to keep all of them, or an array to keep only some (e.g. `['$']`).
  */
-export function toDash<T extends object | string, S extends boolean | string = false>(input: T, keepSymbols?: S | readonly S[]): CaseResult<T, 'Dash', S> {
-  return convert(input, (key) => ToDash(key, keepSymbols as KeepSymbols)) as CaseResult<T, 'Dash', S>;
+export function toKebab<T extends object | string, S extends boolean | string = false>(input: T, keepSymbols?: S | readonly S[]): CaseResult<T, 'Kebab', S> {
+  return convert(input, (key) => ToKebab(key, keepSymbols as KeepSymbols)) as CaseResult<T, 'Kebab', S>;
 }
 
 /**
@@ -88,20 +88,20 @@ export function toUpperSnake<T extends object | string, S extends boolean | stri
 }
 
 /**
- * Converts a string, or the keys of an object/array (deeply), from any case to UPPER-DASH-CASE.
+ * Converts a string, or the keys of an object/array (deeply), from any case to UPPER-KEBAB-CASE.
  *
  * @example
  * ```ts
- * toUpperDash('helloWorld'); // 'HELLO-WORLD'
- * toUpperDash({ firstName: 'John', userID: 1 }); // { 'FIRST-NAME': 'John', 'USER-ID': 1 }
- * toUpperDash('$hello-world', true); // '$HELLO-WORLD'
+ * toUpperKebab('helloWorld'); // 'HELLO-WORLD'
+ * toUpperKebab({ firstName: 'John', userID: 1 }); // { 'FIRST-NAME': 'John', 'USER-ID': 1 }
+ * toUpperKebab('$hello-world', true); // '$HELLO-WORLD'
  * ```
  *
  * @param keepSymbols Symbols (ASCII punctuation, like `$` or `@`) are removed by default.
  * Pass `true` to keep all of them, or an array to keep only some (e.g. `['$']`).
  */
-export function toUpperDash<T extends object | string, S extends boolean | string = false>(input: T, keepSymbols?: S | readonly S[]): CaseResult<T, 'UpperDash', S> {
-  return convert(input, (key) => ToUpperDash(key, keepSymbols as KeepSymbols)) as CaseResult<T, 'UpperDash', S>;
+export function toUpperKebab<T extends object | string, S extends boolean | string = false>(input: T, keepSymbols?: S | readonly S[]): CaseResult<T, 'UpperKebab', S> {
+  return convert(input, (key) => ToUpperKebab(key, keepSymbols as KeepSymbols)) as CaseResult<T, 'UpperKebab', S>;
 }
 
 /**
@@ -122,12 +122,12 @@ export function toTrain<T extends object | string, S extends boolean | string = 
 }
 
 /**
- * Converts a string, or the keys of an object/array (deeply), from any case to dot.case.
+ * Converts a string, or the keys of an object/array (deeply), from any case to dot.case, keeping the original case of each word.
  *
  * @example
  * ```ts
- * toDot('HelloWorld'); // 'hello.world'
- * toDot({ FirstName: 'John', userID: 1 }); // { 'first.name': 'John', 'user.id': 1 }
+ * toDot('HelloWorld'); // 'Hello.World'
+ * toDot({ FirstName: 'John', userID: 1 }); // { 'First.Name': 'John', 'user.ID': 1 }
  * toDot('$hello-world', true); // '$hello.world'
  * ```
  *
@@ -170,4 +170,89 @@ export function toTitle<T extends object | string, S extends boolean | string = 
  */
 export function toSentence<T extends object | string, S extends boolean | string = false>(input: T, keepSymbols?: S | readonly S[]): CaseResult<T, 'Sentence', S> {
   return convert(input, (key) => ToSentence(key, keepSymbols as KeepSymbols)) as CaseResult<T, 'Sentence', S>;
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from any case to Pascal_Snake_Case (also known as Ada_Case).
+ *
+ * @example
+ * ```ts
+ * toPascalSnake('helloWorld'); // 'Hello_World'
+ * toPascalSnake({ first_name: 'John', userID: 1 }); // { First_Name: 'John', User_Id: 1 }
+ * toPascalSnake('$hello-world', true); // '$Hello_World'
+ * ```
+ *
+ * @param keepSymbols Symbols (ASCII punctuation, like `$` or `@`) are removed by default.
+ * Pass `true` to keep all of them, or an array to keep only some (e.g. `['$']`).
+ */
+export function toPascalSnake<T extends object | string, S extends boolean | string = false>(input: T, keepSymbols?: S | readonly S[]): CaseResult<T, 'PascalSnake', S> {
+  return convert(input, (key) => ToPascalSnake(key, keepSymbols as KeepSymbols)) as CaseResult<T, 'PascalSnake', S>;
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from any case to path/case, keeping the original case of each word.
+ *
+ * @example
+ * ```ts
+ * toPath('helloWorld'); // 'hello/World'
+ * toPath({ first_name: 'John', userID: 1 }); // { 'first/name': 'John', 'user/ID': 1 }
+ * toPath('$hello-world', true); // '$hello/world'
+ * ```
+ *
+ * @param keepSymbols Symbols (ASCII punctuation, like `$` or `@`) are removed by default.
+ * Pass `true` to keep all of them, or an array to keep only some (e.g. `['$']`).
+ */
+export function toPath<T extends object | string, S extends boolean | string = false>(input: T, keepSymbols?: S | readonly S[]): CaseResult<T, 'Path', S> {
+  return convert(input, (key) => ToPath(key, keepSymbols as KeepSymbols)) as CaseResult<T, 'Path', S>;
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from any case to space case, keeping the original case of each word.
+ *
+ * @example
+ * ```ts
+ * toSpace('helloWorld'); // 'hello World'
+ * toSpace({ first_name: 'John', userID: 1 }); // { 'first name': 'John', 'user ID': 1 }
+ * toSpace('$hello-world', true); // '$hello world'
+ * ```
+ *
+ * @param keepSymbols Symbols (ASCII punctuation, like `$` or `@`) are removed by default.
+ * Pass `true` to keep all of them, or an array to keep only some (e.g. `['$']`).
+ */
+export function toSpace<T extends object | string, S extends boolean | string = false>(input: T, keepSymbols?: S | readonly S[]): CaseResult<T, 'Space', S> {
+  return convert(input, (key) => ToSpace(key, keepSymbols as KeepSymbols)) as CaseResult<T, 'Space', S>;
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from any case to lower case (space separated).
+ *
+ * @example
+ * ```ts
+ * toLower('helloWorld'); // 'hello world'
+ * toLower({ first_name: 'John', userID: 1 }); // { 'first name': 'John', 'user id': 1 }
+ * toLower('$hello-world', true); // '$hello world'
+ * ```
+ *
+ * @param keepSymbols Symbols (ASCII punctuation, like `$` or `@`) are removed by default.
+ * Pass `true` to keep all of them, or an array to keep only some (e.g. `['$']`).
+ */
+export function toLower<T extends object | string, S extends boolean | string = false>(input: T, keepSymbols?: S | readonly S[]): CaseResult<T, 'Lower', S> {
+  return convert(input, (key) => ToLower(key, keepSymbols as KeepSymbols)) as CaseResult<T, 'Lower', S>;
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from any case to UPPER CASE (space separated).
+ *
+ * @example
+ * ```ts
+ * toUpper('helloWorld'); // 'HELLO WORLD'
+ * toUpper({ first_name: 'John', userID: 1 }); // { 'FIRST NAME': 'John', 'USER ID': 1 }
+ * toUpper('$hello-world', true); // '$HELLO WORLD'
+ * ```
+ *
+ * @param keepSymbols Symbols (ASCII punctuation, like `$` or `@`) are removed by default.
+ * Pass `true` to keep all of them, or an array to keep only some (e.g. `['$']`).
+ */
+export function toUpper<T extends object | string, S extends boolean | string = false>(input: T, keepSymbols?: S | readonly S[]): CaseResult<T, 'Upper', S> {
+  return convert(input, (key) => ToUpper(key, keepSymbols as KeepSymbols)) as CaseResult<T, 'Upper', S>;
 }
