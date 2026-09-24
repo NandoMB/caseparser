@@ -21,17 +21,8 @@ Convert **Strings** and **JSON (Object Keys)** from a **case type** to another o
 
 ## Installation
 
-###### Yarn
 ```sh
-yarn add caseparser
-```
-###### NPM
-```sh
-npm add caseparser
-```
-###### PNPM
-```sh
-pnpm add caseparser
+npm add caseparser    # or: pnpm add caseparser / yarn add caseparser
 ```
 ###### Deno (JSR)
 ```sh
@@ -60,127 +51,74 @@ Every change is tested in CI on Node.js 22, 24 and 26, Bun, Deno, Cloudflare Wor
 
 Ready-to-run projects for each environment (Node.js ESM/CommonJS, TypeScript, TypeScript 4.1, Bun, Deno, the browser and Cloudflare Workers) are in [examples/](./examples).
 
-```js
-// CommonJS
-const { camelToSnake } = require('caseparser');
-```
-
 ## How to use
 
-###### Example 1
-Passing **String** as parameter:
 ```ts
-import { camelToSnake } from 'caseparser';
+import { camelToSnake } from 'caseparser';      // ESM
+// const { camelToSnake } = require('caseparser'); // CommonJS
 
-camelToSnake('loremIpsumIsSimplyDummyTextOfThePrintingAndTypesettingIndustry');
+camelToSnake('helloWorld'); // 'hello_world'
+
+camelToSnake({ firstName: 'John', addresses: [{ postalCode: '61105' }] });
+// { first_name: 'John', addresses: [{ postal_code: '61105' }] }
 ```
-Will result:
+
+Objects are converted deeply, including objects inside arrays. The input is never mutated: a new object is returned.
+
+### Typical use: API responses
+
 ```ts
-'lorem_ipsum_is_simply_dummy_text_of_the_printing_and_typesetting_industry'
-```
-<br/>
+import { snakeToCamel, camelToSnake } from 'caseparser';
 
-###### Example 2
-Passing **JSON** as parameter:
-```js
-import { camelToSnake } from 'caseparser';
+const res = await fetch('/api/users/1');
+const user = snakeToCamel(await res.json());   // { firstName, lastName, ... }
 
-const data = [
-  {
-    id: 1,
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
-    addresses: [
-      {
-        country: 'United States',
-        state: 'Illinois',
-        city: 'Rockford',
-        postalCode: '61105',
-        street: {
-          streetName: '41 Forest Run Circle',
-          streetNumber: '539'
-        }
-      }
-    ]
-  }
-];
-const result = camelToSnake(data);
+await fetch('/api/users/1', {
+  method: 'PUT',
+  body: JSON.stringify(camelToSnake(user)),     // back to { first_name, ... }
+});
 ```
-Will Result:
-```json
-[
-  {
-    "id": 1,
-    "first_name": "John",
-    "last_name": "Doe",
-    "email": "john.doe@example.com",
-    "addresses": [
-      {
-        "country": "United States",
-        "state": "Illinois",
-        "city": "Rockford",
-        "postal_code": "61105",
-        "street": {
-          "street_name": "41 Forest Run Circle",
-          "street_number": "539"
-        }
-      }
-    ]
-  }
-]
+
+### Type inference
+
+The resulting keys are inferred at the type level, so your editor autocompletes the converted names:
+
+```ts
+const user = snakeToCamel({ first_name: 'John', addresses: [{ postal_code: '61105' }] });
+//    ^? { firstName: string; addresses: { postalCode: string }[] }
+
+user.firstName;  // ✅
+user.first_name; // ❌ Property 'first_name' does not exist
 ```
 
 ## Conversion Types
 
-###### camelCase to ...
-```js
-camelToDash(data);
-camelToPascal(data);
-camelToSnake(data);
-camelToUpperDash(data);
-camelToUpperSnake(data);
-```
-###### snakeCase to ...
-```js
-snakeToCamel(data);
-snakeToDash(data);
-snakeToPascal(data);
-snakeToUpperDash(data);
-snakeToUpperSnake(data);
-```
-###### dashCase to ...
-```js
-dashToCamel(data);
-dashToPascal(data);
-dashToSnake(data);
-dashToUpperDash(data);
-dashToUpperSnake(data);
-```
-###### pascalCase to ...
-```js
-pascalToCamel(data);
-pascalToDash(data);
-pascalToSnake(data);
-pascalToUpperDash(data);
-pascalToUpperSnake(data);
-```
-###### upperSnakeCase to ...
-```js
-upperSnakeToCamel(data);
-upperSnakeToDash(data);
-upperSnakeToPascal(data);
-upperSnakeToSnake(data);
-upperSnakeToUpperDash(data);
-```
-###### upperDashCase to ...
-```js
-upperDashToCamel(data);
-upperDashToDash(data);
-upperDashToPascal(data);
-upperDashToSnake(data);
-upperDashToUpperSnake(data);
-```
+Every function is named `<from>To<To>`, e.g. `snakeToCamel`. The case names are:
+
+| Name | Example |
+| --- | --- |
+| `camel` | `helloWorld` |
+| `pascal` | `HelloWorld` |
+| `snake` | `hello_world` |
+| `dash` | `hello-world` |
+| `upperSnake` | `HELLO_WORLD` |
+| `upperDash` | `HELLO-WORLD` |
+
+All 30 functions:
+
+- **camelCase:** `camelToPascal`, `camelToSnake`, `camelToDash`, `camelToUpperSnake`, `camelToUpperDash`
+- **PascalCase:** `pascalToCamel`, `pascalToSnake`, `pascalToDash`, `pascalToUpperSnake`, `pascalToUpperDash`
+- **snake_case:** `snakeToCamel`, `snakeToPascal`, `snakeToDash`, `snakeToUpperSnake`, `snakeToUpperDash`
+- **dash-case:** `dashToCamel`, `dashToPascal`, `dashToSnake`, `dashToUpperSnake`, `dashToUpperDash`
+- **UPPER_SNAKE_CASE:** `upperSnakeToCamel`, `upperSnakeToPascal`, `upperSnakeToSnake`, `upperSnakeToDash`, `upperSnakeToUpperDash`
+- **UPPER-DASH-CASE:** `upperDashToCamel`, `upperDashToPascal`, `upperDashToSnake`, `upperDashToDash`, `upperDashToUpperSnake`
+
+## Behavior and limitations
+
+- **Only keys are converted, never values.** In `{ userName: 'johnDoe' }`, `userName` becomes `user_name` but `'johnDoe'` is kept. Strings inside arrays are kept too.
+- **Only plain objects are traversed.** `Date`, `Map`, `Set` and class instances are returned as they are (same reference), without converting their contents.
+- **Acronyms are split letter by letter**, because every uppercase letter starts a new word: `camelToSnake('userID')` → `'user_i_d'`. Prefer `userId` style keys.
+- **Numbers are not word boundaries:** `camelToSnake('html5Parser')` → `'html5_parser'`, `snakeToCamel('user_1_name')` → `'user1Name'`.
 
 ## Security
 
@@ -191,25 +129,5 @@ Releases are built and published from GitHub Actions without long-lived tokens (
 Found a vulnerability? Please report it privately, see [SECURITY.md](./SECURITY.md).
 
 ## License
-The MIT License (MIT)
 
-Copyright (c) 2017 Fernando Machado Bernardino
-[NandoMB](https://github.com/NandoMB). https://github.com/NandoMB/caseparser
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+[MIT](./LICENSE) © 2017 Fernando Machado Bernardino
