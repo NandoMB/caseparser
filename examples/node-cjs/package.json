@@ -1,0 +1,11 @@
+{
+  "name": "caseparser-example-node-cjs",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "caseparser": "^4.0.0"
+  }
+}

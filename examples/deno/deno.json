@@ -1,0 +1,8 @@
+{
+  "imports": {
+    "@nandomb/caseparser": "jsr:@nandomb/caseparser@^4.0.0"
+  },
+  "tasks": {
+    "start": "deno run main.ts"
+  }
+}

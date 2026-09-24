@@ -1,0 +1,16 @@
+{
+  "userId": 42,
+  "firstName": "Ada",
+  "lastName": "Lovelace",
+  "billingAddress": {
+    "postalCode": "61105",
+    "streetName": "Forest Run Circle"
+  },
+  "recentOrders": [
+    {
+      "orderId": 1,
+      "totalAmount": 99.9
+    }
+  ]
+}
+{"user_id":42,"is_email_verified":true}

@@ -1,0 +1,15 @@
+// This example is compiled with the TypeScript 4.1 installed in this folder (`npm start`), on purpose:
+// it checks that caseparser works with legacy setups (CommonJS + `moduleResolution: "node"`).
+// Editors running a newer TypeScript report `moduleResolution: "node"` as deprecated; that is expected here.
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "strict": true,
+    "types": [],
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src"]
+}

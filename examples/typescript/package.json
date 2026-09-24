@@ -1,0 +1,14 @@
+{
+  "name": "caseparser-example-typescript",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsc && node dist/index.js"
+  },
+  "dependencies": {
+    "caseparser": "^4.0.0"
+  },
+  "devDependencies": {
+    "typescript": "7.0.2"
+  }
+}

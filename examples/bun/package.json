@@ -1,0 +1,11 @@
+{
+  "name": "caseparser-example-bun",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "bun index.ts"
+  },
+  "dependencies": {
+    "caseparser": "^4.0.0"
+  }
+}
