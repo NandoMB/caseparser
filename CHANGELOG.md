@@ -1,5 +1,11 @@
 # caseparser
 
+## 4.1.0
+
+### Minor Changes
+
+- 38c321a: Add Train-Case (`Content-Type`) and dot.case (`app.server.port`) conversions: `trainToX`/`xToTrain` and `dotToX`/`xToDot` for every existing case, with the same key type inference.
+
 ## 4.0.0
 
 ### Major Changes
