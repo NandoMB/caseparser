@@ -168,6 +168,85 @@ describe('toX types', () => {
       'Home addresses': { 'Postal code': string }[];
     }>();
   });
+  test('Should infer the converted keys of a nested API response for every toX function', () => {
+    const response = {
+      user_id: 42,
+      first_name: 'Ada',
+      last_name: 'Lovelace',
+      billing_address: { postal_code: '61105', street_name: 'Forest Run Circle' },
+      recent_orders: [{ order_id: 1, total_amount: 99.9 }]
+    };
+    expectTypeOf(caseparser.toCamel(response)).toEqualTypeOf<{
+      userId: number;
+      firstName: string;
+      lastName: string;
+      billingAddress: { postalCode: string; streetName: string };
+      recentOrders: { orderId: number; totalAmount: number }[];
+    }>();
+    expectTypeOf(caseparser.toDash(response)).toEqualTypeOf<{
+      'user-id': number;
+      'first-name': string;
+      'last-name': string;
+      'billing-address': { 'postal-code': string; 'street-name': string };
+      'recent-orders': { 'order-id': number; 'total-amount': number }[];
+    }>();
+    expectTypeOf(caseparser.toDot(response)).toEqualTypeOf<{
+      'user.id': number;
+      'first.name': string;
+      'last.name': string;
+      'billing.address': { 'postal.code': string; 'street.name': string };
+      'recent.orders': { 'order.id': number; 'total.amount': number }[];
+    }>();
+    expectTypeOf(caseparser.toPascal(response)).toEqualTypeOf<{
+      UserId: number;
+      FirstName: string;
+      LastName: string;
+      BillingAddress: { PostalCode: string; StreetName: string };
+      RecentOrders: { OrderId: number; TotalAmount: number }[];
+    }>();
+    expectTypeOf(caseparser.toSentence(response)).toEqualTypeOf<{
+      'User id': number;
+      'First name': string;
+      'Last name': string;
+      'Billing address': { 'Postal code': string; 'Street name': string };
+      'Recent orders': { 'Order id': number; 'Total amount': number }[];
+    }>();
+    expectTypeOf(caseparser.toSnake(response)).toEqualTypeOf<{
+      user_id: number;
+      first_name: string;
+      last_name: string;
+      billing_address: { postal_code: string; street_name: string };
+      recent_orders: { order_id: number; total_amount: number }[];
+    }>();
+    expectTypeOf(caseparser.toTitle(response)).toEqualTypeOf<{
+      'User Id': number;
+      'First Name': string;
+      'Last Name': string;
+      'Billing Address': { 'Postal Code': string; 'Street Name': string };
+      'Recent Orders': { 'Order Id': number; 'Total Amount': number }[];
+    }>();
+    expectTypeOf(caseparser.toTrain(response)).toEqualTypeOf<{
+      'User-Id': number;
+      'First-Name': string;
+      'Last-Name': string;
+      'Billing-Address': { 'Postal-Code': string; 'Street-Name': string };
+      'Recent-Orders': { 'Order-Id': number; 'Total-Amount': number }[];
+    }>();
+    expectTypeOf(caseparser.toUpperDash(response)).toEqualTypeOf<{
+      'USER-ID': number;
+      'FIRST-NAME': string;
+      'LAST-NAME': string;
+      'BILLING-ADDRESS': { 'POSTAL-CODE': string; 'STREET-NAME': string };
+      'RECENT-ORDERS': { 'ORDER-ID': number; 'TOTAL-AMOUNT': number }[];
+    }>();
+    expectTypeOf(caseparser.toUpperSnake(response)).toEqualTypeOf<{
+      USER_ID: number;
+      FIRST_NAME: string;
+      LAST_NAME: string;
+      BILLING_ADDRESS: { POSTAL_CODE: string; STREET_NAME: string };
+      RECENT_ORDERS: { ORDER_ID: number; TOTAL_AMOUNT: number }[];
+    }>();
+  });
   test('Should split words in types the same way as at runtime', () => {
     const keys = { userID: 1, getHTTPResponseCode: 1, 'X-API-Key': 1, html5Parser: 1, v2Api: 1, '__leading--double..sep  ': 1 };
     expectTypeOf(caseparser.toDash(keys)).toEqualTypeOf<{
