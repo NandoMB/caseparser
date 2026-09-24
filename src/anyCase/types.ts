@@ -27,12 +27,12 @@ type Words<T extends string, W extends string[] = [], Word extends string = '', 
         : Words<Rest, W, `${Word}${C}`, C>
     : Push<W, Word>;
 
-type Join<W extends string[], S extends string> =
-  W extends [infer A extends string] ? A :
-  W extends [infer A extends string, ...infer R extends string[]] ? `${A}${S}${Join<R, S>}` :
+type Join<W, S extends string> =
+  W extends [infer A] ? A & string :
+  W extends [infer A, ...infer R] ? `${A & string}${S}${Join<R, S>}` :
   '';
-type CapitalizeAll<W extends string[]> = { [K in keyof W]: Capitalize<W[K]> };
-type CamelWords<W extends string[]> = W extends [infer F extends string, ...infer R extends string[]] ? `${F}${Join<CapitalizeAll<R>, ''>}` : '';
+type CapitalizeAll<W> = { [K in keyof W]: Capitalize<W[K] & string> };
+type CamelWords<W> = W extends [infer F, ...infer R] ? `${F & string}${Join<CapitalizeAll<R>, ''>}` : '';
 
 /** A case that the `toX` functions (e.g. `toSnake`) convert to. */
 export type Case = 'Camel' | 'Pascal' | 'Snake' | 'Dash' | 'UpperSnake' | 'UpperDash' | 'Train' | 'Dot' | 'Title' | 'Sentence';

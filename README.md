@@ -43,7 +43,7 @@ npx jsr add @nandomb/caseparser
 | --- | --- |
 | ESM (`import`) | Node.js 12.22+, Deno, Bun, bundlers |
 | CommonJS (`require`) | Node.js 8+, Bun |
-| TypeScript | 4.1+ (any `moduleResolution`: `node`, `node16`/`nodenext`, `bundler`) |
+| TypeScript | 4.1+ (any `moduleResolution`: `node`, `node16`/`nodenext`, `bundler`). The `toX` type inference needs 4.5+ for keys longer than ~20 characters |
 | Browsers | Any ES2015 browser (via bundler) |
 | Edge | Cloudflare Workers |
 
@@ -178,6 +178,7 @@ If your code reads keys like `user_i_d` produced by the old functions, update th
 - **Words are lowercased** before converting, so `toCamel('X-API-Key')` → `'xApiKey'` and `toCamel('First Name')` → `'firstName'`.
 - **Title Case capitalizes every word**, including short ones: `toTitle('termsOfUse')` → `'Terms Of Use'`.
 - **Digits stay attached to the previous word:** `toSnake('html5Parser')` → `'html5_parser'`, `toSnake('user1Name')` → `'user1_name'`.
+- **Type inference has a key length limit.** TypeScript limits how deeply a type can recurse, and keys are converted character by character at the type level. With TypeScript 4.5+, the `toX` functions infer keys up to ~120 characters; with TypeScript 4.1 to 4.4, only up to ~20 characters. Longer keys fail to compile with `Type instantiation is excessively deep and possibly infinite`. The runtime conversion has no limit.
 
 ## Security
 
