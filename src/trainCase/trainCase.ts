@@ -91,3 +91,29 @@ export function trainToUpperDash<T extends object | string>(input: T): Result<T,
 export function trainToDot<T extends object | string>(input: T): Result<T, 'TrainToDot'> {
   return converter(input, 'TrainToDot');
 }
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from Train-Case to Title Case.
+ *
+ * @example
+ * ```ts
+ * trainToTitle('Hello-World'); // 'Hello World'
+ * trainToTitle({ 'First-Name': 'John' }); // { 'First Name': 'John' }
+ * ```
+ */
+export function trainToTitle<T extends object | string>(input: T): Result<T, 'TrainToTitle'> {
+  return converter(input, 'TrainToTitle');
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from Train-Case to Sentence case.
+ *
+ * @example
+ * ```ts
+ * trainToSentence('Hello-World'); // 'Hello world'
+ * trainToSentence({ 'First-Name': 'John' }); // { 'First name': 'John' }
+ * ```
+ */
+export function trainToSentence<T extends object | string>(input: T): Result<T, 'TrainToSentence'> {
+  return converter(input, 'TrainToSentence');
+}

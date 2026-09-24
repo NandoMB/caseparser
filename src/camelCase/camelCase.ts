@@ -91,3 +91,29 @@ export function camelToTrain<T extends object | string>(input: T): Result<T, 'Ca
 export function camelToDot<T extends object | string>(input: T): Result<T, 'CamelToDot'> {
   return converter(input, 'CamelToDot');
 }
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from camelCase to Title Case.
+ *
+ * @example
+ * ```ts
+ * camelToTitle('helloWorld'); // 'Hello World'
+ * camelToTitle({ firstName: 'John' }); // { 'First Name': 'John' }
+ * ```
+ */
+export function camelToTitle<T extends object | string>(input: T): Result<T, 'CamelToTitle'> {
+  return converter(input, 'CamelToTitle');
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from camelCase to Sentence case.
+ *
+ * @example
+ * ```ts
+ * camelToSentence('helloWorld'); // 'Hello world'
+ * camelToSentence({ firstName: 'John' }); // { 'First name': 'John' }
+ * ```
+ */
+export function camelToSentence<T extends object | string>(input: T): Result<T, 'CamelToSentence'> {
+  return converter(input, 'CamelToSentence');
+}

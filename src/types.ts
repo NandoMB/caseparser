@@ -62,17 +62,59 @@ type DotToTrain<T extends string> = DashToTrain<DotToDash<T>>;
 type DotToUpperDash<T extends string> = Uppercase<DotToDash<T>>;
 type DotToUpperSnake<T extends string> = DashToUpperSnake<DotToDash<T>>;
 
-type ParserCamelType = 'CamelToDash' | 'CamelToPascal' | 'CamelToSnake' | 'CamelToUpperDash' | 'CamelToUpperSnake' | 'CamelToTrain' | 'CamelToDot';
-type ParserDashType = 'DashToCamel' | 'DashToPascal' | 'DashToSnake' | 'DashToUpperDash' | 'DashToUpperSnake' | 'DashToTrain' | 'DashToDot';
-type ParserPascalType = 'PascalToCamel' | 'PascalToDash' | 'PascalToSnake' | 'PascalToUpperDash' | 'PascalToUpperSnake' | 'PascalToTrain' | 'PascalToDot';
-type ParserSnakeType = 'SnakeToCamel' | 'SnakeToDash' | 'SnakeToPascal' | 'SnakeToUpperDash' | 'SnakeToUpperSnake' | 'SnakeToTrain' | 'SnakeToDot';
-type ParserUpperDashType = 'UpperDashToCamel' | 'UpperDashToDash' | 'UpperDashToPascal' | 'UpperDashToSnake' | 'UpperDashToUpperSnake' | 'UpperDashToTrain' | 'UpperDashToDot';
-type ParserUpperSnakeType = 'UpperSnakeToCamel' | 'UpperSnakeToDash' | 'UpperSnakeToPascal' | 'UpperSnakeToSnake' | 'UpperSnakeToUpperDash' | 'UpperSnakeToTrain' | 'UpperSnakeToDot';
-type ParserTrainType = 'TrainToCamel' | 'TrainToDash' | 'TrainToDot' | 'TrainToPascal' | 'TrainToSnake' | 'TrainToUpperDash' | 'TrainToUpperSnake';
-type ParserDotType = 'DotToCamel' | 'DotToDash' | 'DotToPascal' | 'DotToSnake' | 'DotToTrain' | 'DotToUpperDash' | 'DotToUpperSnake';
+type DashToWords<T extends string> = T extends `${infer L}-${infer R}` ? `${L} ${DashToWords<R>}` : T;
+type WordsToDash<T extends string> = T extends `${infer L} ${infer R}` ? `${L}-${WordsToDash<R>}` : T;
+
+type DashToTitle<T extends string> = T extends `${infer L}-${infer R}` ? `${Capitalize<L>} ${DashToTitle<R>}` : Capitalize<T>;
+type DashToSentence<T extends string> = Capitalize<DashToWords<T>>;
+type CamelToTitle<T extends string> = DashToTitle<CamelToDash<T>>;
+type CamelToSentence<T extends string> = DashToSentence<CamelToDash<T>>;
+type PascalToTitle<T extends string> = DashToTitle<PascalToDash<T>>;
+type PascalToSentence<T extends string> = DashToSentence<PascalToDash<T>>;
+type SnakeToTitle<T extends string> = DashToTitle<SnakeToDash<T>>;
+type SnakeToSentence<T extends string> = DashToSentence<SnakeToDash<T>>;
+type UpperSnakeToTitle<T extends string> = DashToTitle<UpperSnakeToDash<T>>;
+type UpperSnakeToSentence<T extends string> = DashToSentence<UpperSnakeToDash<T>>;
+type UpperDashToTitle<T extends string> = DashToTitle<UpperDashToDash<T>>;
+type UpperDashToSentence<T extends string> = DashToSentence<UpperDashToDash<T>>;
+type TrainToTitle<T extends string> = DashToTitle<TrainToDash<T>>;
+type TrainToSentence<T extends string> = DashToSentence<TrainToDash<T>>;
+type DotToTitle<T extends string> = DashToTitle<DotToDash<T>>;
+type DotToSentence<T extends string> = DashToSentence<DotToDash<T>>;
+
+type TitleToDash<T extends string> = WordsToDash<Lowercase<T>>;
+type TitleToCamel<T extends string> = DashToCamel<TitleToDash<T>>;
+type TitleToPascal<T extends string> = DashToPascal<TitleToDash<T>>;
+type TitleToSnake<T extends string> = DashToSnake<TitleToDash<T>>;
+type TitleToUpperSnake<T extends string> = DashToUpperSnake<TitleToDash<T>>;
+type TitleToUpperDash<T extends string> = DashToUpperDash<TitleToDash<T>>;
+type TitleToTrain<T extends string> = DashToTrain<TitleToDash<T>>;
+type TitleToDot<T extends string> = DashToDot<TitleToDash<T>>;
+type TitleToSentence<T extends string> = DashToSentence<TitleToDash<T>>;
+
+type SentenceToDash<T extends string> = WordsToDash<Lowercase<T>>;
+type SentenceToCamel<T extends string> = DashToCamel<SentenceToDash<T>>;
+type SentenceToPascal<T extends string> = DashToPascal<SentenceToDash<T>>;
+type SentenceToSnake<T extends string> = DashToSnake<SentenceToDash<T>>;
+type SentenceToUpperSnake<T extends string> = DashToUpperSnake<SentenceToDash<T>>;
+type SentenceToUpperDash<T extends string> = DashToUpperDash<SentenceToDash<T>>;
+type SentenceToTrain<T extends string> = DashToTrain<SentenceToDash<T>>;
+type SentenceToDot<T extends string> = DashToDot<SentenceToDash<T>>;
+type SentenceToTitle<T extends string> = DashToTitle<SentenceToDash<T>>;
+
+type ParserCamelType = 'CamelToDash' | 'CamelToPascal' | 'CamelToSnake' | 'CamelToUpperDash' | 'CamelToUpperSnake' | 'CamelToTrain' | 'CamelToDot' | 'CamelToTitle' | 'CamelToSentence';
+type ParserDashType = 'DashToCamel' | 'DashToPascal' | 'DashToSnake' | 'DashToUpperDash' | 'DashToUpperSnake' | 'DashToTrain' | 'DashToDot' | 'DashToTitle' | 'DashToSentence';
+type ParserPascalType = 'PascalToCamel' | 'PascalToDash' | 'PascalToSnake' | 'PascalToUpperDash' | 'PascalToUpperSnake' | 'PascalToTrain' | 'PascalToDot' | 'PascalToTitle' | 'PascalToSentence';
+type ParserSnakeType = 'SnakeToCamel' | 'SnakeToDash' | 'SnakeToPascal' | 'SnakeToUpperDash' | 'SnakeToUpperSnake' | 'SnakeToTrain' | 'SnakeToDot' | 'SnakeToTitle' | 'SnakeToSentence';
+type ParserUpperDashType = 'UpperDashToCamel' | 'UpperDashToDash' | 'UpperDashToPascal' | 'UpperDashToSnake' | 'UpperDashToUpperSnake' | 'UpperDashToTrain' | 'UpperDashToDot' | 'UpperDashToTitle' | 'UpperDashToSentence';
+type ParserUpperSnakeType = 'UpperSnakeToCamel' | 'UpperSnakeToDash' | 'UpperSnakeToPascal' | 'UpperSnakeToSnake' | 'UpperSnakeToUpperDash' | 'UpperSnakeToTrain' | 'UpperSnakeToDot' | 'UpperSnakeToTitle' | 'UpperSnakeToSentence';
+type ParserTrainType = 'TrainToCamel' | 'TrainToDash' | 'TrainToDot' | 'TrainToPascal' | 'TrainToSnake' | 'TrainToUpperDash' | 'TrainToUpperSnake' | 'TrainToTitle' | 'TrainToSentence';
+type ParserDotType = 'DotToCamel' | 'DotToDash' | 'DotToPascal' | 'DotToSnake' | 'DotToTrain' | 'DotToUpperDash' | 'DotToUpperSnake' | 'DotToTitle' | 'DotToSentence';
+type ParserTitleType = 'TitleToCamel' | 'TitleToPascal' | 'TitleToSnake' | 'TitleToDash' | 'TitleToUpperSnake' | 'TitleToUpperDash' | 'TitleToTrain' | 'TitleToDot' | 'TitleToSentence';
+type ParserSentenceType = 'SentenceToCamel' | 'SentenceToPascal' | 'SentenceToSnake' | 'SentenceToDash' | 'SentenceToUpperSnake' | 'SentenceToUpperDash' | 'SentenceToTrain' | 'SentenceToDot' | 'SentenceToTitle';
 
 /** Identifies a conversion, e.g. `'CamelToSnake'`. */
-export type ParserType = ParserCamelType | ParserDashType | ParserPascalType | ParserSnakeType | ParserUpperDashType | ParserUpperSnakeType | ParserTrainType | ParserDotType;
+export type ParserType = ParserCamelType | ParserDashType | ParserPascalType | ParserSnakeType | ParserUpperDashType | ParserUpperSnakeType | ParserTrainType | ParserDotType | ParserTitleType | ParserSentenceType;
 
 /** Flattens an intersection/mapped type so editors show the resulting keys. */
 export type Prettify<T> = {
@@ -146,6 +188,40 @@ export type Result<T, P> =
       P extends 'DotToUpperSnake' ? DotToUpperSnake<K & string> :
       P extends 'DotToUpperDash' ? DotToUpperDash<K & string> :
       P extends 'DotToTrain' ? DotToTrain<K & string> :
+      P extends 'CamelToTitle' ? CamelToTitle<K & string> :
+      P extends 'CamelToSentence' ? CamelToSentence<K & string> :
+      P extends 'PascalToTitle' ? PascalToTitle<K & string> :
+      P extends 'PascalToSentence' ? PascalToSentence<K & string> :
+      P extends 'SnakeToTitle' ? SnakeToTitle<K & string> :
+      P extends 'SnakeToSentence' ? SnakeToSentence<K & string> :
+      P extends 'DashToTitle' ? DashToTitle<K & string> :
+      P extends 'DashToSentence' ? DashToSentence<K & string> :
+      P extends 'UpperSnakeToTitle' ? UpperSnakeToTitle<K & string> :
+      P extends 'UpperSnakeToSentence' ? UpperSnakeToSentence<K & string> :
+      P extends 'UpperDashToTitle' ? UpperDashToTitle<K & string> :
+      P extends 'UpperDashToSentence' ? UpperDashToSentence<K & string> :
+      P extends 'TrainToTitle' ? TrainToTitle<K & string> :
+      P extends 'TrainToSentence' ? TrainToSentence<K & string> :
+      P extends 'DotToTitle' ? DotToTitle<K & string> :
+      P extends 'DotToSentence' ? DotToSentence<K & string> :
+      P extends 'TitleToCamel' ? TitleToCamel<K & string> :
+      P extends 'TitleToPascal' ? TitleToPascal<K & string> :
+      P extends 'TitleToSnake' ? TitleToSnake<K & string> :
+      P extends 'TitleToDash' ? TitleToDash<K & string> :
+      P extends 'TitleToUpperSnake' ? TitleToUpperSnake<K & string> :
+      P extends 'TitleToUpperDash' ? TitleToUpperDash<K & string> :
+      P extends 'TitleToTrain' ? TitleToTrain<K & string> :
+      P extends 'TitleToDot' ? TitleToDot<K & string> :
+      P extends 'TitleToSentence' ? TitleToSentence<K & string> :
+      P extends 'SentenceToCamel' ? SentenceToCamel<K & string> :
+      P extends 'SentenceToPascal' ? SentenceToPascal<K & string> :
+      P extends 'SentenceToSnake' ? SentenceToSnake<K & string> :
+      P extends 'SentenceToDash' ? SentenceToDash<K & string> :
+      P extends 'SentenceToUpperSnake' ? SentenceToUpperSnake<K & string> :
+      P extends 'SentenceToUpperDash' ? SentenceToUpperDash<K & string> :
+      P extends 'SentenceToTrain' ? SentenceToTrain<K & string> :
+      P extends 'SentenceToDot' ? SentenceToDot<K & string> :
+      P extends 'SentenceToTitle' ? SentenceToTitle<K & string> :
       never
     ]: Result<T[K], P>
   }> :

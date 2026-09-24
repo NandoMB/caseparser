@@ -91,3 +91,29 @@ export function upperSnakeToTrain<T extends object | string>(input: T): Result<T
 export function upperSnakeToDot<T extends object | string>(input: T): Result<T, 'UpperSnakeToDot'> {
   return converter(input, 'UpperSnakeToDot');
 }
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from UPPER_SNAKE_CASE to Title Case.
+ *
+ * @example
+ * ```ts
+ * upperSnakeToTitle('HELLO_WORLD'); // 'Hello World'
+ * upperSnakeToTitle({ FIRST_NAME: 'John' }); // { 'First Name': 'John' }
+ * ```
+ */
+export function upperSnakeToTitle<T extends object | string>(input: T): Result<T, 'UpperSnakeToTitle'> {
+  return converter(input, 'UpperSnakeToTitle');
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from UPPER_SNAKE_CASE to Sentence case.
+ *
+ * @example
+ * ```ts
+ * upperSnakeToSentence('HELLO_WORLD'); // 'Hello world'
+ * upperSnakeToSentence({ FIRST_NAME: 'John' }); // { 'First name': 'John' }
+ * ```
+ */
+export function upperSnakeToSentence<T extends object | string>(input: T): Result<T, 'UpperSnakeToSentence'> {
+  return converter(input, 'UpperSnakeToSentence');
+}

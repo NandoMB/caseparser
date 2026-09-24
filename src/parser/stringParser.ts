@@ -65,6 +65,43 @@ const DotToTrain = (str: string) => DashToTrain(DotToDash(str));
 const DotToUpperDash = (str: string) => Uppercase(DotToDash(str));
 const DotToUpperSnake = (str: string) => DashToUpperSnake(DotToDash(str));
 
+const DashToTitle = (str: string) => str.split('-').map(Capitalize).join(' ');
+const DashToSentence = (str: string) => Capitalize(str.replace(/(\-)/g, ' '));
+const CamelToTitle = (str: string) => DashToTitle(CamelToDash(str));
+const CamelToSentence = (str: string) => DashToSentence(CamelToDash(str));
+const PascalToTitle = (str: string) => DashToTitle(PascalToDash(str));
+const PascalToSentence = (str: string) => DashToSentence(PascalToDash(str));
+const SnakeToTitle = (str: string) => DashToTitle(SnakeToDash(str));
+const SnakeToSentence = (str: string) => DashToSentence(SnakeToDash(str));
+const UpperSnakeToTitle = (str: string) => DashToTitle(UpperSnakeToDash(str));
+const UpperSnakeToSentence = (str: string) => DashToSentence(UpperSnakeToDash(str));
+const UpperDashToTitle = (str: string) => DashToTitle(UpperDashToDash(str));
+const UpperDashToSentence = (str: string) => DashToSentence(UpperDashToDash(str));
+const TrainToTitle = (str: string) => DashToTitle(TrainToDash(str));
+const TrainToSentence = (str: string) => DashToSentence(TrainToDash(str));
+const DotToTitle = (str: string) => DashToTitle(DotToDash(str));
+const DotToSentence = (str: string) => DashToSentence(DotToDash(str));
+
+const TitleToDash = (str: string) => Lowercase(str).replace(/( )/g, '-');
+const TitleToCamel = (str: string) => DashToCamel(TitleToDash(str));
+const TitleToPascal = (str: string) => DashToPascal(TitleToDash(str));
+const TitleToSnake = (str: string) => DashToSnake(TitleToDash(str));
+const TitleToUpperSnake = (str: string) => DashToUpperSnake(TitleToDash(str));
+const TitleToUpperDash = (str: string) => DashToUpperDash(TitleToDash(str));
+const TitleToTrain = (str: string) => DashToTrain(TitleToDash(str));
+const TitleToDot = (str: string) => DashToDot(TitleToDash(str));
+const TitleToSentence = (str: string) => DashToSentence(TitleToDash(str));
+
+const SentenceToDash = (str: string) => Lowercase(str).replace(/( )/g, '-');
+const SentenceToCamel = (str: string) => DashToCamel(SentenceToDash(str));
+const SentenceToPascal = (str: string) => DashToPascal(SentenceToDash(str));
+const SentenceToSnake = (str: string) => DashToSnake(SentenceToDash(str));
+const SentenceToUpperSnake = (str: string) => DashToUpperSnake(SentenceToDash(str));
+const SentenceToUpperDash = (str: string) => DashToUpperDash(SentenceToDash(str));
+const SentenceToTrain = (str: string) => DashToTrain(SentenceToDash(str));
+const SentenceToDot = (str: string) => DashToDot(SentenceToDash(str));
+const SentenceToTitle = (str: string) => DashToTitle(SentenceToDash(str));
+
 
 export default function parse(input: string, type: ParserType): string {
   return {
@@ -123,6 +160,40 @@ export default function parse(input: string, type: ParserType): string {
     DotToDash,
     DotToUpperSnake,
     DotToUpperDash,
-    DotToTrain
+    DotToTrain,
+    CamelToTitle,
+    CamelToSentence,
+    PascalToTitle,
+    PascalToSentence,
+    SnakeToTitle,
+    SnakeToSentence,
+    DashToTitle,
+    DashToSentence,
+    UpperSnakeToTitle,
+    UpperSnakeToSentence,
+    UpperDashToTitle,
+    UpperDashToSentence,
+    TrainToTitle,
+    TrainToSentence,
+    DotToTitle,
+    DotToSentence,
+    TitleToCamel,
+    TitleToPascal,
+    TitleToSnake,
+    TitleToDash,
+    TitleToUpperSnake,
+    TitleToUpperDash,
+    TitleToTrain,
+    TitleToDot,
+    TitleToSentence,
+    SentenceToCamel,
+    SentenceToPascal,
+    SentenceToSnake,
+    SentenceToDash,
+    SentenceToUpperSnake,
+    SentenceToUpperDash,
+    SentenceToTrain,
+    SentenceToDot,
+    SentenceToTitle
   }[type](input);
 }
