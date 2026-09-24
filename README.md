@@ -91,6 +91,25 @@ user.firstName;  // ✅
 user.first_name; // ❌ Property 'first_name' does not exist
 ```
 
+### From any case
+
+When you don't know (or don't control) the input's case, use the `toX` functions. They split the input into words, whatever its case, and even accept keys in different cases in the same object:
+
+```ts
+import { toCamel, toSnake } from 'caseparser';
+
+toSnake('helloWorld');  // 'hello_world'
+toSnake('Hello World'); // 'hello_world'
+toSnake('HELLO-WORLD'); // 'hello_world'
+
+toCamel({ user_id: 1, 'Last-Name': 'Doe', XMLHttpRequest: true });
+//    ^? { userId: number; lastName: string; xmlHttpRequest: boolean }
+```
+
+Available: `toCamel`, `toPascal`, `toSnake`, `toDash`, `toUpperSnake`, `toUpperDash`, `toTrain`, `toDot`, `toTitle` and `toSentence`, all with the same type inference.
+
+Words are split on `_`, `-`, `.` and spaces, and before an uppercase letter that starts a new word. Unlike the `<from>To<To>` functions, acronyms are kept together (`toSnake('userID')` → `'user_id'`), but they aren't restored on the way back: `toCamel('user_id')` → `'userId'`.
+
 ## Conversion Types
 
 Every function is named `<from>To<To>`, e.g. `snakeToCamel`. The case names are:
