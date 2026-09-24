@@ -11,5 +11,6 @@ Small projects using caseparser in different environments. They all do the same 
 | [bun](./bun) | Bun running TypeScript directly | `bun install && bun start` |
 | [deno](./deno) | Deno, importing from [JSR](https://jsr.io/@nandomb/caseparser) | `deno task start` |
 | [browser](./browser) | Plain HTML with an import map, no bundler | serve the folder (e.g. `npx serve examples/browser`) and open it |
+| [cloudflare-worker](./cloudflare-worker) | Cloudflare Worker, running locally on `workerd` with wrangler | `npm install && npm run dev`, then open the URL it prints |
 
 Every pull request runs all of them against the current code (`pnpm run test:examples`), so they always work with the latest version.
