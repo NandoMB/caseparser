@@ -65,3 +65,29 @@ export function camelToUpperSnake<T extends object | string>(input: T): Result<T
 export function camelToUpperDash<T extends object | string>(input: T): Result<T, 'CamelToUpperDash'> {
   return converter(input, 'CamelToUpperDash');
 }
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from camelCase to Train-Case.
+ *
+ * @example
+ * ```ts
+ * camelToTrain('helloWorld'); // 'Hello-World'
+ * camelToTrain({ firstName: 'John' }); // { 'First-Name': 'John' }
+ * ```
+ */
+export function camelToTrain<T extends object | string>(input: T): Result<T, 'CamelToTrain'> {
+  return converter(input, 'CamelToTrain');
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from camelCase to dot.case.
+ *
+ * @example
+ * ```ts
+ * camelToDot('helloWorld'); // 'hello.world'
+ * camelToDot({ firstName: 'John' }); // { 'first.name': 'John' }
+ * ```
+ */
+export function camelToDot<T extends object | string>(input: T): Result<T, 'CamelToDot'> {
+  return converter(input, 'CamelToDot');
+}

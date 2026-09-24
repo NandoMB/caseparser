@@ -65,3 +65,29 @@ export function pascalToUpperSnake<T extends object | string>(input: T): Result<
 export function pascalToUpperDash<T extends object | string>(input: T): Result<T, 'PascalToUpperDash'> {
   return converter(input, 'PascalToUpperDash');
 }
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from PascalCase to Train-Case.
+ *
+ * @example
+ * ```ts
+ * pascalToTrain('HelloWorld'); // 'Hello-World'
+ * pascalToTrain({ FirstName: 'John' }); // { 'First-Name': 'John' }
+ * ```
+ */
+export function pascalToTrain<T extends object | string>(input: T): Result<T, 'PascalToTrain'> {
+  return converter(input, 'PascalToTrain');
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from PascalCase to dot.case.
+ *
+ * @example
+ * ```ts
+ * pascalToDot('HelloWorld'); // 'hello.world'
+ * pascalToDot({ FirstName: 'John' }); // { 'first.name': 'John' }
+ * ```
+ */
+export function pascalToDot<T extends object | string>(input: T): Result<T, 'PascalToDot'> {
+  return converter(input, 'PascalToDot');
+}

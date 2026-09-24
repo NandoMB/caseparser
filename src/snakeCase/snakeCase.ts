@@ -65,3 +65,29 @@ export function snakeToUpperSnake<T extends object | string>(input: T): Result<T
 export function snakeToUpperDash<T extends object | string>(input: T): Result<T, 'SnakeToUpperDash'> {
   return converter(input, 'SnakeToUpperDash');
 }
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from snake_case to Train-Case.
+ *
+ * @example
+ * ```ts
+ * snakeToTrain('hello_world'); // 'Hello-World'
+ * snakeToTrain({ first_name: 'John' }); // { 'First-Name': 'John' }
+ * ```
+ */
+export function snakeToTrain<T extends object | string>(input: T): Result<T, 'SnakeToTrain'> {
+  return converter(input, 'SnakeToTrain');
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from snake_case to dot.case.
+ *
+ * @example
+ * ```ts
+ * snakeToDot('hello_world'); // 'hello.world'
+ * snakeToDot({ first_name: 'John' }); // { 'first.name': 'John' }
+ * ```
+ */
+export function snakeToDot<T extends object | string>(input: T): Result<T, 'SnakeToDot'> {
+  return converter(input, 'SnakeToDot');
+}
