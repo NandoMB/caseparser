@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   build:
-    name: Node ${{matrix.node-version}}
+    name: Support Node.js ${{matrix.node-version}}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -35,12 +35,20 @@ jobs:
       - run: pnpm run ci
 
   examples:
-    name: Example (${{matrix.example}})
+    name: Support ${{matrix.name}}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        example: [node-esm, node-cjs, typescript, typescript-legacy, bun, deno, browser, cloudflare-worker]
+        include:
+          - { example: node-esm, name: Node.js (ESM) }
+          - { example: node-cjs, name: Node.js (CommonJS) }
+          - { example: typescript, name: TypeScript (latest) }
+          - { example: typescript-legacy, name: TypeScript (4.1+) }
+          - { example: bun, name: Bun }
+          - { example: deno, name: Deno (JSR) }
+          - { example: browser, name: Browser (no bundler) }
+          - { example: cloudflare-worker, name: Cloudflare Workers }
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -61,7 +69,7 @@ jobs:
       - run: pnpm run test:examples ${{matrix.example}}
 
   browsers:
-    name: Browsers (Chromium, Firefox, WebKit)
+    name: Support Browsers (Chromium, Firefox, WebKit)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -78,7 +86,7 @@ jobs:
       - run: pnpm run test:browser
 
   jsr:
-    name: JSR (dry run)
+    name: Check JSR publish (dry run)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
