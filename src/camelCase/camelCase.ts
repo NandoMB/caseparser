@@ -9,6 +9,9 @@ import { converter } from '../parser/index.ts';
  * camelToDash('helloWorld'); // 'hello-world'
  * camelToDash({ firstName: 'John' }); // { 'first-name': 'John' }
  * ```
+ *
+ * @deprecated Use `toDash` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function camelToDash<T extends object | string>(input: T): Result<T, 'CamelToDash'> {
   return converter(input, 'CamelToDash');
@@ -22,6 +25,9 @@ export function camelToDash<T extends object | string>(input: T): Result<T, 'Cam
  * camelToSnake('helloWorld'); // 'hello_world'
  * camelToSnake({ firstName: 'John' }); // { first_name: 'John' }
  * ```
+ *
+ * @deprecated Use `toSnake` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function camelToSnake<T extends object | string>(input: T): Result<T, 'CamelToSnake'> {
   return converter(input, 'CamelToSnake');
@@ -35,6 +41,9 @@ export function camelToSnake<T extends object | string>(input: T): Result<T, 'Ca
  * camelToPascal('helloWorld'); // 'HelloWorld'
  * camelToPascal({ firstName: 'John' }); // { FirstName: 'John' }
  * ```
+ *
+ * @deprecated Use `toPascal` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function camelToPascal<T extends object | string>(input: T): Result<T, 'CamelToPascal'> {
   return converter(input, 'CamelToPascal');
@@ -48,6 +57,9 @@ export function camelToPascal<T extends object | string>(input: T): Result<T, 'C
  * camelToUpperSnake('helloWorld'); // 'HELLO_WORLD'
  * camelToUpperSnake({ firstName: 'John' }); // { FIRST_NAME: 'John' }
  * ```
+ *
+ * @deprecated Use `toUpperSnake` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function camelToUpperSnake<T extends object | string>(input: T): Result<T, 'CamelToUpperSnake'> {
   return converter(input, 'CamelToUpperSnake');
@@ -61,6 +73,9 @@ export function camelToUpperSnake<T extends object | string>(input: T): Result<T
  * camelToUpperDash('helloWorld'); // 'HELLO-WORLD'
  * camelToUpperDash({ firstName: 'John' }); // { 'FIRST-NAME': 'John' }
  * ```
+ *
+ * @deprecated Use `toUpperDash` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function camelToUpperDash<T extends object | string>(input: T): Result<T, 'CamelToUpperDash'> {
   return converter(input, 'CamelToUpperDash');
@@ -74,6 +89,9 @@ export function camelToUpperDash<T extends object | string>(input: T): Result<T,
  * camelToTrain('helloWorld'); // 'Hello-World'
  * camelToTrain({ firstName: 'John' }); // { 'First-Name': 'John' }
  * ```
+ *
+ * @deprecated Use `toTrain` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function camelToTrain<T extends object | string>(input: T): Result<T, 'CamelToTrain'> {
   return converter(input, 'CamelToTrain');
@@ -87,6 +105,9 @@ export function camelToTrain<T extends object | string>(input: T): Result<T, 'Ca
  * camelToDot('helloWorld'); // 'hello.world'
  * camelToDot({ firstName: 'John' }); // { 'first.name': 'John' }
  * ```
+ *
+ * @deprecated Use `toDot` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function camelToDot<T extends object | string>(input: T): Result<T, 'CamelToDot'> {
   return converter(input, 'CamelToDot');
@@ -100,6 +121,9 @@ export function camelToDot<T extends object | string>(input: T): Result<T, 'Came
  * camelToTitle('helloWorld'); // 'Hello World'
  * camelToTitle({ firstName: 'John' }); // { 'First Name': 'John' }
  * ```
+ *
+ * @deprecated Use `toTitle` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function camelToTitle<T extends object | string>(input: T): Result<T, 'CamelToTitle'> {
   return converter(input, 'CamelToTitle');
@@ -113,6 +137,9 @@ export function camelToTitle<T extends object | string>(input: T): Result<T, 'Ca
  * camelToSentence('helloWorld'); // 'Hello world'
  * camelToSentence({ firstName: 'John' }); // { 'First name': 'John' }
  * ```
+ *
+ * @deprecated Use `toSentence` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function camelToSentence<T extends object | string>(input: T): Result<T, 'CamelToSentence'> {
   return converter(input, 'CamelToSentence');

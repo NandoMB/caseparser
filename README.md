@@ -54,28 +54,43 @@ Ready-to-run projects for each environment (Node.js ESM/CommonJS, TypeScript, Ty
 ## How to use
 
 ```ts
-import { camelToSnake } from 'caseparser';      // ESM
-// const { camelToSnake } = require('caseparser'); // CommonJS
+import { toSnake } from 'caseparser';      // ESM
+// const { toSnake } = require('caseparser'); // CommonJS
 
-camelToSnake('helloWorld'); // 'hello_world'
+toSnake('helloWorld'); // 'hello_world'
 
-camelToSnake({ firstName: 'John', addresses: [{ postalCode: '61105' }] });
+toSnake({ firstName: 'John', addresses: [{ postalCode: '61105' }] });
 // { first_name: 'John', addresses: [{ postal_code: '61105' }] }
 ```
 
 Objects are converted deeply, including objects inside arrays. The input is never mutated: a new object is returned.
 
+There is one function per target case, and the input can be in any case (see [From any case](#from-any-case)):
+
+```ts
+toCamel('helloWorld');      // 'helloWorld'
+toPascal('helloWorld');     // 'HelloWorld'
+toSnake('helloWorld');      // 'hello_world'
+toDash('helloWorld');       // 'hello-world'
+toUpperSnake('helloWorld'); // 'HELLO_WORLD'
+toUpperDash('helloWorld');  // 'HELLO-WORLD'
+toTrain('helloWorld');      // 'Hello-World'
+toDot('helloWorld');        // 'hello.world'
+toTitle('helloWorld');      // 'Hello World'
+toSentence('helloWorld');   // 'Hello world'
+```
+
 ### Typical use: API responses
 
 ```ts
-import { snakeToCamel, camelToSnake } from 'caseparser';
+import { toCamel, toSnake } from 'caseparser';
 
 const res = await fetch('/api/users/1');
-const user = snakeToCamel(await res.json());   // { firstName, lastName, ... }
+const user = toCamel(await res.json());   // { firstName, lastName, ... }
 
 await fetch('/api/users/1', {
   method: 'PUT',
-  body: JSON.stringify(camelToSnake(user)),     // back to { first_name, ... }
+  body: JSON.stringify(toSnake(user)),          // back to { first_name, ... }
 });
 ```
 
@@ -84,7 +99,7 @@ await fetch('/api/users/1', {
 The resulting keys are inferred at the type level, so your editor autocompletes the converted names:
 
 ```ts
-const user = snakeToCamel({ first_name: 'John', addresses: [{ postal_code: '61105' }] });
+const user = toCamel({ first_name: 'John', addresses: [{ postal_code: '61105' }] });
 //    ^? { firstName: string; addresses: { postalCode: string }[] }
 
 user.firstName;  // ✅
@@ -93,7 +108,7 @@ user.first_name; // ❌ Property 'first_name' does not exist
 
 ### From any case
 
-When you don't know (or don't control) the input's case, use the `toX` functions. They split the input into words, whatever its case, and even accept keys in different cases in the same object:
+You don't need to know the input's case: the input is split into words whatever its case, so keys in different cases can even be mixed in the same object:
 
 ```ts
 import { toCamel, toSnake } from 'caseparser';
@@ -106,11 +121,11 @@ toCamel({ user_id: 1, 'Last-Name': 'Doe', XMLHttpRequest: true });
 //    ^? { userId: number; lastName: string; xmlHttpRequest: boolean }
 ```
 
-Available: `toCamel`, `toPascal`, `toSnake`, `toDash`, `toUpperSnake`, `toUpperDash`, `toTrain`, `toDot`, `toTitle` and `toSentence`, all with the same type inference.
-
-Words are split on `_`, `-`, `.` and spaces, and before an uppercase letter that starts a new word. Unlike the `<from>To<To>` functions, acronyms are kept together (`toSnake('userID')` → `'user_id'`), but they aren't restored on the way back: `toCamel('user_id')` → `'userId'`.
+Words are split on `_`, `-`, `.` and spaces, and before an uppercase letter that starts a new word.
 
 ## Conversion Types
+
+> **Deprecated:** the `<from>To<To>` functions below are deprecated in favor of the `toX` functions ([How to use](#how-to-use)) and will be removed in the next major version. They keep working until then. See [Migrating to `toX`](#migrating-to-tox).
 
 Every function is named `<from>To<To>`, e.g. `snakeToCamel`. The case names are:
 
@@ -140,14 +155,29 @@ All 90 functions:
 - **Title Case:** `titleToCamel`, `titleToPascal`, `titleToSnake`, `titleToDash`, `titleToUpperSnake`, `titleToUpperDash`, `titleToTrain`, `titleToDot`, `titleToSentence`
 - **Sentence case:** `sentenceToCamel`, `sentenceToPascal`, `sentenceToSnake`, `sentenceToDash`, `sentenceToUpperSnake`, `sentenceToUpperDash`, `sentenceToTrain`, `sentenceToDot`, `sentenceToTitle`
 
+## Migrating to `toX`
+
+Replace each `<from>To<To>` function with the `toX` function for its target case, whatever the source case: `camelToSnake`, `dashToSnake`, `titleToSnake`... all become `toSnake`.
+
+For well-formed keys (`firstName`, `first_name`) the result is the same. It differs when a key has consecutive uppercase letters or doesn't match the source case:
+
+| Call | `<from>To<To>` result | `toX` result |
+| --- | --- | --- |
+| `camelToSnake('userID')` / `toSnake('userID')` | `'user_i_d'` | `'user_id'` |
+| `camelToSnake('XMLHttpRequest')` / `toSnake('XMLHttpRequest')` | `'_x_m_l_http_request'` | `'xml_http_request'` |
+| `camelToSnake('HelloWorld')` / `toSnake('HelloWorld')` | `'_hello_world'` | `'hello_world'` |
+| `snakeToCamel('user_ID')` / `toCamel('user_ID')` | `'userID'` | `'userId'` |
+
+If your code reads keys like `user_i_d` produced by the old functions, update those reads when migrating. The inferred types follow the new results, so TypeScript points out every place to change.
+
 ## Behavior and limitations
 
 - **Only keys are converted, never values.** In `{ userName: 'johnDoe' }`, `userName` becomes `user_name` but `'johnDoe'` is kept. Strings inside arrays are kept too.
 - **Only plain objects are traversed.** `Date`, `Map`, `Set` and class instances are returned as they are (same reference), without converting their contents.
-- **Acronyms are split letter by letter**, because every uppercase letter starts a new word: `camelToSnake('userID')` → `'user_i_d'`. Prefer `userId` style keys.
-- **Train-Case, Title Case and Sentence case words are lowercased** before converting, so `trainToCamel('X-API-Key')` → `'xApiKey'` and `titleToCamel('First Name')` → `'firstName'`.
-- **Title Case capitalizes every word**, including short ones: `camelToTitle('termsOfUse')` → `'Terms Of Use'`.
-- **Numbers are not word boundaries:** `camelToSnake('html5Parser')` → `'html5_parser'`, `snakeToCamel('user_1_name')` → `'user1Name'`.
+- **Acronyms are kept together, but not restored:** `toSnake('userID')` → `'user_id'`, and back `toCamel('user_id')` → `'userId'`.
+- **Words are lowercased** before converting, so `toCamel('X-API-Key')` → `'xApiKey'` and `toCamel('First Name')` → `'firstName'`.
+- **Title Case capitalizes every word**, including short ones: `toTitle('termsOfUse')` → `'Terms Of Use'`.
+- **Digits stay attached to the previous word:** `toSnake('html5Parser')` → `'html5_parser'`, `toSnake('user1Name')` → `'user1_name'`.
 
 ## Security
 

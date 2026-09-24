@@ -9,6 +9,9 @@ import { converter } from '../parser/index.ts';
  * upperDashToCamel('HELLO-WORLD'); // 'helloWorld'
  * upperDashToCamel({ 'FIRST-NAME': 'John' }); // { firstName: 'John' }
  * ```
+ *
+ * @deprecated Use `toCamel` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function upperDashToCamel<T extends object | string>(input: T): Result<T, 'UpperDashToCamel'> {
   return converter(input, 'UpperDashToCamel');
@@ -22,6 +25,9 @@ export function upperDashToCamel<T extends object | string>(input: T): Result<T,
  * upperDashToSnake('HELLO-WORLD'); // 'hello_world'
  * upperDashToSnake({ 'FIRST-NAME': 'John' }); // { first_name: 'John' }
  * ```
+ *
+ * @deprecated Use `toSnake` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function upperDashToSnake<T extends object | string>(input: T): Result<T, 'UpperDashToSnake'> {
   return converter(input, 'UpperDashToSnake');
@@ -35,6 +41,9 @@ export function upperDashToSnake<T extends object | string>(input: T): Result<T,
  * upperDashToDash('HELLO-WORLD'); // 'hello-world'
  * upperDashToDash({ 'FIRST-NAME': 'John' }); // { 'first-name': 'John' }
  * ```
+ *
+ * @deprecated Use `toDash` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function upperDashToDash<T extends object | string>(input: T): Result<T, 'UpperDashToDash'> {
   return converter(input, 'UpperDashToDash');
@@ -48,6 +57,9 @@ export function upperDashToDash<T extends object | string>(input: T): Result<T, 
  * upperDashToPascal('HELLO-WORLD'); // 'HelloWorld'
  * upperDashToPascal({ 'FIRST-NAME': 'John' }); // { FirstName: 'John' }
  * ```
+ *
+ * @deprecated Use `toPascal` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function upperDashToPascal<T extends object | string>(input: T): Result<T, 'UpperDashToPascal'> {
   return converter(input, 'UpperDashToPascal');
@@ -61,6 +73,9 @@ export function upperDashToPascal<T extends object | string>(input: T): Result<T
  * upperDashToUpperSnake('HELLO-WORLD'); // 'HELLO_WORLD'
  * upperDashToUpperSnake({ 'FIRST-NAME': 'John' }); // { FIRST_NAME: 'John' }
  * ```
+ *
+ * @deprecated Use `toUpperSnake` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function upperDashToUpperSnake<T extends object | string>(input: T): Result<T, 'UpperDashToUpperSnake'> {
   return converter(input, 'UpperDashToUpperSnake');
@@ -74,6 +89,9 @@ export function upperDashToUpperSnake<T extends object | string>(input: T): Resu
  * upperDashToTrain('HELLO-WORLD'); // 'Hello-World'
  * upperDashToTrain({ 'FIRST-NAME': 'John' }); // { 'First-Name': 'John' }
  * ```
+ *
+ * @deprecated Use `toTrain` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function upperDashToTrain<T extends object | string>(input: T): Result<T, 'UpperDashToTrain'> {
   return converter(input, 'UpperDashToTrain');
@@ -87,6 +105,9 @@ export function upperDashToTrain<T extends object | string>(input: T): Result<T,
  * upperDashToDot('HELLO-WORLD'); // 'hello.world'
  * upperDashToDot({ 'FIRST-NAME': 'John' }); // { 'first.name': 'John' }
  * ```
+ *
+ * @deprecated Use `toDot` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function upperDashToDot<T extends object | string>(input: T): Result<T, 'UpperDashToDot'> {
   return converter(input, 'UpperDashToDot');
@@ -100,6 +121,9 @@ export function upperDashToDot<T extends object | string>(input: T): Result<T, '
  * upperDashToTitle('HELLO-WORLD'); // 'Hello World'
  * upperDashToTitle({ 'FIRST-NAME': 'John' }); // { 'First Name': 'John' }
  * ```
+ *
+ * @deprecated Use `toTitle` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function upperDashToTitle<T extends object | string>(input: T): Result<T, 'UpperDashToTitle'> {
   return converter(input, 'UpperDashToTitle');
@@ -113,6 +137,9 @@ export function upperDashToTitle<T extends object | string>(input: T): Result<T,
  * upperDashToSentence('HELLO-WORLD'); // 'Hello world'
  * upperDashToSentence({ 'FIRST-NAME': 'John' }); // { 'First name': 'John' }
  * ```
+ *
+ * @deprecated Use `toSentence` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function upperDashToSentence<T extends object | string>(input: T): Result<T, 'UpperDashToSentence'> {
   return converter(input, 'UpperDashToSentence');
