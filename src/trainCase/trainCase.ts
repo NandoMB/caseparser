@@ -9,6 +9,9 @@ import { converter } from '../parser/index.ts';
  * trainToCamel('Hello-World'); // 'helloWorld'
  * trainToCamel({ 'First-Name': 'John' }); // { firstName: 'John' }
  * ```
+ *
+ * @deprecated Use `toCamel` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function trainToCamel<T extends object | string>(input: T): Result<T, 'TrainToCamel'> {
   return converter(input, 'TrainToCamel');
@@ -22,6 +25,9 @@ export function trainToCamel<T extends object | string>(input: T): Result<T, 'Tr
  * trainToPascal('Hello-World'); // 'HelloWorld'
  * trainToPascal({ 'First-Name': 'John' }); // { FirstName: 'John' }
  * ```
+ *
+ * @deprecated Use `toPascal` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function trainToPascal<T extends object | string>(input: T): Result<T, 'TrainToPascal'> {
   return converter(input, 'TrainToPascal');
@@ -35,6 +41,9 @@ export function trainToPascal<T extends object | string>(input: T): Result<T, 'T
  * trainToSnake('Hello-World'); // 'hello_world'
  * trainToSnake({ 'First-Name': 'John' }); // { first_name: 'John' }
  * ```
+ *
+ * @deprecated Use `toSnake` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function trainToSnake<T extends object | string>(input: T): Result<T, 'TrainToSnake'> {
   return converter(input, 'TrainToSnake');
@@ -48,6 +57,9 @@ export function trainToSnake<T extends object | string>(input: T): Result<T, 'Tr
  * trainToDash('Hello-World'); // 'hello-world'
  * trainToDash({ 'First-Name': 'John' }); // { 'first-name': 'John' }
  * ```
+ *
+ * @deprecated Use `toDash` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function trainToDash<T extends object | string>(input: T): Result<T, 'TrainToDash'> {
   return converter(input, 'TrainToDash');
@@ -61,6 +73,9 @@ export function trainToDash<T extends object | string>(input: T): Result<T, 'Tra
  * trainToUpperSnake('Hello-World'); // 'HELLO_WORLD'
  * trainToUpperSnake({ 'First-Name': 'John' }); // { FIRST_NAME: 'John' }
  * ```
+ *
+ * @deprecated Use `toUpperSnake` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function trainToUpperSnake<T extends object | string>(input: T): Result<T, 'TrainToUpperSnake'> {
   return converter(input, 'TrainToUpperSnake');
@@ -74,6 +89,9 @@ export function trainToUpperSnake<T extends object | string>(input: T): Result<T
  * trainToUpperDash('Hello-World'); // 'HELLO-WORLD'
  * trainToUpperDash({ 'First-Name': 'John' }); // { 'FIRST-NAME': 'John' }
  * ```
+ *
+ * @deprecated Use `toUpperDash` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function trainToUpperDash<T extends object | string>(input: T): Result<T, 'TrainToUpperDash'> {
   return converter(input, 'TrainToUpperDash');
@@ -87,6 +105,9 @@ export function trainToUpperDash<T extends object | string>(input: T): Result<T,
  * trainToDot('Hello-World'); // 'hello.world'
  * trainToDot({ 'First-Name': 'John' }); // { 'first.name': 'John' }
  * ```
+ *
+ * @deprecated Use `toDot` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function trainToDot<T extends object | string>(input: T): Result<T, 'TrainToDot'> {
   return converter(input, 'TrainToDot');
@@ -100,6 +121,9 @@ export function trainToDot<T extends object | string>(input: T): Result<T, 'Trai
  * trainToTitle('Hello-World'); // 'Hello World'
  * trainToTitle({ 'First-Name': 'John' }); // { 'First Name': 'John' }
  * ```
+ *
+ * @deprecated Use `toTitle` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function trainToTitle<T extends object | string>(input: T): Result<T, 'TrainToTitle'> {
   return converter(input, 'TrainToTitle');
@@ -113,6 +137,9 @@ export function trainToTitle<T extends object | string>(input: T): Result<T, 'Tr
  * trainToSentence('Hello-World'); // 'Hello world'
  * trainToSentence({ 'First-Name': 'John' }); // { 'First name': 'John' }
  * ```
+ *
+ * @deprecated Use `toSentence` instead, which converts from any case. It keeps acronyms together,
+ * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function trainToSentence<T extends object | string>(input: T): Result<T, 'TrainToSentence'> {
   return converter(input, 'TrainToSentence');

@@ -4,10 +4,14 @@ import arrayParser from './arrayParser.ts';
 import objectParser from './objectParser.ts';
 import stringParser from './stringParser.ts';
 
+/** Converts a string, or the keys of an object/array (deeply), with `convertKey`. */
+export function convert(input: unknown, convertKey: (key: string) => string): unknown {
+  if (isString(input)) return convertKey(input);
+  if (isArray(input)) return arrayParser(input, convertKey);
+  if (isObject(input)) return objectParser(input, convertKey);
+  return undefined;
+}
+
 export function converter<T extends object | string, P extends ParserType>(input: T, type: P) {
-  let result;
-  if (isString(input)) result = stringParser(input, type);
-  if (isArray(input)) result = arrayParser(input, type);
-  if (isObject(input)) result = objectParser(input, type);
-  return result as Result<T, P>;
+  return convert(input, (key) => stringParser(key, type)) as Result<T, P>;
 }

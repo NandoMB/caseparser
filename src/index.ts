@@ -29,3 +29,4 @@ export * from './sentenceCase/index.ts';
 export * from './upperDashCase/index.ts';
 export * from './upperSnakeCase/index.ts';
 export type { ParserType, Prettify, Result } from './types.ts';
+export * from './anyCase/index.ts';

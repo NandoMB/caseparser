@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, expectTypeOf, test } from 'vitest';
 import * as caseparser from '../index.ts';
 
 describe('Title Case', () => {
@@ -397,5 +397,80 @@ describe('Title Case', () => {
         ],
       }
     `);
+  });
+});
+
+describe('Title Case types', () => {
+  test('Should infer the converted keys of a nested API response for every titleToX function', () => {
+    const response = {
+      'User Id': 42,
+      'First Name': 'Ada',
+      'Last Name': 'Lovelace',
+      'Billing Address': { 'Postal Code': '61105', 'Street Name': 'Forest Run Circle' },
+      'Recent Orders': [{ 'Order Id': 1, 'Total Amount': 99.9 }]
+    };
+    expectTypeOf(caseparser.titleToCamel(response)).toEqualTypeOf<{
+      userId: number;
+      firstName: string;
+      lastName: string;
+      billingAddress: { postalCode: string; streetName: string };
+      recentOrders: { orderId: number; totalAmount: number }[];
+    }>();
+    expectTypeOf(caseparser.titleToPascal(response)).toEqualTypeOf<{
+      UserId: number;
+      FirstName: string;
+      LastName: string;
+      BillingAddress: { PostalCode: string; StreetName: string };
+      RecentOrders: { OrderId: number; TotalAmount: number }[];
+    }>();
+    expectTypeOf(caseparser.titleToSnake(response)).toEqualTypeOf<{
+      user_id: number;
+      first_name: string;
+      last_name: string;
+      billing_address: { postal_code: string; street_name: string };
+      recent_orders: { order_id: number; total_amount: number }[];
+    }>();
+    expectTypeOf(caseparser.titleToDash(response)).toEqualTypeOf<{
+      'user-id': number;
+      'first-name': string;
+      'last-name': string;
+      'billing-address': { 'postal-code': string; 'street-name': string };
+      'recent-orders': { 'order-id': number; 'total-amount': number }[];
+    }>();
+    expectTypeOf(caseparser.titleToUpperSnake(response)).toEqualTypeOf<{
+      USER_ID: number;
+      FIRST_NAME: string;
+      LAST_NAME: string;
+      BILLING_ADDRESS: { POSTAL_CODE: string; STREET_NAME: string };
+      RECENT_ORDERS: { ORDER_ID: number; TOTAL_AMOUNT: number }[];
+    }>();
+    expectTypeOf(caseparser.titleToUpperDash(response)).toEqualTypeOf<{
+      'USER-ID': number;
+      'FIRST-NAME': string;
+      'LAST-NAME': string;
+      'BILLING-ADDRESS': { 'POSTAL-CODE': string; 'STREET-NAME': string };
+      'RECENT-ORDERS': { 'ORDER-ID': number; 'TOTAL-AMOUNT': number }[];
+    }>();
+    expectTypeOf(caseparser.titleToTrain(response)).toEqualTypeOf<{
+      'User-Id': number;
+      'First-Name': string;
+      'Last-Name': string;
+      'Billing-Address': { 'Postal-Code': string; 'Street-Name': string };
+      'Recent-Orders': { 'Order-Id': number; 'Total-Amount': number }[];
+    }>();
+    expectTypeOf(caseparser.titleToDot(response)).toEqualTypeOf<{
+      'user.id': number;
+      'first.name': string;
+      'last.name': string;
+      'billing.address': { 'postal.code': string; 'street.name': string };
+      'recent.orders': { 'order.id': number; 'total.amount': number }[];
+    }>();
+    expectTypeOf(caseparser.titleToSentence(response)).toEqualTypeOf<{
+      'User id': number;
+      'First name': string;
+      'Last name': string;
+      'Billing address': { 'Postal code': string; 'Street name': string };
+      'Recent orders': { 'Order id': number; 'Total amount': number }[];
+    }>();
   });
 });
