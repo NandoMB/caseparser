@@ -74,7 +74,7 @@ export function dashToUpperSnake<T extends object | string>(input: T): Result<T,
  * dashToUpperDash({ 'first-name': 'John' }); // { 'FIRST-NAME': 'John' }
  * ```
  *
- * @deprecated Use `toUpperDash` instead, which converts from any case. It keeps acronyms together,
+ * @deprecated Use `toUpperKebab` instead, which converts from any case. It keeps acronyms together,
  * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function dashToUpperDash<T extends object | string>(input: T): Result<T, 'DashToUpperDash'> {

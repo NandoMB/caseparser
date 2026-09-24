@@ -26,7 +26,7 @@ export function snakeToCamel<T extends object | string>(input: T): Result<T, 'Sn
  * snakeToDash({ first_name: 'John' }); // { 'first-name': 'John' }
  * ```
  *
- * @deprecated Use `toDash` instead, which converts from any case. It keeps acronyms together,
+ * @deprecated Use `toKebab` instead, which converts from any case. It keeps acronyms together,
  * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function snakeToDash<T extends object | string>(input: T): Result<T, 'SnakeToDash'> {
@@ -74,7 +74,7 @@ export function snakeToUpperSnake<T extends object | string>(input: T): Result<T
  * snakeToUpperDash({ first_name: 'John' }); // { 'FIRST-NAME': 'John' }
  * ```
  *
- * @deprecated Use `toUpperDash` instead, which converts from any case. It keeps acronyms together,
+ * @deprecated Use `toUpperKebab` instead, which converts from any case. It keeps acronyms together,
  * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function snakeToUpperDash<T extends object | string>(input: T): Result<T, 'SnakeToUpperDash'> {

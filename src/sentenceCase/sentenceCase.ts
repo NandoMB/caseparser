@@ -58,7 +58,7 @@ export function sentenceToSnake<T extends object | string>(input: T): Result<T, 
  * sentenceToDash({ 'First name': 'John' }); // { 'first-name': 'John' }
  * ```
  *
- * @deprecated Use `toDash` instead, which converts from any case. It keeps acronyms together,
+ * @deprecated Use `toKebab` instead, which converts from any case. It keeps acronyms together,
  * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function sentenceToDash<T extends object | string>(input: T): Result<T, 'SentenceToDash'> {
@@ -90,7 +90,7 @@ export function sentenceToUpperSnake<T extends object | string>(input: T): Resul
  * sentenceToUpperDash({ 'First name': 'John' }); // { 'FIRST-NAME': 'John' }
  * ```
  *
- * @deprecated Use `toUpperDash` instead, which converts from any case. It keeps acronyms together,
+ * @deprecated Use `toUpperKebab` instead, which converts from any case. It keeps acronyms together,
  * so results differ for keys like `userID` (see the migration notes in the README).
  */
 export function sentenceToUpperDash<T extends object | string>(input: T): Result<T, 'SentenceToUpperDash'> {
