@@ -43,7 +43,7 @@ npx jsr add @nandomb/caseparser
 | --- | --- |
 | ESM (`import`) | Node.js 12.22+, Deno, Bun, bundlers |
 | CommonJS (`require`) | Node.js 8+, Bun |
-| TypeScript | 4.1+ (any `moduleResolution`: `node`, `node16`/`nodenext`, `bundler`). The `toX` type inference needs 4.5+ for keys longer than ~20 characters |
+| TypeScript | 4.1+ (any `moduleResolution`: `node`, `node16`/`nodenext`, `bundler`). The `toX` type inference needs 4.5+ for keys longer than ~15 characters |
 | Browsers | Any ES2015 browser (via bundler) |
 | Edge | Cloudflare Workers |
 
@@ -123,6 +123,30 @@ toCamel({ user_id: 1, 'Last-Name': 'Doe', XMLHttpRequest: true });
 
 Words are split on `_`, `-`, `.` and spaces, and before an uppercase letter that starts a new word.
 
+### Symbols
+
+Symbols (ASCII punctuation such as `$`, `@`, `#` or `%`) are removed by default. Pass a second argument to keep them: `true` keeps all of them, and an array keeps only the listed ones:
+
+```ts
+toCamel({ $ref: 1, '@type': 'user' });         // { ref: 1, type: 'user' }
+toCamel({ $ref: 1, '@type': 'user' }, true);   // { $ref: 1, '@type': 'user' }
+toCamel({ $ref: 1, '@type': 'user' }, ['$']);  // { $ref: 1, type: 'user' }
+
+toCamel('$Hello-world', true); // '$helloWorld'
+toPascal('$id', true);         // '$Id'
+```
+
+A symbol always starts a new word, so the words are the same whether symbols are kept or not. A kept symbol sticks to the start of the next word, or to the end of the previous one when no word follows:
+
+```ts
+toSnake('$$hello$World$$hi');       // 'hello_world_hi'
+toSnake('$$hello$World$$hi', true); // '$$hello_$world_$$hi'
+toSnake('user@name', true);         // 'user_@name'
+toSnake('total%_count', true);      // 'total%_count'
+```
+
+The inferred types follow the same rules. `_`, `-` and `.` are separators, not symbols, so `_links` always becomes `links`.
+
 ## Conversion Types
 
 > **Deprecated:** the `<from>To<To>` functions below are deprecated in favor of the `toX` functions ([How to use](#how-to-use)) and will be removed in the next major version. They keep working until then. See [Migrating to `toX`](#migrating-to-tox).
@@ -178,7 +202,7 @@ If your code reads keys like `user_i_d` produced by the old functions, update th
 - **Words are lowercased** before converting, so `toCamel('X-API-Key')` → `'xApiKey'` and `toCamel('First Name')` → `'firstName'`.
 - **Title Case capitalizes every word**, including short ones: `toTitle('termsOfUse')` → `'Terms Of Use'`.
 - **Digits stay attached to the previous word:** `toSnake('html5Parser')` → `'html5_parser'`, `toSnake('user1Name')` → `'user1_name'`.
-- **Type inference has a key length limit.** TypeScript limits how deeply a type can recurse, and keys are converted character by character at the type level. With TypeScript 4.5+, the `toX` functions infer keys up to ~120 characters; with TypeScript 4.1 to 4.4, only up to ~20 characters. Longer keys fail to compile with `Type instantiation is excessively deep and possibly infinite`. The runtime conversion has no limit.
+- **Type inference has a key length limit.** TypeScript limits how deeply a type can recurse, and keys are converted character by character at the type level. With TypeScript 4.5+, the `toX` functions infer keys up to ~120 characters; with TypeScript 4.1 to 4.4, only up to ~15 characters. Longer keys fail to compile with `Type instantiation is excessively deep and possibly infinite`. The runtime conversion has no limit.
 
 ## Security
 

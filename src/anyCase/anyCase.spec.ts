@@ -141,7 +141,66 @@ describe('toX (from any case)', () => {
   });
 });
 
+describe('toX symbols', () => {
+  test.each([
+    ['$Hello-world', false, ['hello', 'world']],
+    ['$Hello-world', true, ['$hello', 'world']],
+    ['$catDog', false, ['cat', 'dog']],
+    ['$catDog', true, ['$cat', 'dog']],
+    ['@type', ['$'], ['type']],
+    ['$ref', ['$'], ['$ref']],
+    ['first$Name-@last', ['@'], ['first', 'name', '@last']],
+    ['price%Rate', true, ['price', '%rate']],
+    ['$$hello$World$$hi', false, ['hello', 'world', 'hi']],
+    ['$$hello$World$$hi', true, ['$$hello', '$world', '$$hi']],
+    ['user@name', false, ['user', 'name']],
+    ['user@name', true, ['user', '@name']],
+    ['total%', true, ['total%']],
+    ['total%_count', true, ['total%', 'count']],
+    ['a$$', true, ['a$$']],
+    ['$_id', true, ['$', 'id']],
+    ['_links', true, ['links']],
+    ['名前_key', false, ['名前', 'key']],
+    ['$', false, []],
+  ] as const)('Should split %j with keepSymbols %j', (input, keep, expected) => {
+    expect(words(input, keep)).toEqual(expected);
+  });
+  test('Should remove symbols by default, keep all with true, or keep only the listed ones', () => {
+    const data = { $ref: 1, '@type': 'x', user_id: 2 };
+    expect(caseparser.toCamel(data)).toEqual({ ref: 1, type: 'x', userId: 2 });
+    expect(caseparser.toCamel(data, true)).toEqual({ $ref: 1, '@type': 'x', userId: 2 });
+    expect(caseparser.toCamel(data, ['$'])).toEqual({ $ref: 1, type: 'x', userId: 2 });
+    expect(caseparser.toCamel(data, false)).toEqual(caseparser.toCamel(data));
+  });
+  test('Should capitalize the first letter after kept symbols', () => {
+    expect(caseparser.toCamel('$Hello-world', true)).toBe('$helloWorld');
+    expect(caseparser.toPascal('$id', true)).toBe('$Id');
+    expect(caseparser.toTitle('@first_name', true)).toBe('@First Name');
+    expect(caseparser.toSentence('$first_name', true)).toBe('$First name');
+    expect(caseparser.toUpperSnake('$first_name', ['$'])).toBe('$FIRST_NAME');
+    expect(caseparser.toPascal('$$hello$World$$hi')).toBe('HelloWorldHi');
+    expect(caseparser.toPascal('$$hello$World$$hi', true)).toBe('$$Hello$World$$Hi');
+    expect(caseparser.toSnake('$$hello$World$$hi', true)).toBe('$$hello_$world_$$hi');
+  });
+});
+
 describe('toX types', () => {
+  test('Should infer keys with symbols removed, kept or partially kept', () => {
+    const data = { $ref: 1, '@type': 'x', user_id: 2 };
+    expectTypeOf(caseparser.toCamel(data)).toEqualTypeOf<{ ref: number; type: string; userId: number }>();
+    expectTypeOf(caseparser.toCamel(data, false)).toEqualTypeOf<{ ref: number; type: string; userId: number }>();
+    expectTypeOf(caseparser.toCamel(data, true)).toEqualTypeOf<{ $ref: number; '@type': string; userId: number }>();
+    expectTypeOf(caseparser.toCamel(data, ['$'])).toEqualTypeOf<{ $ref: number; type: string; userId: number }>();
+    expectTypeOf(caseparser.toPascal({ $first_name: 1 }, true)).toEqualTypeOf<{ $FirstName: number }>();
+    expectTypeOf(caseparser.toSentence({ '@first_name': 1 }, ['@'])).toEqualTypeOf<{ '@First name': number }>();
+    expectTypeOf(caseparser.toPascal({ $$hello$World$$hi: 1 })).toEqualTypeOf<{ HelloWorldHi: number }>();
+    expectTypeOf(caseparser.toSnake({ $$hello$World$$hi: 1, 'total%': 2 }, true)).toEqualTypeOf<{ $$hello_$world_$$hi: number; 'total%': number }>();
+  });
+  test('Should fall back to string keys when keepSymbols is only known at runtime', () => {
+    const data = { $ref: 1 };
+    expectTypeOf(caseparser.toCamel(data, true as boolean)).toEqualTypeOf<{ [x: string]: number }>();
+    expectTypeOf(caseparser.toCamel(data, [] as string[])).toEqualTypeOf<{ [x: string]: number }>();
+  });
   test('Should infer the converted keys from any case, deeply', () => {
     const data = {
       user_id: 1,
