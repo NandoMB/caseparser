@@ -39,19 +39,23 @@
     "dist"
   ],
   "scripts": {
-    "dev": "vitest",
-    "test": "vitest run",
-    "coverage": "vitest run --coverage",
+    "dev": "vitest --project node",
+    "test": "vitest run --project node",
+    "coverage": "vitest run --project node --coverage",
     "build": "tsdown",
     "lint": "tsc",
     "ci": "pnpm run lint && pnpm run test && pnpm run build",
     "release": "node scripts/release.js",
-    "changeset:version": "changeset version && node scripts/sync-jsr-version.js"
+    "changeset:version": "changeset version && node scripts/sync-jsr-version.js",
+    "test:browser": "vitest run --project browser",
+    "test:examples": "node scripts/test-examples.js"
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.3",
     "@types/node": "^26.6.2",
+    "@vitest/browser-playwright": "^5.0.1",
     "@vitest/coverage-istanbul": "^5.0.1",
+    "playwright": "^1.63.0",
     "tsdown": "^0.23.0",
     "typescript": "^7.0.2",
     "vitest": "^5.0.1"
