@@ -4,7 +4,8 @@
 // - npm-based examples install the packed package (the exact tarball that would be published to npm)
 // - Deno imports the TypeScript source (what JSR publishes) instead of the published JSR version
 // - the browser example gets the local build instead of the CDN file, in headless Chromium
-import { execSync } from 'node:child_process';
+// - the Cloudflare Worker is bundled and served locally by wrangler (workerd runtime), then requested over HTTP
+import { execSync, spawn } from 'node:child_process';
 import { existsSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
@@ -73,10 +74,44 @@ async function runBrowserExample(dir) {
   }
 }
 
+async function runWorkerExample(dir) {
+  sh(`npm install --no-save --no-package-lock --no-audit --no-fund ${tarball}`, dir);
+
+  const port = await new Promise((done) => {
+    const probe = createServer().listen(0, () => {
+      const { port } = probe.address();
+      probe.close(() => done(port));
+    });
+  });
+  const wrangler = spawn('npx', ['wrangler', 'dev', '--ip', '127.0.0.1', '--port', String(port)], {
+    cwd: dir,
+    detached: true,
+    stdio: 'ignore',
+    env: { ...process.env, WRANGLER_SEND_METRICS: 'false' }
+  });
+
+  try {
+    const deadline = Date.now() + 60_000;
+    while (Date.now() < deadline) {
+      try {
+        const response = await fetch(`http://127.0.0.1:${port}/`);
+        if (response.ok) return await response.text();
+      } catch {
+        // not ready yet
+      }
+      await new Promise((done) => setTimeout(done, 500));
+    }
+    throw new Error('wrangler dev did not start within 60s');
+  } finally {
+    process.kill(-wrangler.pid);
+  }
+}
+
 const runners = {
   deno: { requires: 'deno', run: runDenoExample },
   bun: { requires: 'bun', run: runNpmExample },
-  browser: { run: runBrowserExample }
+  browser: { run: runBrowserExample },
+  'cloudflare-worker': { run: runWorkerExample }
 };
 
 let failed = false;

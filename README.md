@@ -54,10 +54,11 @@ npx jsr add @nandomb/caseparser
 | CommonJS (`require`) | Node.js 8+, Bun |
 | TypeScript | 4.1+ (any `moduleResolution`: `node`, `node16`/`nodenext`, `bundler`) |
 | Browsers | Any ES2015 browser (via bundler) |
+| Edge | Cloudflare Workers |
 
-Every change is tested in CI on Node.js 22, 24 and 26, Bun, Deno, and in Chromium, Firefox and WebKit.
+Every change is tested in CI on Node.js 22, 24 and 26, Bun, Deno, Cloudflare Workers, and in Chromium, Firefox and WebKit.
 
-Ready-to-run projects for each environment (Node.js ESM/CommonJS, TypeScript, TypeScript 4.1, Bun, Deno and the browser) are in [examples/](./examples).
+Ready-to-run projects for each environment (Node.js ESM/CommonJS, TypeScript, TypeScript 4.1, Bun, Deno, the browser and Cloudflare Workers) are in [examples/](./examples).
 
 ```js
 // CommonJS
