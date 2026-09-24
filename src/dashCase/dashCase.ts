@@ -65,3 +65,29 @@ export function dashToUpperSnake<T extends object | string>(input: T): Result<T,
 export function dashToUpperDash<T extends object | string>(input: T): Result<T, 'DashToUpperDash'> {
   return converter(input, 'DashToUpperDash');
 }
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from dash-case to Train-Case.
+ *
+ * @example
+ * ```ts
+ * dashToTrain('hello-world'); // 'Hello-World'
+ * dashToTrain({ 'first-name': 'John' }); // { 'First-Name': 'John' }
+ * ```
+ */
+export function dashToTrain<T extends object | string>(input: T): Result<T, 'DashToTrain'> {
+  return converter(input, 'DashToTrain');
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from dash-case to dot.case.
+ *
+ * @example
+ * ```ts
+ * dashToDot('hello-world'); // 'hello.world'
+ * dashToDot({ 'first-name': 'John' }); // { 'first.name': 'John' }
+ * ```
+ */
+export function dashToDot<T extends object | string>(input: T): Result<T, 'DashToDot'> {
+  return converter(input, 'DashToDot');
+}

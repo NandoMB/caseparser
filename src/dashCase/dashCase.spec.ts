@@ -238,4 +238,84 @@ describe('dash-case', () => {
       }
     `);
   });
+  test('Should convert a string from dashToTrain', () => {
+    expect(caseparser.dashToTrain(input.string)).toMatchInlineSnapshot('"Grand-Rapids-Charter-Township"');
+  });
+  test('Should convert a string from dashToDot', () => {
+    expect(caseparser.dashToDot(input.string)).toMatchInlineSnapshot('"grand.rapids.charter.township"');
+  });
+  test('Should convert a json from dashToTrain', () => {
+    expect(caseparser.dashToTrain(input.json)).toMatchInlineSnapshot(`
+      {
+        "Addresses": [
+          {
+            "City": "Rockford",
+            "Country": "United States",
+            "Postal-Code": "61105",
+            "State": "Illinois",
+            "Street": {
+              "Street-Name": "41 Forest Run Circle",
+              "Street-Number": "539",
+            },
+          },
+          {
+            "City": "Conroe",
+            "Country": "United States",
+            "Postal-Code": "77301",
+            "State": "Texas",
+            "Street": {
+              "Street-Name": "E Phillips St",
+              "Street-Number": "200",
+            },
+          },
+        ],
+        "Email": "john.doe@example.com",
+        "First-Name": "John",
+        "Id": 1,
+        "Is-Under-Age": false,
+        "Last-Name": "Doe",
+        "Telephone-Numbers": [
+          "(616) 361-1338",
+          "(907) 742-5450",
+        ],
+      }
+    `);
+  });
+  test('Should convert a json from dashToDot', () => {
+    expect(caseparser.dashToDot(input.json)).toMatchInlineSnapshot(`
+      {
+        "addresses": [
+          {
+            "city": "Rockford",
+            "country": "United States",
+            "postal.code": "61105",
+            "state": "Illinois",
+            "street": {
+              "street.name": "41 Forest Run Circle",
+              "street.number": "539",
+            },
+          },
+          {
+            "city": "Conroe",
+            "country": "United States",
+            "postal.code": "77301",
+            "state": "Texas",
+            "street": {
+              "street.name": "E Phillips St",
+              "street.number": "200",
+            },
+          },
+        ],
+        "email": "john.doe@example.com",
+        "first.name": "John",
+        "id": 1,
+        "is.under.age": false,
+        "last.name": "Doe",
+        "telephone.numbers": [
+          "(616) 361-1338",
+          "(907) 742-5450",
+        ],
+      }
+    `);
+  });
 });

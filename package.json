@@ -71,11 +71,15 @@
     "pascal case",
     "upper snake case",
     "upper dash case",
+    "train case",
+    "dot case",
     "camelCase",
     "snake_case",
     "dash-case",
     "PascalCase",
     "UPPER_SNAKE_CASE",
-    "UPPER-DASH-CASE"
+    "UPPER-DASH-CASE",
+    "Train-Case",
+    "dot.case"
   ]
 }

@@ -103,21 +103,26 @@ Every function is named `<from>To<To>`, e.g. `snakeToCamel`. The case names are:
 | `dash` | `hello-world` |
 | `upperSnake` | `HELLO_WORLD` |
 | `upperDash` | `HELLO-WORLD` |
+| `train` | `Hello-World` |
+| `dot` | `hello.world` |
 
-All 30 functions:
+All 56 functions:
 
-- **camelCase:** `camelToPascal`, `camelToSnake`, `camelToDash`, `camelToUpperSnake`, `camelToUpperDash`
-- **PascalCase:** `pascalToCamel`, `pascalToSnake`, `pascalToDash`, `pascalToUpperSnake`, `pascalToUpperDash`
-- **snake_case:** `snakeToCamel`, `snakeToPascal`, `snakeToDash`, `snakeToUpperSnake`, `snakeToUpperDash`
-- **dash-case:** `dashToCamel`, `dashToPascal`, `dashToSnake`, `dashToUpperSnake`, `dashToUpperDash`
-- **UPPER_SNAKE_CASE:** `upperSnakeToCamel`, `upperSnakeToPascal`, `upperSnakeToSnake`, `upperSnakeToDash`, `upperSnakeToUpperDash`
-- **UPPER-DASH-CASE:** `upperDashToCamel`, `upperDashToPascal`, `upperDashToSnake`, `upperDashToDash`, `upperDashToUpperSnake`
+- **camelCase:** `camelToPascal`, `camelToSnake`, `camelToDash`, `camelToUpperSnake`, `camelToUpperDash`, `camelToTrain`, `camelToDot`
+- **PascalCase:** `pascalToCamel`, `pascalToSnake`, `pascalToDash`, `pascalToUpperSnake`, `pascalToUpperDash`, `pascalToTrain`, `pascalToDot`
+- **snake_case:** `snakeToCamel`, `snakeToPascal`, `snakeToDash`, `snakeToUpperSnake`, `snakeToUpperDash`, `snakeToTrain`, `snakeToDot`
+- **dash-case:** `dashToCamel`, `dashToPascal`, `dashToSnake`, `dashToUpperSnake`, `dashToUpperDash`, `dashToTrain`, `dashToDot`
+- **UPPER_SNAKE_CASE:** `upperSnakeToCamel`, `upperSnakeToPascal`, `upperSnakeToSnake`, `upperSnakeToDash`, `upperSnakeToUpperDash`, `upperSnakeToTrain`, `upperSnakeToDot`
+- **UPPER-DASH-CASE:** `upperDashToCamel`, `upperDashToPascal`, `upperDashToSnake`, `upperDashToDash`, `upperDashToUpperSnake`, `upperDashToTrain`, `upperDashToDot`
+- **Train-Case:** `trainToCamel`, `trainToPascal`, `trainToSnake`, `trainToDash`, `trainToUpperSnake`, `trainToUpperDash`, `trainToDot`
+- **dot.case:** `dotToCamel`, `dotToPascal`, `dotToSnake`, `dotToDash`, `dotToUpperSnake`, `dotToUpperDash`, `dotToTrain`
 
 ## Behavior and limitations
 
 - **Only keys are converted, never values.** In `{ userName: 'johnDoe' }`, `userName` becomes `user_name` but `'johnDoe'` is kept. Strings inside arrays are kept too.
 - **Only plain objects are traversed.** `Date`, `Map`, `Set` and class instances are returned as they are (same reference), without converting their contents.
 - **Acronyms are split letter by letter**, because every uppercase letter starts a new word: `camelToSnake('userID')` → `'user_i_d'`. Prefer `userId` style keys.
+- **Train-Case words are lowercased** before converting, so `trainToCamel('X-API-Key')` → `'xApiKey'`.
 - **Numbers are not word boundaries:** `camelToSnake('html5Parser')` → `'html5_parser'`, `snakeToCamel('user_1_name')` → `'user1Name'`.
 
 ## Security

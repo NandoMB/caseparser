@@ -65,3 +65,29 @@ export function upperDashToPascal<T extends object | string>(input: T): Result<T
 export function upperDashToUpperSnake<T extends object | string>(input: T): Result<T, 'UpperDashToUpperSnake'> {
   return converter(input, 'UpperDashToUpperSnake');
 }
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from UPPER-DASH-CASE to Train-Case.
+ *
+ * @example
+ * ```ts
+ * upperDashToTrain('HELLO-WORLD'); // 'Hello-World'
+ * upperDashToTrain({ 'FIRST-NAME': 'John' }); // { 'First-Name': 'John' }
+ * ```
+ */
+export function upperDashToTrain<T extends object | string>(input: T): Result<T, 'UpperDashToTrain'> {
+  return converter(input, 'UpperDashToTrain');
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from UPPER-DASH-CASE to dot.case.
+ *
+ * @example
+ * ```ts
+ * upperDashToDot('HELLO-WORLD'); // 'hello.world'
+ * upperDashToDot({ 'FIRST-NAME': 'John' }); // { 'first.name': 'John' }
+ * ```
+ */
+export function upperDashToDot<T extends object | string>(input: T): Result<T, 'UpperDashToDot'> {
+  return converter(input, 'UpperDashToDot');
+}
