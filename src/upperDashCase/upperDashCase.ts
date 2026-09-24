@@ -91,3 +91,29 @@ export function upperDashToTrain<T extends object | string>(input: T): Result<T,
 export function upperDashToDot<T extends object | string>(input: T): Result<T, 'UpperDashToDot'> {
   return converter(input, 'UpperDashToDot');
 }
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from UPPER-DASH-CASE to Title Case.
+ *
+ * @example
+ * ```ts
+ * upperDashToTitle('HELLO-WORLD'); // 'Hello World'
+ * upperDashToTitle({ 'FIRST-NAME': 'John' }); // { 'First Name': 'John' }
+ * ```
+ */
+export function upperDashToTitle<T extends object | string>(input: T): Result<T, 'UpperDashToTitle'> {
+  return converter(input, 'UpperDashToTitle');
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from UPPER-DASH-CASE to Sentence case.
+ *
+ * @example
+ * ```ts
+ * upperDashToSentence('HELLO-WORLD'); // 'Hello world'
+ * upperDashToSentence({ 'FIRST-NAME': 'John' }); // { 'First name': 'John' }
+ * ```
+ */
+export function upperDashToSentence<T extends object | string>(input: T): Result<T, 'UpperDashToSentence'> {
+  return converter(input, 'UpperDashToSentence');
+}

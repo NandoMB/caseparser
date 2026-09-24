@@ -91,3 +91,29 @@ export function dotToUpperDash<T extends object | string>(input: T): Result<T, '
 export function dotToTrain<T extends object | string>(input: T): Result<T, 'DotToTrain'> {
   return converter(input, 'DotToTrain');
 }
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from dot.case to Title Case.
+ *
+ * @example
+ * ```ts
+ * dotToTitle('hello.world'); // 'Hello World'
+ * dotToTitle({ 'first.name': 'John' }); // { 'First Name': 'John' }
+ * ```
+ */
+export function dotToTitle<T extends object | string>(input: T): Result<T, 'DotToTitle'> {
+  return converter(input, 'DotToTitle');
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from dot.case to Sentence case.
+ *
+ * @example
+ * ```ts
+ * dotToSentence('hello.world'); // 'Hello world'
+ * dotToSentence({ 'first.name': 'John' }); // { 'First name': 'John' }
+ * ```
+ */
+export function dotToSentence<T extends object | string>(input: T): Result<T, 'DotToSentence'> {
+  return converter(input, 'DotToSentence');
+}

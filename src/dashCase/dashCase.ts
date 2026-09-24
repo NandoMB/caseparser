@@ -91,3 +91,29 @@ export function dashToTrain<T extends object | string>(input: T): Result<T, 'Das
 export function dashToDot<T extends object | string>(input: T): Result<T, 'DashToDot'> {
   return converter(input, 'DashToDot');
 }
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from dash-case to Title Case.
+ *
+ * @example
+ * ```ts
+ * dashToTitle('hello-world'); // 'Hello World'
+ * dashToTitle({ 'first-name': 'John' }); // { 'First Name': 'John' }
+ * ```
+ */
+export function dashToTitle<T extends object | string>(input: T): Result<T, 'DashToTitle'> {
+  return converter(input, 'DashToTitle');
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from dash-case to Sentence case.
+ *
+ * @example
+ * ```ts
+ * dashToSentence('hello-world'); // 'Hello world'
+ * dashToSentence({ 'first-name': 'John' }); // { 'First name': 'John' }
+ * ```
+ */
+export function dashToSentence<T extends object | string>(input: T): Result<T, 'DashToSentence'> {
+  return converter(input, 'DashToSentence');
+}

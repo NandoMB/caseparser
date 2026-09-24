@@ -91,3 +91,29 @@ export function pascalToTrain<T extends object | string>(input: T): Result<T, 'P
 export function pascalToDot<T extends object | string>(input: T): Result<T, 'PascalToDot'> {
   return converter(input, 'PascalToDot');
 }
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from PascalCase to Title Case.
+ *
+ * @example
+ * ```ts
+ * pascalToTitle('HelloWorld'); // 'Hello World'
+ * pascalToTitle({ FirstName: 'John' }); // { 'First Name': 'John' }
+ * ```
+ */
+export function pascalToTitle<T extends object | string>(input: T): Result<T, 'PascalToTitle'> {
+  return converter(input, 'PascalToTitle');
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from PascalCase to Sentence case.
+ *
+ * @example
+ * ```ts
+ * pascalToSentence('HelloWorld'); // 'Hello world'
+ * pascalToSentence({ FirstName: 'John' }); // { 'First name': 'John' }
+ * ```
+ */
+export function pascalToSentence<T extends object | string>(input: T): Result<T, 'PascalToSentence'> {
+  return converter(input, 'PascalToSentence');
+}

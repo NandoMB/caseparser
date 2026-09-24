@@ -105,24 +105,29 @@ Every function is named `<from>To<To>`, e.g. `snakeToCamel`. The case names are:
 | `upperDash` | `HELLO-WORLD` |
 | `train` | `Hello-World` |
 | `dot` | `hello.world` |
+| `title` | `Hello World` |
+| `sentence` | `Hello world` |
 
-All 56 functions:
+All 90 functions:
 
-- **camelCase:** `camelToPascal`, `camelToSnake`, `camelToDash`, `camelToUpperSnake`, `camelToUpperDash`, `camelToTrain`, `camelToDot`
-- **PascalCase:** `pascalToCamel`, `pascalToSnake`, `pascalToDash`, `pascalToUpperSnake`, `pascalToUpperDash`, `pascalToTrain`, `pascalToDot`
-- **snake_case:** `snakeToCamel`, `snakeToPascal`, `snakeToDash`, `snakeToUpperSnake`, `snakeToUpperDash`, `snakeToTrain`, `snakeToDot`
-- **dash-case:** `dashToCamel`, `dashToPascal`, `dashToSnake`, `dashToUpperSnake`, `dashToUpperDash`, `dashToTrain`, `dashToDot`
-- **UPPER_SNAKE_CASE:** `upperSnakeToCamel`, `upperSnakeToPascal`, `upperSnakeToSnake`, `upperSnakeToDash`, `upperSnakeToUpperDash`, `upperSnakeToTrain`, `upperSnakeToDot`
-- **UPPER-DASH-CASE:** `upperDashToCamel`, `upperDashToPascal`, `upperDashToSnake`, `upperDashToDash`, `upperDashToUpperSnake`, `upperDashToTrain`, `upperDashToDot`
-- **Train-Case:** `trainToCamel`, `trainToPascal`, `trainToSnake`, `trainToDash`, `trainToUpperSnake`, `trainToUpperDash`, `trainToDot`
-- **dot.case:** `dotToCamel`, `dotToPascal`, `dotToSnake`, `dotToDash`, `dotToUpperSnake`, `dotToUpperDash`, `dotToTrain`
+- **camelCase:** `camelToPascal`, `camelToSnake`, `camelToDash`, `camelToUpperSnake`, `camelToUpperDash`, `camelToTrain`, `camelToDot`, `camelToTitle`, `camelToSentence`
+- **PascalCase:** `pascalToCamel`, `pascalToSnake`, `pascalToDash`, `pascalToUpperSnake`, `pascalToUpperDash`, `pascalToTrain`, `pascalToDot`, `pascalToTitle`, `pascalToSentence`
+- **snake_case:** `snakeToCamel`, `snakeToPascal`, `snakeToDash`, `snakeToUpperSnake`, `snakeToUpperDash`, `snakeToTrain`, `snakeToDot`, `snakeToTitle`, `snakeToSentence`
+- **dash-case:** `dashToCamel`, `dashToPascal`, `dashToSnake`, `dashToUpperSnake`, `dashToUpperDash`, `dashToTrain`, `dashToDot`, `dashToTitle`, `dashToSentence`
+- **UPPER_SNAKE_CASE:** `upperSnakeToCamel`, `upperSnakeToPascal`, `upperSnakeToSnake`, `upperSnakeToDash`, `upperSnakeToUpperDash`, `upperSnakeToTrain`, `upperSnakeToDot`, `upperSnakeToTitle`, `upperSnakeToSentence`
+- **UPPER-DASH-CASE:** `upperDashToCamel`, `upperDashToPascal`, `upperDashToSnake`, `upperDashToDash`, `upperDashToUpperSnake`, `upperDashToTrain`, `upperDashToDot`, `upperDashToTitle`, `upperDashToSentence`
+- **Train-Case:** `trainToCamel`, `trainToPascal`, `trainToSnake`, `trainToDash`, `trainToUpperSnake`, `trainToUpperDash`, `trainToDot`, `trainToTitle`, `trainToSentence`
+- **dot.case:** `dotToCamel`, `dotToPascal`, `dotToSnake`, `dotToDash`, `dotToUpperSnake`, `dotToUpperDash`, `dotToTrain`, `dotToTitle`, `dotToSentence`
+- **Title Case:** `titleToCamel`, `titleToPascal`, `titleToSnake`, `titleToDash`, `titleToUpperSnake`, `titleToUpperDash`, `titleToTrain`, `titleToDot`, `titleToSentence`
+- **Sentence case:** `sentenceToCamel`, `sentenceToPascal`, `sentenceToSnake`, `sentenceToDash`, `sentenceToUpperSnake`, `sentenceToUpperDash`, `sentenceToTrain`, `sentenceToDot`, `sentenceToTitle`
 
 ## Behavior and limitations
 
 - **Only keys are converted, never values.** In `{ userName: 'johnDoe' }`, `userName` becomes `user_name` but `'johnDoe'` is kept. Strings inside arrays are kept too.
 - **Only plain objects are traversed.** `Date`, `Map`, `Set` and class instances are returned as they are (same reference), without converting their contents.
 - **Acronyms are split letter by letter**, because every uppercase letter starts a new word: `camelToSnake('userID')` → `'user_i_d'`. Prefer `userId` style keys.
-- **Train-Case words are lowercased** before converting, so `trainToCamel('X-API-Key')` → `'xApiKey'`.
+- **Train-Case, Title Case and Sentence case words are lowercased** before converting, so `trainToCamel('X-API-Key')` → `'xApiKey'` and `titleToCamel('First Name')` → `'firstName'`.
+- **Title Case capitalizes every word**, including short ones: `camelToTitle('termsOfUse')` → `'Terms Of Use'`.
 - **Numbers are not word boundaries:** `camelToSnake('html5Parser')` → `'html5_parser'`, `snakeToCamel('user_1_name')` → `'user1Name'`.
 
 ## Security

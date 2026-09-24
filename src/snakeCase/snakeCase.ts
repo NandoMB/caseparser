@@ -91,3 +91,29 @@ export function snakeToTrain<T extends object | string>(input: T): Result<T, 'Sn
 export function snakeToDot<T extends object | string>(input: T): Result<T, 'SnakeToDot'> {
   return converter(input, 'SnakeToDot');
 }
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from snake_case to Title Case.
+ *
+ * @example
+ * ```ts
+ * snakeToTitle('hello_world'); // 'Hello World'
+ * snakeToTitle({ first_name: 'John' }); // { 'First Name': 'John' }
+ * ```
+ */
+export function snakeToTitle<T extends object | string>(input: T): Result<T, 'SnakeToTitle'> {
+  return converter(input, 'SnakeToTitle');
+}
+
+/**
+ * Converts a string, or the keys of an object/array (deeply), from snake_case to Sentence case.
+ *
+ * @example
+ * ```ts
+ * snakeToSentence('hello_world'); // 'Hello world'
+ * snakeToSentence({ first_name: 'John' }); // { 'First name': 'John' }
+ * ```
+ */
+export function snakeToSentence<T extends object | string>(input: T): Result<T, 'SnakeToSentence'> {
+  return converter(input, 'SnakeToSentence');
+}

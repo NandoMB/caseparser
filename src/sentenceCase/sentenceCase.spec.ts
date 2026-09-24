@@ -1,60 +1,72 @@
 import { describe, expect, test } from 'vitest';
 import * as caseparser from '../index.ts';
 
-describe('UPPER-DASH-CASE', () => {
+describe('Sentence case', () => {
   const input = {
-    string: 'GRAND-RAPIDS-CHARTER-TOWNSHIP',
+    string: 'Grand rapids charter township',
     json: {
-      "ID": 1,
-      "IS-UNDER-AGE": false,
-      "FIRST-NAME": "John",
-      "LAST-NAME": "Doe",
-      "EMAIL": "john.doe@example.com",
-      "TELEPHONE-NUMBERS": [
+      "Id": 1,
+      "Is under age": false,
+      "First name": "John",
+      "Last name": "Doe",
+      "Email": "john.doe@example.com",
+      "Telephone numbers": [
         "(616) 361-1338",
         "(907) 742-5450",
       ],
-      "ADDRESSES": [
+      "Addresses": [
         {
-          "COUNTRY": "United States",
-          "STATE": "Illinois",
-          "CITY": "Rockford",
-          "POSTAL-CODE": "61105",
-          "STREET": {
-            "STREET-NAME": "41 Forest Run Circle",
-            "STREET-NUMBER": "539"
+          "Country": "United States",
+          "State": "Illinois",
+          "City": "Rockford",
+          "Postal code": "61105",
+          "Street": {
+            "Street name": "41 Forest Run Circle",
+            "Street number": "539"
           }
         },
         {
-          "COUNTRY": "United States",
-          "STATE": "Texas",
-          "CITY": "Conroe",
-          "POSTAL-CODE": "77301",
-          "STREET": {
-            "STREET-NAME": "E Phillips St",
-            "STREET-NUMBER": "200"
+          "Country": "United States",
+          "State": "Texas",
+          "City": "Conroe",
+          "Postal code": "77301",
+          "Street": {
+            "Street name": "E Phillips St",
+            "Street number": "200"
           }
         }
       ]
     }
   };
-  test('Should convert a string from upperDashToCamel', () => {
-    expect(caseparser.upperDashToCamel(input.string)).toMatchInlineSnapshot('"grandRapidsCharterTownship"');
+  test('Should convert a string from sentenceToCamel', () => {
+    expect(caseparser.sentenceToCamel(input.string)).toMatchInlineSnapshot('"grandRapidsCharterTownship"');
   });
-  test('Should convert a string from upperDashToDash', () => {
-    expect(caseparser.upperDashToDash(input.string)).toMatchInlineSnapshot('"grand-rapids-charter-township"');
+  test('Should convert a string from sentenceToPascal', () => {
+    expect(caseparser.sentenceToPascal(input.string)).toMatchInlineSnapshot('"GrandRapidsCharterTownship"');
   });
-  test('Should convert a string from upperDashToPascal', () => {
-    expect(caseparser.upperDashToPascal(input.string)).toMatchInlineSnapshot('"GrandRapidsCharterTownship"');
+  test('Should convert a string from sentenceToSnake', () => {
+    expect(caseparser.sentenceToSnake(input.string)).toMatchInlineSnapshot('"grand_rapids_charter_township"');
   });
-  test('Should convert a string from upperDashToSnake', () => {
-    expect(caseparser.upperDashToSnake(input.string)).toMatchInlineSnapshot('"grand_rapids_charter_township"');
+  test('Should convert a string from sentenceToDash', () => {
+    expect(caseparser.sentenceToDash(input.string)).toMatchInlineSnapshot('"grand-rapids-charter-township"');
   });
-  test('Should convert a string from upperDashToUpperSnake', () => {
-    expect(caseparser.upperDashToUpperSnake(input.string)).toMatchInlineSnapshot('"GRAND_RAPIDS_CHARTER_TOWNSHIP"');
+  test('Should convert a string from sentenceToUpperSnake', () => {
+    expect(caseparser.sentenceToUpperSnake(input.string)).toMatchInlineSnapshot('"GRAND_RAPIDS_CHARTER_TOWNSHIP"');
   });
-  test('Should convert a json from upperDashToCamel', () => {
-    expect(caseparser.upperDashToCamel(input.json)).toMatchInlineSnapshot(`
+  test('Should convert a string from sentenceToUpperDash', () => {
+    expect(caseparser.sentenceToUpperDash(input.string)).toMatchInlineSnapshot('"GRAND-RAPIDS-CHARTER-TOWNSHIP"');
+  });
+  test('Should convert a string from sentenceToTrain', () => {
+    expect(caseparser.sentenceToTrain(input.string)).toMatchInlineSnapshot('"Grand-Rapids-Charter-Township"');
+  });
+  test('Should convert a string from sentenceToDot', () => {
+    expect(caseparser.sentenceToDot(input.string)).toMatchInlineSnapshot('"grand.rapids.charter.township"');
+  });
+  test('Should convert a string from sentenceToTitle', () => {
+    expect(caseparser.sentenceToTitle(input.string)).toMatchInlineSnapshot('"Grand Rapids Charter Township"');
+  });
+  test('Should convert a json from sentenceToCamel', () => {
+    expect(caseparser.sentenceToCamel(input.json)).toMatchInlineSnapshot(`
       {
         "addresses": [
           {
@@ -90,45 +102,8 @@ describe('UPPER-DASH-CASE', () => {
       }
     `);
   });
-  test('Should convert a json from upperDashToDash', () => {
-    expect(caseparser.upperDashToDash(input.json)).toMatchInlineSnapshot(`
-      {
-        "addresses": [
-          {
-            "city": "Rockford",
-            "country": "United States",
-            "postal-code": "61105",
-            "state": "Illinois",
-            "street": {
-              "street-name": "41 Forest Run Circle",
-              "street-number": "539",
-            },
-          },
-          {
-            "city": "Conroe",
-            "country": "United States",
-            "postal-code": "77301",
-            "state": "Texas",
-            "street": {
-              "street-name": "E Phillips St",
-              "street-number": "200",
-            },
-          },
-        ],
-        "email": "john.doe@example.com",
-        "first-name": "John",
-        "id": 1,
-        "is-under-age": false,
-        "last-name": "Doe",
-        "telephone-numbers": [
-          "(616) 361-1338",
-          "(907) 742-5450",
-        ],
-      }
-    `);
-  });
-  test('Should convert a json from upperDashToPascal', () => {
-    expect(caseparser.upperDashToPascal(input.json)).toMatchInlineSnapshot(`
+  test('Should convert a json from sentenceToPascal', () => {
+    expect(caseparser.sentenceToPascal(input.json)).toMatchInlineSnapshot(`
       {
         "Addresses": [
           {
@@ -164,8 +139,8 @@ describe('UPPER-DASH-CASE', () => {
       }
     `);
   });
-  test('Should convert a json from upperDashToSnake', () => {
-    expect(caseparser.upperDashToSnake(input.json)).toMatchInlineSnapshot(`
+  test('Should convert a json from sentenceToSnake', () => {
+    expect(caseparser.sentenceToSnake(input.json)).toMatchInlineSnapshot(`
       {
         "addresses": [
           {
@@ -201,8 +176,45 @@ describe('UPPER-DASH-CASE', () => {
       }
     `);
   });
-  test('Should convert a json from upperDashToUpperSnake', () => {
-    expect(caseparser.upperDashToUpperSnake(input.json)).toMatchInlineSnapshot(`
+  test('Should convert a json from sentenceToDash', () => {
+    expect(caseparser.sentenceToDash(input.json)).toMatchInlineSnapshot(`
+      {
+        "addresses": [
+          {
+            "city": "Rockford",
+            "country": "United States",
+            "postal-code": "61105",
+            "state": "Illinois",
+            "street": {
+              "street-name": "41 Forest Run Circle",
+              "street-number": "539",
+            },
+          },
+          {
+            "city": "Conroe",
+            "country": "United States",
+            "postal-code": "77301",
+            "state": "Texas",
+            "street": {
+              "street-name": "E Phillips St",
+              "street-number": "200",
+            },
+          },
+        ],
+        "email": "john.doe@example.com",
+        "first-name": "John",
+        "id": 1,
+        "is-under-age": false,
+        "last-name": "Doe",
+        "telephone-numbers": [
+          "(616) 361-1338",
+          "(907) 742-5450",
+        ],
+      }
+    `);
+  });
+  test('Should convert a json from sentenceToUpperSnake', () => {
+    expect(caseparser.sentenceToUpperSnake(input.json)).toMatchInlineSnapshot(`
       {
         "ADDRESSES": [
           {
@@ -238,14 +250,45 @@ describe('UPPER-DASH-CASE', () => {
       }
     `);
   });
-  test('Should convert a string from upperDashToTrain', () => {
-    expect(caseparser.upperDashToTrain(input.string)).toMatchInlineSnapshot('"Grand-Rapids-Charter-Township"');
+  test('Should convert a json from sentenceToUpperDash', () => {
+    expect(caseparser.sentenceToUpperDash(input.json)).toMatchInlineSnapshot(`
+      {
+        "ADDRESSES": [
+          {
+            "CITY": "Rockford",
+            "COUNTRY": "United States",
+            "POSTAL-CODE": "61105",
+            "STATE": "Illinois",
+            "STREET": {
+              "STREET-NAME": "41 Forest Run Circle",
+              "STREET-NUMBER": "539",
+            },
+          },
+          {
+            "CITY": "Conroe",
+            "COUNTRY": "United States",
+            "POSTAL-CODE": "77301",
+            "STATE": "Texas",
+            "STREET": {
+              "STREET-NAME": "E Phillips St",
+              "STREET-NUMBER": "200",
+            },
+          },
+        ],
+        "EMAIL": "john.doe@example.com",
+        "FIRST-NAME": "John",
+        "ID": 1,
+        "IS-UNDER-AGE": false,
+        "LAST-NAME": "Doe",
+        "TELEPHONE-NUMBERS": [
+          "(616) 361-1338",
+          "(907) 742-5450",
+        ],
+      }
+    `);
   });
-  test('Should convert a string from upperDashToDot', () => {
-    expect(caseparser.upperDashToDot(input.string)).toMatchInlineSnapshot('"grand.rapids.charter.township"');
-  });
-  test('Should convert a json from upperDashToTrain', () => {
-    expect(caseparser.upperDashToTrain(input.json)).toMatchInlineSnapshot(`
+  test('Should convert a json from sentenceToTrain', () => {
+    expect(caseparser.sentenceToTrain(input.json)).toMatchInlineSnapshot(`
       {
         "Addresses": [
           {
@@ -281,8 +324,8 @@ describe('UPPER-DASH-CASE', () => {
       }
     `);
   });
-  test('Should convert a json from upperDashToDot', () => {
-    expect(caseparser.upperDashToDot(input.json)).toMatchInlineSnapshot(`
+  test('Should convert a json from sentenceToDot', () => {
+    expect(caseparser.sentenceToDot(input.json)).toMatchInlineSnapshot(`
       {
         "addresses": [
           {
@@ -318,14 +361,8 @@ describe('UPPER-DASH-CASE', () => {
       }
     `);
   });
-  test('Should convert a string from upperDashToTitle', () => {
-    expect(caseparser.upperDashToTitle(input.string)).toMatchInlineSnapshot('"Grand Rapids Charter Township"');
-  });
-  test('Should convert a string from upperDashToSentence', () => {
-    expect(caseparser.upperDashToSentence(input.string)).toMatchInlineSnapshot('"Grand rapids charter township"');
-  });
-  test('Should convert a json from upperDashToTitle', () => {
-    expect(caseparser.upperDashToTitle(input.json)).toMatchInlineSnapshot(`
+  test('Should convert a json from sentenceToTitle', () => {
+    expect(caseparser.sentenceToTitle(input.json)).toMatchInlineSnapshot(`
       {
         "Addresses": [
           {
@@ -355,43 +392,6 @@ describe('UPPER-DASH-CASE', () => {
         "Is Under Age": false,
         "Last Name": "Doe",
         "Telephone Numbers": [
-          "(616) 361-1338",
-          "(907) 742-5450",
-        ],
-      }
-    `);
-  });
-  test('Should convert a json from upperDashToSentence', () => {
-    expect(caseparser.upperDashToSentence(input.json)).toMatchInlineSnapshot(`
-      {
-        "Addresses": [
-          {
-            "City": "Rockford",
-            "Country": "United States",
-            "Postal code": "61105",
-            "State": "Illinois",
-            "Street": {
-              "Street name": "41 Forest Run Circle",
-              "Street number": "539",
-            },
-          },
-          {
-            "City": "Conroe",
-            "Country": "United States",
-            "Postal code": "77301",
-            "State": "Texas",
-            "Street": {
-              "Street name": "E Phillips St",
-              "Street number": "200",
-            },
-          },
-        ],
-        "Email": "john.doe@example.com",
-        "First name": "John",
-        "Id": 1,
-        "Is under age": false,
-        "Last name": "Doe",
-        "Telephone numbers": [
           "(616) 361-1338",
           "(907) 742-5450",
         ],

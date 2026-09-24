@@ -318,4 +318,84 @@ describe('snake_case', () => {
       }
     `);
   });
+  test('Should convert a string from snakeToTitle', () => {
+    expect(caseparser.snakeToTitle(input.string)).toMatchInlineSnapshot('"Grand Rapids Charter Township"');
+  });
+  test('Should convert a string from snakeToSentence', () => {
+    expect(caseparser.snakeToSentence(input.string)).toMatchInlineSnapshot('"Grand rapids charter township"');
+  });
+  test('Should convert a json from snakeToTitle', () => {
+    expect(caseparser.snakeToTitle(input.json)).toMatchInlineSnapshot(`
+      {
+        "Addresses": [
+          {
+            "City": "Rockford",
+            "Country": "United States",
+            "Postal Code": "61105",
+            "State": "Illinois",
+            "Street": {
+              "Street Name": "41 Forest Run Circle",
+              "Street Number": "539",
+            },
+          },
+          {
+            "City": "Conroe",
+            "Country": "United States",
+            "Postal Code": "77301",
+            "State": "Texas",
+            "Street": {
+              "Street Name": "E Phillips St",
+              "Street Number": "200",
+            },
+          },
+        ],
+        "Email": "john.doe@example.com",
+        "First Name": "John",
+        "Id": 1,
+        "Is Under Age": false,
+        "Last Name": "Doe",
+        "Telephone Numbers": [
+          "(616) 361-1338",
+          "(907) 742-5450",
+        ],
+      }
+    `);
+  });
+  test('Should convert a json from snakeToSentence', () => {
+    expect(caseparser.snakeToSentence(input.json)).toMatchInlineSnapshot(`
+      {
+        "Addresses": [
+          {
+            "City": "Rockford",
+            "Country": "United States",
+            "Postal code": "61105",
+            "State": "Illinois",
+            "Street": {
+              "Street name": "41 Forest Run Circle",
+              "Street number": "539",
+            },
+          },
+          {
+            "City": "Conroe",
+            "Country": "United States",
+            "Postal code": "77301",
+            "State": "Texas",
+            "Street": {
+              "Street name": "E Phillips St",
+              "Street number": "200",
+            },
+          },
+        ],
+        "Email": "john.doe@example.com",
+        "First name": "John",
+        "Id": 1,
+        "Is under age": false,
+        "Last name": "Doe",
+        "Telephone numbers": [
+          "(616) 361-1338",
+          "(907) 742-5450",
+        ],
+      }
+    `);
+  });
 });

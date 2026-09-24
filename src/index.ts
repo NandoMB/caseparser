@@ -3,7 +3,8 @@
  * type to another, with the resulting keys inferred at the type level.
  *
  * Supported cases: camelCase, PascalCase, snake_case, dash-case,
- * UPPER_SNAKE_CASE, UPPER-DASH-CASE, Train-Case and dot.case.
+ * UPPER_SNAKE_CASE, UPPER-DASH-CASE, Train-Case, dot.case,
+ * Title Case and Sentence case.
  *
  * @example
  * ```ts
@@ -23,6 +24,8 @@ export * from './pascalCase/index.ts';
 export * from './snakeCase/index.ts';
 export * from './trainCase/index.ts';
 export * from './dotCase/index.ts';
+export * from './titleCase/index.ts';
+export * from './sentenceCase/index.ts';
 export * from './upperDashCase/index.ts';
 export * from './upperSnakeCase/index.ts';
 export type { ParserType, Prettify, Result } from './types.ts';
