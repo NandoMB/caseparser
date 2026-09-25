@@ -44,20 +44,28 @@
     "coverage": "vitest run --project node --coverage",
     "build": "tsdown",
     "lint": "tsc",
-    "ci": "pnpm run lint && pnpm run test && pnpm run build",
+    "ci": "pnpm run lint && pnpm run test && pnpm run build && pnpm run lint:package",
     "release": "node scripts/release.js",
     "changeset:version": "changeset version && node scripts/sync-jsr-version.js",
+    "lint:package": "publint && attw --pack .",
     "test:browser": "vitest run --project browser",
-    "test:examples": "node scripts/test-examples.js"
+    "test:bun": "bunx --bun vitest run --project node",
+    "test:deno": "deno run -A node_modules/vitest/vitest.mjs run --project node",
+    "test:ts-legacy": "node node_modules/typescript-4.1/bin/tsc -p test/typescript-4.1",
+    "lint:jsr": "deno publish --dry-run --allow-dirty",
+    "test:ci": "pnpm run ci && pnpm run test:ts-legacy && pnpm run test:browser && pnpm run test:bun && pnpm run test:deno && pnpm run lint:jsr"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
     "@changesets/cli": "^3.0.3",
     "@types/node": "^26.6.2",
     "@vitest/browser-playwright": "^5.0.1",
     "@vitest/coverage-istanbul": "^5.0.1",
     "playwright": "^1.63.0",
+    "publint": "^0.3.24",
     "tsdown": "^0.23.0",
     "typescript": "^7.0.2",
+    "typescript-4.1": "npm:typescript@4.1.6",
     "vitest": "^5.0.1"
   },
   "keywords": [

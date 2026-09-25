@@ -1,2 +1,2 @@
 export * from './anyCase.ts';
-export type { Case, CaseResult, KeepSymbols } from './types.ts';
+export type { AllowSymbols, Case, CaseOptions, CaseResult, KeepSymbols, PathCaseOptions, PathSeparator, Transform, TransformCaseOptions } from './types.ts';

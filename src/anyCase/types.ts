@@ -10,7 +10,36 @@ type SymbolChar =
  * Which symbols the `toX` functions keep: `true` keeps all of them, `false` (the default)
  * removes all of them, and an array keeps only the listed ones (e.g. `['$', '@']`).
  */
-export type KeepSymbols = boolean | readonly string[];
+export type AllowSymbols = boolean | readonly string[];
+
+/**
+ * @deprecated Renamed to `AllowSymbols`. It will be removed in the next major version.
+ */
+export type KeepSymbols = AllowSymbols;
+
+/** Changes the case of the whole result: `'lowercase'` or `'uppercase'`. */
+export type Transform = 'uppercase' | 'lowercase';
+
+/** The options of the `toX` functions. `S` is inferred from `allowSymbols`. */
+export interface CaseOptions<S = boolean | string> {
+  /** Symbols are removed by default. `true` keeps all of them, and an array keeps only the listed ones (e.g. `['$']`). */
+  allowSymbols?: S | readonly S[];
+}
+
+/** The options of `toDot` and `toPath`, which also take a `transform`. `X` is inferred from `transform`. */
+export interface TransformCaseOptions<S = boolean | string, X extends Transform | undefined = Transform | undefined> extends CaseOptions<S> {
+  /** The original case of each word is kept by default. `'lowercase'` or `'uppercase'` changes the case of the whole result. */
+  transform?: X;
+}
+
+/** The separator that `toPath` joins the words with: `'/'` (the default) or `'\\'`. */
+export type PathSeparator = '/' | '\\';
+
+/** The options of `toPath`, which also take a `separator`. `P` is inferred from `separator`. */
+export interface PathCaseOptions<S = boolean | string, X extends Transform | undefined = Transform | undefined, P extends PathSeparator = PathSeparator> extends TransformCaseOptions<S, X> {
+  /** Joins the words with `'/'` (the default) or `'\\'`. */
+  separator?: P;
+}
 
 type IsUpper<C extends string> = C extends Lowercase<C> ? false : true;
 type IsLower<C extends string> = C extends Uppercase<C> ? false : true;
@@ -55,6 +84,11 @@ type Join<W, S extends string> =
   W extends [infer A, ...infer R] ? `${A & string}${S}${Join<R, S>}` :
   '';
 type CapitalizeAll<W> = { [K in keyof W]: CapitalizeWord<W[K] & string> };
+/** In a path, `/` and `\\` also separate words: they are replaced with a space before splitting, like `ToPath` does. */
+type PathSeparatorsToSpace<T extends string> =
+  T extends `${infer A}/${infer B}` ? PathSeparatorsToSpace<`${A} ${B}`> :
+  T extends `${infer A}\\${infer B}` ? PathSeparatorsToSpace<`${A} ${B}`> :
+  T;
 type CamelWords<W> = W extends [infer F, ...infer R] ? `${F & string}${Join<CapitalizeAll<R>, ''>}` : '';
 
 /** A case that the `toX` functions (e.g. `toSnake`) convert to. */
@@ -62,10 +96,17 @@ export type Case =
   | 'Camel' | 'Pascal' | 'Snake' | 'Kebab' | 'UpperSnake' | 'UpperKebab' | 'Train' | 'Dot' | 'Title' | 'Sentence'
   | 'PascalSnake' | 'Path' | 'Space' | 'Lower' | 'Upper';
 
-/** The symbols kept by a `keepSymbols` argument: `true` → all, `false` → none, `'$' | '@'` → those. */
+/** The symbols kept by an `allowSymbols` argument: `true` → all, `false` → none, `'$' | '@'` → those. */
 type KeptSymbols<S> = S extends true ? SymbolChar : S extends false ? never : S & string;
 
-type ConvertKey<K extends string, C extends Case, S extends string> =
+/** Applies a `transform` to a converted key, or falls back to `string` when it is only known at runtime. */
+type ApplyTransform<K extends string, X> =
+  [X] extends [undefined] ? K :
+  [X] extends ['lowercase'] ? Lowercase<K> :
+  [X] extends ['uppercase'] ? Uppercase<K> :
+  string;
+
+type ConvertKey<K extends string, C extends Case, S extends string, P extends string = '/'> =
   string extends K ? string :
   C extends 'Camel' ? CamelWords<Words<K, S>> :
   C extends 'Pascal' ? Join<CapitalizeAll<Words<K, S>>, ''> :
@@ -78,7 +119,7 @@ type ConvertKey<K extends string, C extends Case, S extends string> =
   C extends 'Title' ? Join<CapitalizeAll<Words<K, S>>, ' '> :
   C extends 'Sentence' ? CapitalizeWord<Join<Words<K, S>, ' '>> :
   C extends 'PascalSnake' ? Join<CapitalizeAll<Words<K, S>>, '_'> :
-  C extends 'Path' ? Join<Words<K, S, false>, '/'> :
+  C extends 'Path' ? Join<Words<PathSeparatorsToSpace<K>, S, false>, P> :
   C extends 'Space' ? Join<Words<K, S, false>, ' '> :
   C extends 'Lower' ? Join<Words<K, S>, ' '> :
   C extends 'Upper' ? Uppercase<Join<Words<K, S>, ' '>> :
@@ -87,15 +128,16 @@ type ConvertKey<K extends string, C extends Case, S extends string> =
 /**
  * The type returned by a `toX` function: strings stay `string`, and object keys
  * in any case (deeply, including inside arrays) are renamed to the case `C`.
- * `S` is the `keepSymbols` argument (`false` by default).
+ * `S` is the `allowSymbols` argument (`false` by default), `X` the `transform` option of `toDot` and `toPath`,
+ * and `P` the `separator` option of `toPath`.
  */
-export type CaseResult<T, C extends Case, S = false> =
+export type CaseResult<T, C extends Case, S = false, X = undefined, P extends string = '/'> =
   T extends string ? string :
   T extends Array<unknown> ? {
-    [K in keyof T]: CaseResult<T[K], C, S>
+    [K in keyof T]: CaseResult<T[K], C, S, X, P>
   } :
   T extends object ? Prettify<{
-    [K in keyof T as boolean extends S ? string : string extends KeptSymbols<S> ? string : ConvertKey<K & string, C, KeptSymbols<S>>]: CaseResult<T[K], C, S>
+    [K in keyof T as boolean extends S ? string : string extends KeptSymbols<S> ? string : ApplyTransform<ConvertKey<K & string, C, KeptSymbols<S>, P>, X>]: CaseResult<T[K], C, S, X, P>
   }> :
   T
 ;

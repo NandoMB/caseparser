@@ -1,0 +1,13 @@
+// Compiled with TypeScript 4.1 (`pnpm run test:ts-legacy`): checks that the built `.d.ts` parses on
+// legacy setups while the deprecated functions exist. `moduleResolution` is left out on purpose:
+// TypeScript 4.1 defaults to `node` for CommonJS, and TypeScript 6+ reports `node` as deprecated.
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "CommonJS",
+    "strict": true,
+    "types": [],
+    "noEmit": true
+  },
+  "include": ["index.ts"]
+}
