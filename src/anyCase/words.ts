@@ -1,4 +1,4 @@
-import type { KeepSymbols } from './types.ts';
+import type { AllowSymbols, PathSeparator, Transform } from './types.ts';
 
 // ASCII punctuation, except the separators `_`, `-` and `.`
 const SYMBOLS = '!"#$%&\'()*+,/:;<=>?@[\\]^`{|}~';
@@ -7,7 +7,7 @@ const isSeparator = (c: string) => c === '_' || c === '-' || c === '.' || c === 
 const isSymbol = (c: string) => SYMBOLS.indexOf(c) !== -1;
 const isUpper = (c: string) => c !== c.toLowerCase();
 const isLower = (c: string) => c !== c.toUpperCase();
-const isKept = (c: string, keep: KeepSymbols) =>
+const isKept = (c: string, keep: AllowSymbols) =>
   keep === true || (typeof keep !== 'boolean' && keep !== undefined && keep !== null && keep.indexOf(c) !== -1);
 
 /**
@@ -20,7 +20,7 @@ const isKept = (c: string, keep: KeepSymbols) =>
  * → `hello`, `$world`), or to the end of the previous one when no word follows (`total%`).
  * Words keep their original case when `lowercase` is `false`.
  */
-export function words(str: string, keep: KeepSymbols = false, lowercase = true): string[] {
+export function words(str: string, keep: AllowSymbols = false, lowercase = true): string[] {
   const result: string[] = [];
   let word = '';
   let prev = '';
@@ -65,7 +65,16 @@ function capitalize(word: string): string {
   return word.slice(0, i) + word.charAt(i).toUpperCase() + word.slice(i + 1);
 }
 
-type Formatter = (str: string, keep?: KeepSymbols) => string;
+/** Changes the case of the whole string, or keeps it when `transform` is `undefined`. */
+function applyTransform(str: string, transform?: Transform): string {
+  if (transform === 'lowercase') return str.toLowerCase();
+  if (transform === 'uppercase') return str.toUpperCase();
+  return str;
+}
+
+type Formatter = (str: string, keep?: AllowSymbols) => string;
+type TransformFormatter = (str: string, keep?: AllowSymbols, transform?: Transform) => string;
+type PathFormatter = (str: string, keep?: AllowSymbols, transform?: Transform, separator?: PathSeparator) => string;
 export const ToCamel: Formatter = (str, keep) => words(str, keep).map((w, i) => (i ? capitalize(w) : w)).join('');
 export const ToPascal: Formatter = (str, keep) => words(str, keep).map(capitalize).join('');
 export const ToSnake: Formatter = (str, keep) => words(str, keep).join('_');
@@ -73,11 +82,13 @@ export const ToKebab: Formatter = (str, keep) => words(str, keep).join('-');
 export const ToUpperSnake: Formatter = (str, keep) => words(str, keep).join('_').toUpperCase();
 export const ToUpperKebab: Formatter = (str, keep) => words(str, keep).join('-').toUpperCase();
 export const ToTrain: Formatter = (str, keep) => words(str, keep).map(capitalize).join('-');
-export const ToDot: Formatter = (str, keep) => words(str, keep, false).join('.');
+export const ToDot: TransformFormatter = (str, keep, transform) => applyTransform(words(str, keep, false).join('.'), transform);
 export const ToTitle: Formatter = (str, keep) => words(str, keep).map(capitalize).join(' ');
 export const ToSentence: Formatter = (str, keep) => capitalize(words(str, keep).join(' '));
 export const ToPascalSnake: Formatter = (str, keep) => words(str, keep).map(capitalize).join('_');
-export const ToPath: Formatter = (str, keep) => words(str, keep, false).join('/');
+// In a path, `/` and `\` also separate words (they are symbols in the other cases)
+export const ToPath: PathFormatter = (str, keep, transform, separator = '/') =>
+  applyTransform(words(str.replace(/[/\\]/g, ' '), keep, false).join(separator), transform);
 export const ToSpace: Formatter = (str, keep) => words(str, keep, false).join(' ');
 export const ToLower: Formatter = (str, keep) => words(str, keep).join(' ');
 export const ToUpper: Formatter = (str, keep) => words(str, keep).join(' ').toUpperCase();
