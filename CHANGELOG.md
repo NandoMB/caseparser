@@ -1,5 +1,18 @@
 # caseparser
 
+## 5.1.0
+
+### Minor Changes
+
+- 770f400: `toPath` takes a `separator` option to join the words with `'/'` (the default) or `'\\'`: `toPath('users/profilePicture', { separator: '\\' })` → `'users\\profile\\Picture'`, with the same type inference.
+  
+  In `toPath`, `/` and `\` in the input now separate words, so paths can be converted between separators. This only changes results when symbols are kept with `allowSymbols`, where they used to be kept: `toPath('profile/picture', true)` → `'profile/picture'` (was `'profile//picture'`). In the other functions `/` and `\` are still symbols.
+- 770f400: The `toX` functions now also take an options object as the second argument: `toCamel(data, { allowSymbols: ['$'] })`. Passing `true` or an array directly (`toCamel(data, ['$'])`) keeps working as a shorthand for `allowSymbols`.
+  
+  `toDot` and `toPath` take a `transform` option (`'lowercase'` or `'uppercase'`) to change the case of the whole result, including object keys, with the same type inference: `toDot({ user_ID: 1 }, { transform: 'lowercase' })` → `{ 'user.id': 1 }`. Without it they keep the original case of each word, as before.
+  
+  The `KeepSymbols` type is renamed to `AllowSymbols`. `KeepSymbols` keeps working as a deprecated alias and will be removed in the next major version. New exported types: `AllowSymbols`, `CaseOptions`, `TransformCaseOptions` and `Transform`.
+
 ## 5.0.0
 
 ### Major Changes
