@@ -1,5 +1,57 @@
 # caseparser
 
+## 6.0.0
+
+### Major Changes
+
+- ab363f1: Removes the deprecated `<from>To<To>` functions, and requires TypeScript 4.7+ and Node.js 22+.
+  
+  **Breaking changes**
+  
+  - The 90 `<from>To<To>` functions (e.g. `snakeToCamel`, `camelToSnake`), deprecated since 4.3.0, are removed. The whole package is 60% smaller (12.4 KB → 4.9 KB minified, 3.1 KB → 1.8 KB gzipped), and its type declarations 70% smaller (90 KB → 27 KB).
+  - The types `Result`, `ParserType` and `Prettify`, used only by those functions, are removed, and so is `KeepSymbols`, the old name of `AllowSymbols`.
+  - TypeScript 4.7 or later is required (it was 4.5 for the `toX` functions).
+  - Node.js 22 or later is required (`engines`), the oldest maintained LTS version. Node.js 22+, Bun, Deno, browsers and Cloudflare Workers are tested on every change. Stay on 5.x for older versions of Node.js.
+  
+  **Migrating from 5.x**
+  
+  Replace each `<from>To<To>` function with the `toX` function for its target case, whatever the source case: `camelToSnake`, `dashToSnake`, `titleToSnake`... all become `toSnake`. The dash cases were renamed: `<from>ToDash` becomes `toKebab`, and `<from>ToUpperDash` becomes `toUpperKebab`.
+  
+  For well-formed keys (`firstName`, `first_name`) the result is the same. It differs when a key has consecutive uppercase letters or doesn't match the source case, and `toDot` keeps the original case of each word (pass `{ transform: 'lowercase' }` to get the old result):
+  
+  | Before | Result | After | Result |
+  | --- | --- | --- | --- |
+  | `camelToSnake('userID')` | `'user_i_d'` | `toSnake('userID')` | `'user_id'` |
+  | `camelToSnake('XMLHttpRequest')` | `'_x_m_l_http_request'` | `toSnake('XMLHttpRequest')` | `'xml_http_request'` |
+  | `camelToSnake('HelloWorld')` | `'_hello_world'` | `toSnake('HelloWorld')` | `'hello_world'` |
+  | `snakeToCamel('user_ID')` | `'userID'` | `toCamel('user_ID')` | `'userId'` |
+  | `camelToDot('helloWorld')` | `'hello.world'` | `toDot('helloWorld')` | `'hello.World'` |
+  | `camelToSnake({ __proto__: … })` from JSON | key kept as `__proto__` | `toSnake(…)` | key converted to `proto` (keep it with `ignore: ['__proto__']`) |
+  
+  If your code reads keys like `user_i_d` produced by the old functions, update those reads when migrating. The inferred types follow the new results, so TypeScript points out every place to change.
+
+### Minor Changes
+
+- ab363f1: The `toX` functions take an `ignore` option: object keys that are kept as they are, at any depth, while their values are still converted. The inferred type keeps the ignored keys too:
+  
+  ```ts
+  toCamel({ _id: 1, user_id: 2, extra_data: { inner_key: 3 } }, { ignore: ['_id', 'extra_data'] });
+  // { _id: 1, userId: 2, extra_data: { innerKey: 3 } }
+  ```
+  
+  `CaseOptions`, `TransformCaseOptions` and `PathCaseOptions` take a new optional type parameter for the ignored keys, and `CaseResult` a new optional last one.
+
+### Patch Changes
+
+- ab363f1: Objects with a `constructor` key are converted. Before, `toCamel(JSON.parse('{"user_id":1,"constructor":"x"}'))` returned `undefined`, and a nested object with a `constructor` key was returned as it was, without converting its keys. Untrusted input (like a request body) could contain this key.
+- ab363f1: Faster conversion, with less memory:
+  
+  - Each distinct key is converted once per call when converting arrays of objects, so objects with the same keys (like the items of an API response) are converted ~16x faster.
+  - Keys and strings are split into words by reading character codes and slicing the string, instead of building each word one character at a time, so each key is converted ~2–5x faster (objects with unique keys, small objects and single strings).
+  - One call allocates up to ~20x less memory (121 KB against 2,348 KB for an API response with 2,104 keys), and nothing is kept between calls.
+  
+  The results are unchanged: a test compares every `toX` function and option with 5.1.0 on ~30,000 generated inputs, including letters whose case depends on context (`ς`, `İ`, `ǅ`). See the [benchmarks](https://github.com/NandoMB/caseparser/tree/main/bench).
+
 ## 5.1.0
 
 ### Minor Changes
