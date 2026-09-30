@@ -1,0 +1,67 @@
+{
+  "command": "pnpm size",
+  "environment": {
+    "date": "2026-09-29T23:39:13.691Z",
+    "runtime": "Node.js v24.19.0 (V8 13.6.233.17-node.51)",
+    "cpu": "Apple M3 Pro (11 cores), 18 GB",
+    "os": "Darwin 25.6.0 (arm64)",
+    "caseparser": {
+      "version": "5.1.0",
+      "commit": "a9f0f70",
+      "uncommittedChanges": true
+    },
+    "packages": {
+      "caseparser-5.1.0": "5.1.0",
+      "change-case": "5.4.4",
+      "camelcase-keys": "10.0.3",
+      "snakecase-keys": "9.0.2",
+      "humps": "2.0.1",
+      "es-toolkit": "1.52.0",
+      "lodash-es": "4.18.1",
+      "case-anything": "3.1.6"
+    }
+  },
+  "unit": "bytes",
+  "results": {
+    "caseparser": {
+      "entry": "export { toCamel, toSnake } from '../../dist/index.js';",
+      "minified": 3198,
+      "gzipped": 1469
+    },
+    "caseparser@5.1.0": {
+      "entry": "export { toCamel, toSnake } from 'caseparser-5.1.0';",
+      "minified": 1580,
+      "gzipped": 798
+    },
+    "change-case": {
+      "entry": "export { camelCase, snakeCase } from 'change-case/keys';",
+      "minified": 2483,
+      "gzipped": 993
+    },
+    "camelcase-keys + snakecase-keys": {
+      "entry": "export { default as camelcaseKeys } from 'camelcase-keys'; export { default as snakecaseKeys } from 'snakecase-keys';",
+      "minified": 10437,
+      "gzipped": 3920
+    },
+    "humps": {
+      "entry": "export { camelizeKeys, decamelizeKeys } from 'humps';",
+      "minified": 2191,
+      "gzipped": 960
+    },
+    "es-toolkit": {
+      "entry": "export { toCamelCaseKeys, toSnakeCaseKeys } from 'es-toolkit/object';",
+      "minified": 1420,
+      "gzipped": 618
+    },
+    "caseparser (the whole package)": {
+      "entry": "export * from '../../dist/index.js';",
+      "minified": 4869,
+      "gzipped": 1805
+    },
+    "caseparser@5.1.0 (the whole package)": {
+      "entry": "export * from 'caseparser-5.1.0';",
+      "minified": 12413,
+      "gzipped": 3070
+    }
+  }
+}

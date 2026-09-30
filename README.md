@@ -23,12 +23,12 @@ Convert **strings** and **object keys** to any case, **whatever case they are in
 - [Installation](#installation)
 - [Quick start](#quick-start)
 - [Cases](#cases)
-- [Options](#options): [`allowSymbols`](#allowsymbols), [`transform`](#transform), [`separator`](#separator)
+- [Options](#options): [`allowSymbols`](#allowsymbols), [`ignore`](#ignore), [`transform`](#transform), [`separator`](#separator)
 - [Type inference](#type-inference)
 - [How keys are split into words](#how-keys-are-split-into-words)
 - [Behavior and limitations](#behavior-and-limitations)
+- [Benchmarks](#benchmarks)
 - [Compatibility](#compatibility)
-- [Deprecated `<from>To<To>` functions](#deprecated-fromtoto-functions)
 - [Security](#security)
 
 ## Installation
@@ -154,6 +154,17 @@ toCamel(data, ['$']); // same as { allowSymbols: ['$'] }
 
 A kept symbol sticks to the start of the next word: `toPascal('$id', true)` → `'$Id'`. See [How keys are split into words](#how-keys-are-split-into-words) for the details.
 
+### `ignore`
+
+Object keys that are kept as they are, at any depth. Their values are still converted:
+
+```ts
+toCamel({ _id: 1, user_id: 2, extra_data: { inner_key: 3 } }, { ignore: ['_id', 'extra_data'] });
+// { _id: 1, userId: 2, extra_data: { innerKey: 3 } }
+```
+
+Keys are matched exactly as they are in the input. The inferred type keeps the ignored keys too. It only applies to object keys: `toSnake('userId', { ignore: ['userId'] })` still returns `'user_id'`.
+
 ### `transform`
 
 Only for `toDot` and `toPath`, which keep the original case of each word by default. `'lowercase'` or `'uppercase'` changes the case of the whole result, object keys included:
@@ -223,78 +234,115 @@ The inferred types follow the same rules.
 ## Behavior and limitations
 
 - **Only keys are converted, never values.** In `{ userName: 'johnDoe' }`, `userName` becomes `user_name` but `'johnDoe'` is kept. Strings inside arrays are kept too.
-- **Only plain objects are traversed.** `Date`, `Map`, `Set` and class instances are returned as they are (same reference), without converting their contents.
+- **Only plain objects are traversed.** `Date`, `Map`, `Set`, class instances and objects without a prototype (`Object.create(null)`) are returned as they are (same reference), without converting their contents.
 - **Acronyms are kept together, but not restored:** `toSnake('userID')` → `'user_id'`, and back `toCamel('user_id')` → `'userId'`.
 - **Words are lowercased** before converting (except by `toDot`, `toPath` and `toSpace`), so `toCamel('X-API-Key')` → `'xApiKey'` and `toCamel('First Name')` → `'firstName'`.
 - **Title Case capitalizes every word**, including short ones: `toTitle('termsOfUse')` → `'Terms Of Use'`.
+- **Very deep or circular objects throw.** Objects are converted recursively, so an object nested thousands of levels deep (~5,000 with the default stack of Node.js), or one that contains itself, throws `RangeError: Maximum call stack size exceeded`. `JSON.parse` accepts that depth, so limit it if the input is untrusted and the error is not handled.
 - **Type inference has a key length limit.** TypeScript limits how deeply a type can recurse, and keys are converted character by character at the type level. Keys are inferred up to ~120 characters; longer keys fail to compile with `Type instantiation is excessively deep and possibly infinite`. The runtime conversion has no limit.
+
+### Design trade-offs
+
+- **Nothing is kept between calls.** Within a call, each distinct key is converted once, so the 100 items of an API response cost about as much as one. That work is dropped when the call returns. A library that keeps converted keys between calls (camelcase-keys keeps up to 2 × 100,000) is faster when the same small object is converted over and over, but it holds that memory for the life of the process. With untrusted input (keys chosen by whoever sends the request), that cache can also fill up with keys that never come back and push out the useful ones. caseparser keeps no memory and no state between calls (see [memory](./bench/results/memory.md)).
+- **The cache is only created for arrays.** The objects in an array usually share their keys, while the keys of a single object don't repeat, so small objects and objects with unique keys don't pay for it. Keys repeated in nested objects outside arrays are converted again.
+- **A few hundred bytes more for the same two functions.** Bundling only `toCamel` and `toSnake` takes 1.5 KB gzipped (0.8 KB in 5.1.0), for the character tables and the key cache that make them faster. The whole package is smaller than before (1.8 KB gzipped, 3.1 KB in 5.1.0), because 6.0 removed the deprecated functions.
+- **Correct before fast.** Every `toX` function splits words the same way (acronyms, digits, symbols, non-ASCII letters), even when a simpler rule would be faster for plain `snake_case` → `camelCase` keys.
+
+## Benchmarks
+
+Median time to convert the same data to each case on Node.js 24 (Apple M3 Pro); lower is faster. Each library was measured in 3 rounds, in a different order each time, and the time is the mean of the 3 medians. In **bold**: the fastest, and any library tied with it (its results in the 3 rounds overlap with the fastest's). ❌: the library doesn't convert keys to that case.
+
+#### Repeated keys: an API response with 100 users (2,104 keys)
+
+Every user has the same keys, like the items of a real API response.
+
+| Case | caseparser | caseparser@5.1.0 | change-case | camelcase-keys | snakecase-keys | humps | es-toolkit |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| camelCase | **59 µs** | 979 µs | 969 µs | 271 µs | ❌ | 546 µs | 392 µs |
+| PascalCase | **59 µs** | 1.06 ms | 1.03 ms | 364 µs | ❌ | 637 µs | 506 µs |
+| snake_case | **57 µs** | 891 µs | 1.07 ms | ❌ | 1.38 ms | 400 µs | 380 µs |
+| kebab-case | **58 µs** | 916 µs | 1.09 ms | ❌ | 1.41 ms | 404 µs | 385 µs |
+| UPPER_SNAKE | **58 µs** | 950 µs | 1.13 ms | ❌ | ❌ | ❌ | 455 µs |
+| UPPER-KEBAB | **58 µs** | 947 µs | 1.15 ms | ❌ | ❌ | ❌ | ❌ |
+| Train-Case | **58 µs** | 1.10 ms | 1.19 ms | ❌ | ❌ | ❌ | ❌ |
+| Title Case | **58 µs** | 1.11 ms | 1.16 ms | ❌ | ❌ | ❌ | ❌ |
+| Sentence case | **58 µs** | 1.02 ms | 1.15 ms | ❌ | ❌ | ❌ | ❌ |
+| Pascal_Snake | **58 µs** | 1.10 ms | 1.17 ms | ❌ | ❌ | ❌ | ❌ |
+| lower case | **57 µs** | 893 µs | 1.08 ms | ❌ | 1.40 ms | 401 µs | ❌ |
+| UPPER CASE | **58 µs** | 962 µs | 1.15 ms | ❌ | ❌ | ❌ | ❌ |
+| dot.case | **57 µs** | 903 µs | 1.07 ms | ❌ | 1.40 ms | 404 µs | ❌ |
+| path/case | **57 µs** | 971 µs | 1.08 ms | ❌ | 1.41 ms | 406 µs | ❌ |
+
+#### Unique keys: an object with 1,000 keys
+
+No key repeats, in the object or between calls, so this measures how fast each key is converted.
+
+| Case | caseparser | caseparser@5.1.0 | change-case | camelcase-keys | snakecase-keys | humps | es-toolkit |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| camelCase | **379 µs** | 1.46 ms | 796 µs | 1.11 ms | ❌ | 576 µs | 464 µs |
+| PascalCase | **415 µs** | 2.08 ms | 888 µs | 1.35 ms | ❌ | 648 µs | **516 µs** |
+| snake_case | **390 µs** | 1.32 ms | 849 µs | ❌ | 921 µs | **444 µs** | **404 µs** |
+| kebab-case | **381 µs** | 1.98 ms | 909 µs | ❌ | 1.00 ms | 519 µs | **475 µs** |
+| UPPER_SNAKE | **439 µs** | 2.01 ms | 956 µs | ❌ | ❌ | ❌ | **497 µs** |
+| UPPER-KEBAB | **502 µs** | 1.42 ms | 987 µs | ❌ | ❌ | ❌ | ❌ |
+| Train-Case | **448 µs** | 1.54 ms | 1.00 ms | ❌ | ❌ | ❌ | ❌ |
+| Title Case | **416 µs** | 1.53 ms | 995 µs | ❌ | ❌ | ❌ | ❌ |
+| Sentence case | **429 µs** | 2.08 ms | 926 µs | ❌ | ❌ | ❌ | ❌ |
+| Pascal_Snake | **438 µs** | 991 µs | 1.00 ms | ❌ | ❌ | ❌ | ❌ |
+| lower case | **441 µs** | 1.47 ms | 949 µs | ❌ | 995 µs | **509 µs** | ❌ |
+| UPPER CASE | **460 µs** | 1.49 ms | 987 µs | ❌ | ❌ | ❌ | ❌ |
+| dot.case | **442 µs** | 854 µs | 961 µs | ❌ | 1.00 ms | **515 µs** | ❌ |
+| path/case | **475 µs** | 1.42 ms | 973 µs | ❌ | 1.01 ms | **521 µs** | ❌ |
+
+With repeated keys, caseparser is 5–25x faster than the others, because it converts each distinct key once per call. With unique keys every library converts every key, and caseparser is the fastest or tied: this scenario creates a lot of garbage, so the results change up to ~20% between rounds for every library. For a small object (8 keys) converted over and over, camelcase-keys is faster to camelCase (0.75 µs, against 0.96 µs), because it keeps converted keys between calls (see [Design trade-offs](#design-trade-offs)); to snake_case, caseparser is the fastest (0.92 µs). For strings, caseparser is the fastest too (1.1 µs for 10 strings, against 1.4 µs for es-toolkit).
+
+#### Memory
+
+Heap used on Node.js, measured in a new process for each library:
+
+| Library | Loading the library | One call: API response | One call: 1,000 unique keys | Kept after converting 256,000 keys |
+| --- | ---: | ---: | ---: | ---: |
+| caseparser | 70 KB | **121 KB** | **516 KB** | 0 |
+| caseparser@5.1.0 | 289 KB | 2,348 KB | 2,719 KB | 0 |
+| change-case | 136 KB | 2,850 KB | 1,610 KB | 0 |
+| camelcase-keys | 209 KB | 1,516 KB | 1,742 KB | 11,483 KB |
+| humps | **62 KB** | 1,183 KB | 759 KB | 0 |
+| es-toolkit | 622 KB | 1,745 KB | 1,062 KB | 0 |
+
+Loading is the heap used by importing the library, as the benchmarks do. One call is the memory allocated to convert to camelCase, including the result (62 KB and 48 KB). "Kept" is the memory still used after the calls: camelcase-keys keeps the keys it converted between calls (up to 2 × 100,000). 0 means under 10 KB, which is the noise of the measurement.
+
+#### Compared with the same libraries
+
+- **Cases:** caseparser and change-case convert keys to all 14 cases; humps to 7, es-toolkit and snakecase-keys to 5, camelcase-keys to 2.
+- **Mixed input:** keys in different cases in one object are converted by all of them except humps.
+- **Values:** caseparser and es-toolkit keep `Date`, `Map` and class instances as they are. The others turn some of them into broken copies or plain objects.
+- **Types:** the converted keys are typed by caseparser, camelcase-keys and snakecase-keys. es-toolkit types some keys differently from its result, humps types the result as `object`, and change-case as `unknown`.
+- **Security:** with `__proto__` in untrusted JSON, `humps.decamelizeKeys` replaces the result's prototype, and with a `constructor` key, snakecase-keys throws. The others, caseparser included, convert both.
+- **Skipping keys:** caseparser (`ignore`), camelcase-keys, snakecase-keys and humps have an option to keep some keys as they are; change-case and es-toolkit don't.
+- **Edge cases:** the libraries return different results, for example `userID` → `user_id` or `user_i_d`, and `html5Parser` → `html5_parser` or `html_5_parser`. See [what each library returns](./bench/results/edge-cases.md).
+
+The benchmarks check that every library returns the expected output before measuring it, and each library is called in [its own file](./bench/libraries), with its documented options. The method and every result, with the raw numbers of every round, the date and the versions, are in [`bench/`](./bench). To run them all:
+
+```sh
+pnpm install
+pnpm benchmark
+```
 
 ## Compatibility
 
 | Environment | Supported |
 | --- | --- |
-| ESM (`import`) | Node.js 12.22+, Deno, Bun, bundlers |
-| CommonJS (`require`) | Node.js 8+, Bun |
-| TypeScript | 4.5+ for the `toX` functions, 4.1+ for the deprecated `<from>To<To>` functions (any `moduleResolution`: `node`, `node16`/`nodenext`, `bundler`) |
+| ESM (`import`) | Node.js 22+, Deno, Bun, bundlers |
+| CommonJS (`require`) | Node.js 22+, Bun |
+| TypeScript | 4.7+ (any `moduleResolution`: `node`, `node16`/`nodenext`, `bundler`) |
 | Browsers | Any ES2015 browser (via bundler) |
-| Edge | Cloudflare Workers |
+| Edge | Cloudflare Workers ([example](./examples/cloudflare-worker)) |
 
-On every change, CI runs the test suite on Node.js 22, 24 and 26, Bun and Deno, and in Chromium, Firefox and WebKit. It also checks the packed package with [publint](https://publint.dev) and [Are the Types Wrong?](https://arethetypeswrong.github.io), for ESM, CommonJS and every `moduleResolution`, and compiles the type declarations with TypeScript 4.1.
-
-## Deprecated `<from>To<To>` functions
-
-> **Deprecated:** the `<from>To<To>` functions (e.g. `snakeToCamel`) are deprecated in favor of the `toX` functions and will be removed in the next major version, which will also require TypeScript 4.7+. They keep working until then.
-
-### Migrating to `toX`
-
-Replace each `<from>To<To>` function with the `toX` function for its target case, whatever the source case: `camelToSnake`, `dashToSnake`, `titleToSnake`... all become `toSnake`. The dash cases were renamed: `<from>ToDash` becomes `toKebab`, and `<from>ToUpperDash` becomes `toUpperKebab`.
-
-For well-formed keys (`firstName`, `first_name`) the result is the same. It differs when a key has consecutive uppercase letters or doesn't match the source case, and `toDot` keeps the original case of each word (pass `{ transform: 'lowercase' }` to get the old result):
-
-| Call | `<from>To<To>` result | `toX` result |
-| --- | --- | --- |
-| `camelToSnake('userID')` / `toSnake('userID')` | `'user_i_d'` | `'user_id'` |
-| `camelToSnake('XMLHttpRequest')` / `toSnake('XMLHttpRequest')` | `'_x_m_l_http_request'` | `'xml_http_request'` |
-| `camelToSnake('HelloWorld')` / `toSnake('HelloWorld')` | `'_hello_world'` | `'hello_world'` |
-| `snakeToCamel('user_ID')` / `toCamel('user_ID')` | `'userID'` | `'userId'` |
-| `camelToDot('helloWorld')` / `toDot('helloWorld')` | `'hello.world'` | `'hello.World'` |
-
-If your code reads keys like `user_i_d` produced by the old functions, update those reads when migrating. The inferred types follow the new results, so TypeScript points out every place to change.
-
-<details>
-<summary>All 90 deprecated functions</summary>
-
-Every function is named `<from>To<To>`, e.g. `snakeToCamel`. The case names are:
-
-| Name | Example |
-| --- | --- |
-| `camel` | `helloWorld` |
-| `pascal` | `HelloWorld` |
-| `snake` | `hello_world` |
-| `dash` | `hello-world` |
-| `upperSnake` | `HELLO_WORLD` |
-| `upperDash` | `HELLO-WORLD` |
-| `train` | `Hello-World` |
-| `dot` | `hello.world` |
-| `title` | `Hello World` |
-| `sentence` | `Hello world` |
-
-- **camelCase:** `camelToPascal`, `camelToSnake`, `camelToDash`, `camelToUpperSnake`, `camelToUpperDash`, `camelToTrain`, `camelToDot`, `camelToTitle`, `camelToSentence`
-- **PascalCase:** `pascalToCamel`, `pascalToSnake`, `pascalToDash`, `pascalToUpperSnake`, `pascalToUpperDash`, `pascalToTrain`, `pascalToDot`, `pascalToTitle`, `pascalToSentence`
-- **snake_case:** `snakeToCamel`, `snakeToPascal`, `snakeToDash`, `snakeToUpperSnake`, `snakeToUpperDash`, `snakeToTrain`, `snakeToDot`, `snakeToTitle`, `snakeToSentence`
-- **dash-case:** `dashToCamel`, `dashToPascal`, `dashToSnake`, `dashToUpperSnake`, `dashToUpperDash`, `dashToTrain`, `dashToDot`, `dashToTitle`, `dashToSentence`
-- **UPPER_SNAKE_CASE:** `upperSnakeToCamel`, `upperSnakeToPascal`, `upperSnakeToSnake`, `upperSnakeToDash`, `upperSnakeToUpperDash`, `upperSnakeToTrain`, `upperSnakeToDot`, `upperSnakeToTitle`, `upperSnakeToSentence`
-- **UPPER-DASH-CASE:** `upperDashToCamel`, `upperDashToPascal`, `upperDashToSnake`, `upperDashToDash`, `upperDashToUpperSnake`, `upperDashToTrain`, `upperDashToDot`, `upperDashToTitle`, `upperDashToSentence`
-- **Train-Case:** `trainToCamel`, `trainToPascal`, `trainToSnake`, `trainToDash`, `trainToUpperSnake`, `trainToUpperDash`, `trainToDot`, `trainToTitle`, `trainToSentence`
-- **dot.case:** `dotToCamel`, `dotToPascal`, `dotToSnake`, `dotToDash`, `dotToUpperSnake`, `dotToUpperDash`, `dotToTrain`, `dotToTitle`, `dotToSentence`
-- **Title Case:** `titleToCamel`, `titleToPascal`, `titleToSnake`, `titleToDash`, `titleToUpperSnake`, `titleToUpperDash`, `titleToTrain`, `titleToDot`, `titleToSentence`
-- **Sentence case:** `sentenceToCamel`, `sentenceToPascal`, `sentenceToSnake`, `sentenceToDash`, `sentenceToUpperSnake`, `sentenceToUpperDash`, `sentenceToTrain`, `sentenceToDot`, `sentenceToTitle`
-
-</details>
+On every change, CI runs the test suite on Node.js 22, 24 and 26, Bun and Deno, and in Chromium, Firefox and WebKit, and runs [a Cloudflare Worker](./examples/cloudflare-worker) on workerd with the packed package. It also checks the packed package with [publint](https://publint.dev) and [Are the Types Wrong?](https://arethetypeswrong.github.io), for ESM, CommonJS and every `moduleResolution`, and compiles the type declarations with TypeScript 4.7.
 
 ## Security
 
-caseparser is safe to use with untrusted input (e.g. request bodies or `JSON.parse` output): keys such as `__proto__` are copied as regular keys and never change an object's prototype, and only the object's own properties are converted.
+caseparser is safe to use with untrusted input (e.g. request bodies or `JSON.parse` output): keys such as `__proto__` are copied as regular keys and never change an object's prototype, a `constructor` key doesn't stop an object from being converted, only the object's own properties are converted, and nothing is kept between calls. Limit the depth of untrusted input if a `RangeError` for very deep objects is not handled (see [Behavior and limitations](#behavior-and-limitations)).
 
 Releases are built and published from GitHub Actions without long-lived tokens (OIDC), with [npm provenance](https://docs.npmjs.com/generating-provenance-statements), so every published version can be traced back to the exact commit and workflow that built it. On npm, new versions are [staged](https://docs.npmjs.com/staged-publishing/) and only go live after a maintainer approves them with 2FA.
 

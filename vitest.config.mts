@@ -1,9 +1,11 @@
 import { playwright } from '@vitest/browser-playwright';
-import { defineConfig } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
     allowOnly: true,
+    // The benchmarks have their own dependencies and config (see bench/README.md)
+    exclude: [...configDefaults.exclude, 'bench/**'],
     coverage: {
       provider: 'istanbul',
       reporter: ['text', 'json', 'html'],
