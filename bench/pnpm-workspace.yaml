@@ -1,0 +1,6 @@
+# A separate workspace, so the libraries compared here never become dependencies of caseparser
+allowBuilds:
+  esbuild: true
+minimumReleaseAgeExclude:
+  - case-anything@3.1.6
+  - caseparser@5.1.0

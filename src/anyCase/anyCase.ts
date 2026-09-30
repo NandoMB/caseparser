@@ -1,14 +1,26 @@
 import type { AllowSymbols, CaseOptions, CaseResult, PathCaseOptions, PathSeparator, Transform, TransformCaseOptions } from './types.ts';
 import { convert } from '../parser/index.ts';
-import { ToCamel, ToDot, ToKebab, ToLower, ToPascal, ToPascalSnake, ToPath, ToSentence, ToSnake, ToSpace, ToTitle, ToTrain, ToUpper, ToUpperKebab, ToUpperSnake } from './words.ts';
+import { toKeep, type Keep, ToCamel, ToDot, ToKebab, ToLower, ToPascal, ToPascalSnake, ToPath, ToSentence, ToSnake, ToSpace, ToTitle, ToTrain, ToUpper, ToUpperKebab, ToUpperSnake } from './words.ts';
+
+interface ParsedOptions {
+  keep: Keep;
+  transform?: Transform;
+  separator?: PathSeparator;
+  ignore?: readonly string[];
+}
+
+const KEEP_NONE: ParsedOptions = { keep: false };
+const KEEP_ALL: ParsedOptions = { keep: true };
 
 /** Reads the second argument of a `toX` function: the `allowSymbols` shorthand, or an options object. */
-function parseOptions(options: AllowSymbols | PathCaseOptions | undefined): { allowSymbols?: AllowSymbols; transform?: Transform; separator?: PathSeparator } {
+function parseOptions(options: AllowSymbols | PathCaseOptions | undefined): ParsedOptions {
+  if (options === undefined || options === false) return KEEP_NONE;
+  if (options === true) return KEEP_ALL;
   if (typeof options === 'object' && options !== null && !Array.isArray(options)) {
-    const { allowSymbols, transform, separator } = options as PathCaseOptions;
-    return { allowSymbols: allowSymbols as AllowSymbols | undefined, transform, separator };
+    const { allowSymbols, transform, separator, ignore } = options as PathCaseOptions;
+    return { keep: toKeep(allowSymbols as AllowSymbols | undefined), transform, separator, ignore };
   }
-  return { allowSymbols: options as AllowSymbols | undefined };
+  return { keep: toKeep(options as AllowSymbols) };
 }
 
 /**
@@ -35,9 +47,10 @@ export function toCamel<T extends object | string, S extends boolean | string = 
  *
  * @param options `allowSymbols`: symbols are removed by default; `true` keeps all of them, and an array keeps only some.
  */
-export function toCamel<T extends object | string, S extends boolean | string = false>(input: T, options: CaseOptions<S>): CaseResult<T, 'Camel', S>;
+export function toCamel<T extends object | string, S extends boolean | string = false, I extends string = never>(input: T, options: CaseOptions<S, I>): CaseResult<T, 'Camel', S, undefined, '/', I>;
 export function toCamel(input: object | string, options?: AllowSymbols | CaseOptions): unknown {
-  return convert(input, (key) => ToCamel(key, parseOptions(options).allowSymbols));
+  const { keep, ignore } = parseOptions(options);
+  return convert(input, (key) => ToCamel(key, keep), ignore);
 }
 
 /**
@@ -64,9 +77,10 @@ export function toPascal<T extends object | string, S extends boolean | string =
  *
  * @param options `allowSymbols`: symbols are removed by default; `true` keeps all of them, and an array keeps only some.
  */
-export function toPascal<T extends object | string, S extends boolean | string = false>(input: T, options: CaseOptions<S>): CaseResult<T, 'Pascal', S>;
+export function toPascal<T extends object | string, S extends boolean | string = false, I extends string = never>(input: T, options: CaseOptions<S, I>): CaseResult<T, 'Pascal', S, undefined, '/', I>;
 export function toPascal(input: object | string, options?: AllowSymbols | CaseOptions): unknown {
-  return convert(input, (key) => ToPascal(key, parseOptions(options).allowSymbols));
+  const { keep, ignore } = parseOptions(options);
+  return convert(input, (key) => ToPascal(key, keep), ignore);
 }
 
 /**
@@ -93,9 +107,10 @@ export function toSnake<T extends object | string, S extends boolean | string = 
  *
  * @param options `allowSymbols`: symbols are removed by default; `true` keeps all of them, and an array keeps only some.
  */
-export function toSnake<T extends object | string, S extends boolean | string = false>(input: T, options: CaseOptions<S>): CaseResult<T, 'Snake', S>;
+export function toSnake<T extends object | string, S extends boolean | string = false, I extends string = never>(input: T, options: CaseOptions<S, I>): CaseResult<T, 'Snake', S, undefined, '/', I>;
 export function toSnake(input: object | string, options?: AllowSymbols | CaseOptions): unknown {
-  return convert(input, (key) => ToSnake(key, parseOptions(options).allowSymbols));
+  const { keep, ignore } = parseOptions(options);
+  return convert(input, (key) => ToSnake(key, keep), ignore);
 }
 
 /**
@@ -122,9 +137,10 @@ export function toKebab<T extends object | string, S extends boolean | string = 
  *
  * @param options `allowSymbols`: symbols are removed by default; `true` keeps all of them, and an array keeps only some.
  */
-export function toKebab<T extends object | string, S extends boolean | string = false>(input: T, options: CaseOptions<S>): CaseResult<T, 'Kebab', S>;
+export function toKebab<T extends object | string, S extends boolean | string = false, I extends string = never>(input: T, options: CaseOptions<S, I>): CaseResult<T, 'Kebab', S, undefined, '/', I>;
 export function toKebab(input: object | string, options?: AllowSymbols | CaseOptions): unknown {
-  return convert(input, (key) => ToKebab(key, parseOptions(options).allowSymbols));
+  const { keep, ignore } = parseOptions(options);
+  return convert(input, (key) => ToKebab(key, keep), ignore);
 }
 
 /**
@@ -151,9 +167,10 @@ export function toUpperSnake<T extends object | string, S extends boolean | stri
  *
  * @param options `allowSymbols`: symbols are removed by default; `true` keeps all of them, and an array keeps only some.
  */
-export function toUpperSnake<T extends object | string, S extends boolean | string = false>(input: T, options: CaseOptions<S>): CaseResult<T, 'UpperSnake', S>;
+export function toUpperSnake<T extends object | string, S extends boolean | string = false, I extends string = never>(input: T, options: CaseOptions<S, I>): CaseResult<T, 'UpperSnake', S, undefined, '/', I>;
 export function toUpperSnake(input: object | string, options?: AllowSymbols | CaseOptions): unknown {
-  return convert(input, (key) => ToUpperSnake(key, parseOptions(options).allowSymbols));
+  const { keep, ignore } = parseOptions(options);
+  return convert(input, (key) => ToUpperSnake(key, keep), ignore);
 }
 
 /**
@@ -180,9 +197,10 @@ export function toUpperKebab<T extends object | string, S extends boolean | stri
  *
  * @param options `allowSymbols`: symbols are removed by default; `true` keeps all of them, and an array keeps only some.
  */
-export function toUpperKebab<T extends object | string, S extends boolean | string = false>(input: T, options: CaseOptions<S>): CaseResult<T, 'UpperKebab', S>;
+export function toUpperKebab<T extends object | string, S extends boolean | string = false, I extends string = never>(input: T, options: CaseOptions<S, I>): CaseResult<T, 'UpperKebab', S, undefined, '/', I>;
 export function toUpperKebab(input: object | string, options?: AllowSymbols | CaseOptions): unknown {
-  return convert(input, (key) => ToUpperKebab(key, parseOptions(options).allowSymbols));
+  const { keep, ignore } = parseOptions(options);
+  return convert(input, (key) => ToUpperKebab(key, keep), ignore);
 }
 
 /**
@@ -209,9 +227,10 @@ export function toTrain<T extends object | string, S extends boolean | string = 
  *
  * @param options `allowSymbols`: symbols are removed by default; `true` keeps all of them, and an array keeps only some.
  */
-export function toTrain<T extends object | string, S extends boolean | string = false>(input: T, options: CaseOptions<S>): CaseResult<T, 'Train', S>;
+export function toTrain<T extends object | string, S extends boolean | string = false, I extends string = never>(input: T, options: CaseOptions<S, I>): CaseResult<T, 'Train', S, undefined, '/', I>;
 export function toTrain(input: object | string, options?: AllowSymbols | CaseOptions): unknown {
-  return convert(input, (key) => ToTrain(key, parseOptions(options).allowSymbols));
+  const { keep, ignore } = parseOptions(options);
+  return convert(input, (key) => ToTrain(key, keep), ignore);
 }
 
 // The options overload comes first: after the shorthand one, editors don't suggest the `transform` values
@@ -228,7 +247,7 @@ export function toTrain(input: object | string, options?: AllowSymbols | CaseOpt
  * @param options `allowSymbols`: symbols are removed by default; `true` keeps all of them, and an array keeps only some.
  * `transform`: the original case of each word is kept by default; `'lowercase'` or `'uppercase'` changes the case of the whole result.
  */
-export function toDot<T extends object | string, S extends boolean | string = false, X extends Transform | undefined = undefined>(input: T, options: TransformCaseOptions<S, X>): CaseResult<T, 'Dot', S, X>;
+export function toDot<T extends object | string, S extends boolean | string = false, X extends Transform | undefined = undefined, I extends string = never>(input: T, options: TransformCaseOptions<S, X, I>): CaseResult<T, 'Dot', S, X, '/', I>;
 /**
  * Converts a string, or the keys of an object/array (deeply), from any case to dot.case, keeping the original case of each word.
  *
@@ -244,8 +263,8 @@ export function toDot<T extends object | string, S extends boolean | string = fa
  */
 export function toDot<T extends object | string, S extends boolean | string = false>(input: T, allowSymbols?: S | readonly S[]): CaseResult<T, 'Dot', S>;
 export function toDot(input: object | string, options?: AllowSymbols | TransformCaseOptions): unknown {
-  const { allowSymbols, transform } = parseOptions(options);
-  return convert(input, (key) => ToDot(key, allowSymbols, transform));
+  const { keep, transform, ignore } = parseOptions(options);
+  return convert(input, (key) => ToDot(key, keep, transform), ignore);
 }
 
 /**
@@ -272,9 +291,10 @@ export function toTitle<T extends object | string, S extends boolean | string = 
  *
  * @param options `allowSymbols`: symbols are removed by default; `true` keeps all of them, and an array keeps only some.
  */
-export function toTitle<T extends object | string, S extends boolean | string = false>(input: T, options: CaseOptions<S>): CaseResult<T, 'Title', S>;
+export function toTitle<T extends object | string, S extends boolean | string = false, I extends string = never>(input: T, options: CaseOptions<S, I>): CaseResult<T, 'Title', S, undefined, '/', I>;
 export function toTitle(input: object | string, options?: AllowSymbols | CaseOptions): unknown {
-  return convert(input, (key) => ToTitle(key, parseOptions(options).allowSymbols));
+  const { keep, ignore } = parseOptions(options);
+  return convert(input, (key) => ToTitle(key, keep), ignore);
 }
 
 /**
@@ -301,9 +321,10 @@ export function toSentence<T extends object | string, S extends boolean | string
  *
  * @param options `allowSymbols`: symbols are removed by default; `true` keeps all of them, and an array keeps only some.
  */
-export function toSentence<T extends object | string, S extends boolean | string = false>(input: T, options: CaseOptions<S>): CaseResult<T, 'Sentence', S>;
+export function toSentence<T extends object | string, S extends boolean | string = false, I extends string = never>(input: T, options: CaseOptions<S, I>): CaseResult<T, 'Sentence', S, undefined, '/', I>;
 export function toSentence(input: object | string, options?: AllowSymbols | CaseOptions): unknown {
-  return convert(input, (key) => ToSentence(key, parseOptions(options).allowSymbols));
+  const { keep, ignore } = parseOptions(options);
+  return convert(input, (key) => ToSentence(key, keep), ignore);
 }
 
 /**
@@ -330,9 +351,10 @@ export function toPascalSnake<T extends object | string, S extends boolean | str
  *
  * @param options `allowSymbols`: symbols are removed by default; `true` keeps all of them, and an array keeps only some.
  */
-export function toPascalSnake<T extends object | string, S extends boolean | string = false>(input: T, options: CaseOptions<S>): CaseResult<T, 'PascalSnake', S>;
+export function toPascalSnake<T extends object | string, S extends boolean | string = false, I extends string = never>(input: T, options: CaseOptions<S, I>): CaseResult<T, 'PascalSnake', S, undefined, '/', I>;
 export function toPascalSnake(input: object | string, options?: AllowSymbols | CaseOptions): unknown {
-  return convert(input, (key) => ToPascalSnake(key, parseOptions(options).allowSymbols));
+  const { keep, ignore } = parseOptions(options);
+  return convert(input, (key) => ToPascalSnake(key, keep), ignore);
 }
 
 // The options overload comes first: after the shorthand one, editors don't suggest the `transform` values
@@ -352,7 +374,7 @@ export function toPascalSnake(input: object | string, options?: AllowSymbols | C
  * `transform`: the original case of each word is kept by default; `'lowercase'` or `'uppercase'` changes the case of the whole result.
  * `separator`: `'/'` (the default) or `'\\'`.
  */
-export function toPath<T extends object | string, S extends boolean | string = false, X extends Transform | undefined = undefined, P extends PathSeparator = '/'>(input: T, options: PathCaseOptions<S, X, P>): CaseResult<T, 'Path', S, X, P>;
+export function toPath<T extends object | string, S extends boolean | string = false, X extends Transform | undefined = undefined, P extends PathSeparator = '/', I extends string = never>(input: T, options: PathCaseOptions<S, X, P, I>): CaseResult<T, 'Path', S, X, P, I>;
 /**
  * Converts a string, or the keys of an object/array (deeply), from any case to path/case, keeping the original case of each word.
  * `/` and `\\` in the input also separate words.
@@ -369,8 +391,8 @@ export function toPath<T extends object | string, S extends boolean | string = f
  */
 export function toPath<T extends object | string, S extends boolean | string = false>(input: T, allowSymbols?: S | readonly S[]): CaseResult<T, 'Path', S>;
 export function toPath(input: object | string, options?: AllowSymbols | PathCaseOptions): unknown {
-  const { allowSymbols, transform, separator } = parseOptions(options);
-  return convert(input, (key) => ToPath(key, allowSymbols, transform, separator === '\\' ? '\\' : '/'));
+  const { keep, transform, separator, ignore } = parseOptions(options);
+  return convert(input, (key) => ToPath(key, keep, transform, separator === '\\' ? '\\' : '/'), ignore);
 }
 
 /**
@@ -397,9 +419,10 @@ export function toSpace<T extends object | string, S extends boolean | string = 
  *
  * @param options `allowSymbols`: symbols are removed by default; `true` keeps all of them, and an array keeps only some.
  */
-export function toSpace<T extends object | string, S extends boolean | string = false>(input: T, options: CaseOptions<S>): CaseResult<T, 'Space', S>;
+export function toSpace<T extends object | string, S extends boolean | string = false, I extends string = never>(input: T, options: CaseOptions<S, I>): CaseResult<T, 'Space', S, undefined, '/', I>;
 export function toSpace(input: object | string, options?: AllowSymbols | CaseOptions): unknown {
-  return convert(input, (key) => ToSpace(key, parseOptions(options).allowSymbols));
+  const { keep, ignore } = parseOptions(options);
+  return convert(input, (key) => ToSpace(key, keep), ignore);
 }
 
 /**
@@ -426,9 +449,10 @@ export function toLower<T extends object | string, S extends boolean | string = 
  *
  * @param options `allowSymbols`: symbols are removed by default; `true` keeps all of them, and an array keeps only some.
  */
-export function toLower<T extends object | string, S extends boolean | string = false>(input: T, options: CaseOptions<S>): CaseResult<T, 'Lower', S>;
+export function toLower<T extends object | string, S extends boolean | string = false, I extends string = never>(input: T, options: CaseOptions<S, I>): CaseResult<T, 'Lower', S, undefined, '/', I>;
 export function toLower(input: object | string, options?: AllowSymbols | CaseOptions): unknown {
-  return convert(input, (key) => ToLower(key, parseOptions(options).allowSymbols));
+  const { keep, ignore } = parseOptions(options);
+  return convert(input, (key) => ToLower(key, keep), ignore);
 }
 
 /**
@@ -455,7 +479,8 @@ export function toUpper<T extends object | string, S extends boolean | string = 
  *
  * @param options `allowSymbols`: symbols are removed by default; `true` keeps all of them, and an array keeps only some.
  */
-export function toUpper<T extends object | string, S extends boolean | string = false>(input: T, options: CaseOptions<S>): CaseResult<T, 'Upper', S>;
+export function toUpper<T extends object | string, S extends boolean | string = false, I extends string = never>(input: T, options: CaseOptions<S, I>): CaseResult<T, 'Upper', S, undefined, '/', I>;
 export function toUpper(input: object | string, options?: AllowSymbols | CaseOptions): unknown {
-  return convert(input, (key) => ToUpper(key, parseOptions(options).allowSymbols));
+  const { keep, ignore } = parseOptions(options);
+  return convert(input, (key) => ToUpper(key, keep), ignore);
 }
