@@ -258,20 +258,20 @@ Every user has the same keys, like the items of a real API response.
 
 | Case | caseparser | caseparser@5.1.0 | change-case | camelcase-keys | snakecase-keys | humps | es-toolkit |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| camelCase | **59 µs** | 979 µs | 969 µs | 271 µs | ❌ | 546 µs | 392 µs |
-| PascalCase | **59 µs** | 1.06 ms | 1.03 ms | 364 µs | ❌ | 637 µs | 506 µs |
-| snake_case | **57 µs** | 891 µs | 1.07 ms | ❌ | 1.38 ms | 400 µs | 380 µs |
-| kebab-case | **58 µs** | 916 µs | 1.09 ms | ❌ | 1.41 ms | 404 µs | 385 µs |
-| UPPER_SNAKE | **58 µs** | 950 µs | 1.13 ms | ❌ | ❌ | ❌ | 455 µs |
-| UPPER-KEBAB | **58 µs** | 947 µs | 1.15 ms | ❌ | ❌ | ❌ | ❌ |
-| Train-Case | **58 µs** | 1.10 ms | 1.19 ms | ❌ | ❌ | ❌ | ❌ |
-| Title Case | **58 µs** | 1.11 ms | 1.16 ms | ❌ | ❌ | ❌ | ❌ |
-| Sentence case | **58 µs** | 1.02 ms | 1.15 ms | ❌ | ❌ | ❌ | ❌ |
-| Pascal_Snake | **58 µs** | 1.10 ms | 1.17 ms | ❌ | ❌ | ❌ | ❌ |
-| lower case | **57 µs** | 893 µs | 1.08 ms | ❌ | 1.40 ms | 401 µs | ❌ |
-| UPPER CASE | **58 µs** | 962 µs | 1.15 ms | ❌ | ❌ | ❌ | ❌ |
-| dot.case | **57 µs** | 903 µs | 1.07 ms | ❌ | 1.40 ms | 404 µs | ❌ |
-| path/case | **57 µs** | 971 µs | 1.08 ms | ❌ | 1.41 ms | 406 µs | ❌ |
+| camelCase | **57 µs** | 936 µs | 929 µs | 269 µs | ❌ | 536 µs | 391 µs |
+| PascalCase | **58 µs** | 1.04 ms | 1.01 ms | 361 µs | ❌ | 629 µs | 496 µs |
+| snake_case | **57 µs** | 870 µs | 1.06 ms | ❌ | 1.34 ms | 397 µs | 377 µs |
+| kebab-case | **57 µs** | 884 µs | 1.07 ms | ❌ | 1.38 ms | 399 µs | 382 µs |
+| UPPER_SNAKE | **58 µs** | 923 µs | 1.11 ms | ❌ | ❌ | ❌ | 448 µs |
+| UPPER-KEBAB | **58 µs** | 936 µs | 1.13 ms | ❌ | ❌ | ❌ | ❌ |
+| Train-Case | **58 µs** | 1.07 ms | 1.17 ms | ❌ | ❌ | ❌ | ❌ |
+| Title Case | **58 µs** | 1.08 ms | 1.16 ms | ❌ | ❌ | ❌ | ❌ |
+| Sentence case | **57 µs** | 972 µs | 1.14 ms | ❌ | ❌ | ❌ | ❌ |
+| Pascal_Snake | **58 µs** | 1.07 ms | 1.15 ms | ❌ | ❌ | ❌ | ❌ |
+| lower case | **57 µs** | 902 µs | 1.07 ms | ❌ | 1.39 ms | 402 µs | ❌ |
+| UPPER CASE | **58 µs** | 936 µs | 1.13 ms | ❌ | ❌ | ❌ | ❌ |
+| dot.case | **56 µs** | 879 µs | 1.07 ms | ❌ | 1.38 ms | 402 µs | ❌ |
+| path/case | **57 µs** | 946 µs | 1.07 ms | ❌ | 1.38 ms | 401 µs | ❌ |
 
 #### Unique keys: an object with 1,000 keys
 
@@ -279,22 +279,22 @@ No key repeats, in the object or between calls, so this measures how fast each k
 
 | Case | caseparser | caseparser@5.1.0 | change-case | camelcase-keys | snakecase-keys | humps | es-toolkit |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| camelCase | **379 µs** | 1.46 ms | 796 µs | 1.11 ms | ❌ | 576 µs | 464 µs |
-| PascalCase | **415 µs** | 2.08 ms | 888 µs | 1.35 ms | ❌ | 648 µs | **516 µs** |
-| snake_case | **390 µs** | 1.32 ms | 849 µs | ❌ | 921 µs | **444 µs** | **404 µs** |
-| kebab-case | **381 µs** | 1.98 ms | 909 µs | ❌ | 1.00 ms | 519 µs | **475 µs** |
-| UPPER_SNAKE | **439 µs** | 2.01 ms | 956 µs | ❌ | ❌ | ❌ | **497 µs** |
-| UPPER-KEBAB | **502 µs** | 1.42 ms | 987 µs | ❌ | ❌ | ❌ | ❌ |
-| Train-Case | **448 µs** | 1.54 ms | 1.00 ms | ❌ | ❌ | ❌ | ❌ |
-| Title Case | **416 µs** | 1.53 ms | 995 µs | ❌ | ❌ | ❌ | ❌ |
-| Sentence case | **429 µs** | 2.08 ms | 926 µs | ❌ | ❌ | ❌ | ❌ |
-| Pascal_Snake | **438 µs** | 991 µs | 1.00 ms | ❌ | ❌ | ❌ | ❌ |
-| lower case | **441 µs** | 1.47 ms | 949 µs | ❌ | 995 µs | **509 µs** | ❌ |
-| UPPER CASE | **460 µs** | 1.49 ms | 987 µs | ❌ | ❌ | ❌ | ❌ |
-| dot.case | **442 µs** | 854 µs | 961 µs | ❌ | 1.00 ms | **515 µs** | ❌ |
-| path/case | **475 µs** | 1.42 ms | 973 µs | ❌ | 1.01 ms | **521 µs** | ❌ |
+| camelCase | **276 µs** | 1.94 ms | 740 µs | 1.09 ms | ❌ | 526 µs | 417 µs |
+| PascalCase | **346 µs** | 1.48 ms | 827 µs | 1.33 ms | ❌ | 596 µs | 502 µs |
+| snake_case | **291 µs** | 1.90 ms | 813 µs | ❌ | 892 µs | **421 µs** | **385 µs** |
+| kebab-case | **413 µs** | 1.34 ms | 906 µs | ❌ | 960 µs | **468 µs** | **422 µs** |
+| UPPER_SNAKE | **392 µs** | 1.98 ms | 911 µs | ❌ | ❌ | ❌ | **453 µs** |
+| UPPER-KEBAB | **482 µs** | 874 µs | 949 µs | ❌ | ❌ | ❌ | ❌ |
+| Train-Case | **381 µs** | 2.08 ms | 936 µs | ❌ | ❌ | ❌ | ❌ |
+| Title Case | **461 µs** | 937 µs | 979 µs | ❌ | ❌ | ❌ | ❌ |
+| Sentence case | **362 µs** | 1.98 ms | 900 µs | ❌ | ❌ | ❌ | ❌ |
+| Pascal_Snake | **444 µs** | 1.45 ms | 961 µs | ❌ | ❌ | ❌ | ❌ |
+| lower case | **343 µs** | 1.67 ms | 877 µs | ❌ | 938 µs | **444 µs** | ❌ |
+| UPPER CASE | **464 µs** | 853 µs | 951 µs | ❌ | ❌ | ❌ | ❌ |
+| dot.case | **367 µs** | 1.94 ms | 871 µs | ❌ | 934 µs | **444 µs** | ❌ |
+| path/case | **449 µs** | 855 µs | 917 µs | ❌ | 974 µs | 521 µs | ❌ |
 
-With repeated keys, caseparser is 5–25x faster than the others, because it converts each distinct key once per call. With unique keys every library converts every key, and caseparser is the fastest or tied: this scenario creates a lot of garbage, so the results change up to ~20% between rounds for every library. For a small object (8 keys) converted over and over, camelcase-keys is faster to camelCase (0.75 µs, against 0.96 µs), because it keeps converted keys between calls (see [Design trade-offs](#design-trade-offs)); to snake_case, caseparser is the fastest (0.92 µs). For strings, caseparser is the fastest too (1.1 µs for 10 strings, against 1.4 µs for es-toolkit).
+With repeated keys, caseparser is 5–25x faster than the others, because it converts each distinct key once per call. With unique keys every library converts every key, and caseparser is the fastest or tied: this scenario creates a lot of garbage, so the results change up to ~20% between rounds for every library. For a small object (8 keys) converted over and over, camelcase-keys is faster to camelCase (0.71 µs, against 0.96 µs), because it keeps converted keys between calls (see [Design trade-offs](#design-trade-offs)); to snake_case, caseparser is the fastest (0.92 µs). For strings, caseparser is the fastest too (1.1 µs for 10 strings, against 1.4 µs for es-toolkit).
 
 #### Memory
 
@@ -302,12 +302,12 @@ Heap used on Node.js, measured in a new process for each library:
 
 | Library | Loading the library | One call: API response | One call: 1,000 unique keys | Kept after converting 256,000 keys |
 | --- | ---: | ---: | ---: | ---: |
-| caseparser | 70 KB | **121 KB** | **516 KB** | 0 |
+| caseparser | 71 KB | **121 KB** | **516 KB** | 0 |
 | caseparser@5.1.0 | 289 KB | 2,348 KB | 2,719 KB | 0 |
-| change-case | 136 KB | 2,850 KB | 1,610 KB | 0 |
-| camelcase-keys | 209 KB | 1,516 KB | 1,742 KB | 11,483 KB |
+| change-case | 135 KB | 2,850 KB | 1,610 KB | 0 |
+| camelcase-keys | 210 KB | 1,516 KB | 1,742 KB | 11,488 KB |
 | humps | **62 KB** | 1,183 KB | 759 KB | 0 |
-| es-toolkit | 622 KB | 1,745 KB | 1,062 KB | 0 |
+| es-toolkit | 623 KB | 1,745 KB | 1,062 KB | 0 |
 
 Loading is the heap used by importing the library, as the benchmarks do. One call is the memory allocated to convert to camelCase, including the result (62 KB and 48 KB). "Kept" is the memory still used after the calls: camelcase-keys keeps the keys it converted between calls (up to 2 × 100,000). 0 means under 10 KB, which is the noise of the measurement.
 
