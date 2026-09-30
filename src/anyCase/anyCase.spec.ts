@@ -1,6 +1,6 @@
 import { describe, expect, expectTypeOf, test } from 'vitest';
 import * as caseparser from '../index.ts';
-import { words } from './words.ts';
+import { toKeep, words } from './words.ts';
 
 describe('words', () => {
   test.each([
@@ -24,6 +24,11 @@ describe('words', () => {
     ['first_name-mixed.caseKey', ['first', 'name', 'mixed', 'case', 'key']],
     ['__leading--double..sep  ', ['leading', 'double', 'sep']],
     ['', []],
+    ['fooÉtat', ['foo', 'état']],
+    ['ÜBER_größe', ['über', 'größe']],
+    ['naïveCafé', ['naïve', 'café']],
+    ['ÀBCDef', ['àbc', 'def']],
+    ['straße2Go', ['straße2', 'go']],
   ])('Should split %j into words', (input, expected) => {
     expect(words(input)).toEqual(expected);
   });
@@ -37,7 +42,7 @@ describe('words keeping the original case', () => {
     ['userID', false, ['user', 'ID']],
     ['$catDog', true, ['$cat', 'Dog']],
   ] as const)('Should split %j keeping the case (allowSymbols %j)', (input, keep, expected) => {
-    expect(words(input, keep, false)).toEqual(expected);
+    expect(words(input, keep, 'keep')).toEqual(expected);
   });
   test('Should keep the original case in toSpace, toPath and toDot only', () => {
     expect(caseparser.toSpace('XMLHttpRequest')).toBe('XML Http Request');
@@ -165,6 +170,12 @@ describe('toX (from any case)', () => {
     expect(result.created_at).toBe(date);
     expect(result.tags).toEqual(['someTag', { tag_name: 'x' }]);
   });
+  test('Should convert keys repeated across objects the same way, and not reuse them between calls', () => {
+    const input = [{ $userId: 1, meta: { $userId: 2 } }, { $userId: 3 }];
+    expect(caseparser.toSnake(input)).toEqual([{ user_id: 1, meta: { user_id: 2 } }, { user_id: 3 }]);
+    expect(caseparser.toSnake(input, true)).toEqual([{ $user_id: 1, meta: { $user_id: 2 } }, { $user_id: 3 }]);
+    expect(caseparser.toSnake(input)).toEqual([{ user_id: 1, meta: { user_id: 2 } }, { user_id: 3 }]);
+  });
   test('Should return undefined for inputs that are not strings, arrays or plain objects', () => {
     expect(caseparser.toCamel(42 as never)).toBeUndefined();
     expect(caseparser.toCamel(null as never)).toBeUndefined();
@@ -194,7 +205,7 @@ describe('toX symbols', () => {
     ['名前_key', false, ['名前', 'key']],
     ['$', false, []],
   ] as const)('Should split %j with allowSymbols %j', (input, keep, expected) => {
-    expect(words(input, keep)).toEqual(expected);
+    expect(words(input, toKeep(keep))).toEqual(expected);
   });
   test('Should remove symbols by default, keep all with true, or keep only the listed ones', () => {
     const data = { $ref: 1, '@type': 'x', user_id: 2 };
@@ -247,6 +258,38 @@ describe('toX options', () => {
     expect(caseparser.toPath('$user/id', { separator: '\\', allowSymbols: ['$'] })).toBe('$user\\id');
     expect(caseparser.toPath({ 'billing/address': { 'Postal Code': 1 } }, { separator: '\\' })).toEqual({ 'billing\\address': { 'Postal\\Code': 1 } });
     expect(caseparser.toPath('a_b', { separator: '|' as never })).toBe('a/b');
+  });
+  test('Should keep the keys in ignore at any depth, and convert their values', () => {
+    const input = [{ _id: 1, user_id: 2, meta: { _id: 3, created_at: 4 } }, { _id: 5, extra_data: { inner_key: 6 } }];
+    expect(caseparser.toCamel(input, { ignore: ['_id', 'extra_data'] })).toEqual([
+      { _id: 1, userId: 2, meta: { _id: 3, createdAt: 4 } },
+      { _id: 5, extra_data: { innerKey: 6 } },
+    ]);
+    expect(caseparser.toPath({ $ref: 1, a_b: 2 }, { ignore: ['$ref'], separator: '\\', transform: 'uppercase' })).toEqual({ $ref: 1, 'A\\B': 2 });
+    expect(caseparser.toDot({ user_id: 1, first_name: 2 }, { ignore: ['user_id'], transform: 'lowercase' })).toEqual({ user_id: 1, 'first.name': 2 });
+    expect(caseparser.toSnake({ userId: 1 }, { ignore: [] })).toEqual({ user_id: 1 });
+  });
+  test('Should convert a string even if it is in ignore, which only applies to keys', () => {
+    expect(caseparser.toSnake('userId', { ignore: ['userId'] })).toBe('user_id');
+  });
+  test('Should not reuse ignore between calls', () => {
+    expect(caseparser.toSnake({ userId: 1 }, { ignore: ['userId'] })).toEqual({ userId: 1 });
+    expect(caseparser.toSnake({ userId: 1 })).toEqual({ user_id: 1 });
+  });
+  test('Should keep an ignored "__proto__" key as an own key', () => {
+    const result = caseparser.toCamel(JSON.parse('{"__proto__":{"is_admin":true}}'), { ignore: ['__proto__'] }) as Record<string, any>;
+    expect(Object.getPrototypeOf(result)).toBe(Object.prototype);
+    expect(Object.getOwnPropertyDescriptor(result, '__proto__')?.value).toEqual({ isAdmin: true });
+  });
+  test('Should infer the keys in ignore unchanged', () => {
+    const data = { _id: 1, user_id: 2, meta: { _id: 3, created_at: 'x' }, $ref: 'y' };
+    expectTypeOf(caseparser.toCamel(data, { ignore: ['_id'] })).toEqualTypeOf<{ _id: number; userId: number; meta: { _id: number; createdAt: string }; ref: string }>();
+    expectTypeOf(caseparser.toCamel(data, { ignore: ['_id'], allowSymbols: ['$'] })).toEqualTypeOf<{ _id: number; userId: number; meta: { _id: number; createdAt: string }; $ref: string }>();
+    expectTypeOf(caseparser.toDot({ user_id: 1, first_name: 2 }, { ignore: ['user_id'], transform: 'uppercase' })).toEqualTypeOf<{ user_id: number; 'FIRST.NAME': number }>();
+    expectTypeOf(caseparser.toPath({ a_b: 1, c_d: 2 }, { ignore: ['a_b'], separator: '\\' })).toEqualTypeOf<{ a_b: number; 'c\\d': number }>();
+    expectTypeOf(caseparser.toSnake({ userId: 1 }, { ignore: [] })).toEqualTypeOf<{ user_id: number }>();
+    const keys: string[] = ['_id'];
+    expectTypeOf(caseparser.toCamel({ user_id: 1 }, { ignore: keys })).toEqualTypeOf<{ [x: string]: number }>();
   });
   test('Should transform the keys of an object deeply', () => {
     const response = { user_Id: 42, LAST_name: 'Lovelace', 'billing address': { 'Postal Code': '61105' } };

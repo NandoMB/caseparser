@@ -1,0 +1,15 @@
+{
+  "name": "caseparser-example-cloudflare-worker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "caseparser": "^6.0.0"
+  },
+  "devDependencies": {
+    "wrangler": "4.143.0"
+  }
+}

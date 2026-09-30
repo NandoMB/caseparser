@@ -9,7 +9,7 @@ describe('arrayParser', () => {
       { firstName: 'Jane', addresses: [] }
     ];
 
-    expect(caseparser.camelToSnake(input)).toEqual([
+    expect(caseparser.toSnake(input)).toEqual([
       { first_name: 'John', addresses: [{ postal_code: '61105' }] },
       { first_name: 'Jane', addresses: [] }
     ]);
@@ -18,12 +18,12 @@ describe('arrayParser', () => {
   test('Should convert the keys of objects inside nested arrays', () => {
     const input = [[{ firstName: 'John' }], [[{ lastName: 'Doe' }]]];
 
-    expect(caseparser.camelToSnake(input)).toEqual([[{ first_name: 'John' }], [[{ last_name: 'Doe' }]]]);
+    expect(caseparser.toSnake(input)).toEqual([[{ first_name: 'John' }], [[{ last_name: 'Doe' }]]]);
   });
 
   test('Should keep primitive items untouched', () => {
     const input = ['firstName', 1, null, true, [{ firstName: 'John' }]];
 
-    expect(caseparser.camelToSnake(input)).toEqual(['firstName', 1, null, true, [{ first_name: 'John' }]]);
+    expect(caseparser.toSnake(input)).toEqual(['firstName', 1, null, true, [{ first_name: 'John' }]]);
   });
 });

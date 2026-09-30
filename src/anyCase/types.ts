@@ -1,4 +1,7 @@
-import type { Prettify } from '../types.ts';
+/** Flattens an intersection/mapped type so editors show the resulting keys. */
+type Prettify<T> = {
+  [K in keyof T]: T[K];
+} & {};
 
 type Separator = '_' | '-' | '.' | ' ';
 /** ASCII punctuation, except the separators `_`, `-` and `.`. */
@@ -12,22 +15,19 @@ type SymbolChar =
  */
 export type AllowSymbols = boolean | readonly string[];
 
-/**
- * @deprecated Renamed to `AllowSymbols`. It will be removed in the next major version.
- */
-export type KeepSymbols = AllowSymbols;
-
 /** Changes the case of the whole result: `'lowercase'` or `'uppercase'`. */
 export type Transform = 'uppercase' | 'lowercase';
 
-/** The options of the `toX` functions. `S` is inferred from `allowSymbols`. */
-export interface CaseOptions<S = boolean | string> {
+/** The options of the `toX` functions. `S` is inferred from `allowSymbols`, and `I` from `ignore`. */
+export interface CaseOptions<S = boolean | string, I extends string = string> {
   /** Symbols are removed by default. `true` keeps all of them, and an array keeps only the listed ones (e.g. `['$']`). */
   allowSymbols?: S | readonly S[];
+  /** Object keys that are kept as they are, at any depth (e.g. `['_id']`). Their values are still converted. */
+  ignore?: readonly I[];
 }
 
 /** The options of `toDot` and `toPath`, which also take a `transform`. `X` is inferred from `transform`. */
-export interface TransformCaseOptions<S = boolean | string, X extends Transform | undefined = Transform | undefined> extends CaseOptions<S> {
+export interface TransformCaseOptions<S = boolean | string, X extends Transform | undefined = Transform | undefined, I extends string = string> extends CaseOptions<S, I> {
   /** The original case of each word is kept by default. `'lowercase'` or `'uppercase'` changes the case of the whole result. */
   transform?: X;
 }
@@ -36,7 +36,7 @@ export interface TransformCaseOptions<S = boolean | string, X extends Transform 
 export type PathSeparator = '/' | '\\';
 
 /** The options of `toPath`, which also take a `separator`. `P` is inferred from `separator`. */
-export interface PathCaseOptions<S = boolean | string, X extends Transform | undefined = Transform | undefined, P extends PathSeparator = PathSeparator> extends TransformCaseOptions<S, X> {
+export interface PathCaseOptions<S = boolean | string, X extends Transform | undefined = Transform | undefined, P extends PathSeparator = PathSeparator, I extends string = string> extends TransformCaseOptions<S, X, I> {
   /** Joins the words with `'/'` (the default) or `'\\'`. */
   separator?: P;
 }
@@ -80,8 +80,8 @@ type Words<T extends string, S extends string, L extends boolean = true, W exten
 type CapitalizeWord<W> = W extends `${infer C}${infer R}` ? C extends SymbolChar ? `${C}${CapitalizeWord<R>}` : `${Uppercase<C>}${R}` : W;
 
 type Join<W, S extends string> =
-  W extends [infer A] ? A & string :
-  W extends [infer A, ...infer R] ? `${A & string}${S}${Join<R, S>}` :
+  W extends [infer A extends string] ? A :
+  W extends [infer A extends string, ...infer R] ? `${A}${S}${Join<R, S>}` :
   '';
 type CapitalizeAll<W> = { [K in keyof W]: CapitalizeWord<W[K] & string> };
 /** In a path, `/` and `\\` also separate words: they are replaced with a space before splitting, like `ToPath` does. */
@@ -89,7 +89,7 @@ type PathSeparatorsToSpace<T extends string> =
   T extends `${infer A}/${infer B}` ? PathSeparatorsToSpace<`${A} ${B}`> :
   T extends `${infer A}\\${infer B}` ? PathSeparatorsToSpace<`${A} ${B}`> :
   T;
-type CamelWords<W> = W extends [infer F, ...infer R] ? `${F & string}${Join<CapitalizeAll<R>, ''>}` : '';
+type CamelWords<W> = W extends [infer F extends string, ...infer R] ? `${F}${Join<CapitalizeAll<R>, ''>}` : '';
 
 /** A case that the `toX` functions (e.g. `toSnake`) convert to. */
 export type Case =
@@ -125,19 +125,26 @@ type ConvertKey<K extends string, C extends Case, S extends string, P extends st
   C extends 'Upper' ? Uppercase<Join<Words<K, S>, ' '>> :
   never;
 
+/** An `ignore`d key keeps its name, and any key could be ignored when `ignore` is only known as `string[]`. */
+type IgnoreKey<K, I extends string, Converted> =
+  [I] extends [never] ? Converted :
+  string extends I ? string :
+  K extends I ? K :
+  Converted;
+
 /**
  * The type returned by a `toX` function: strings stay `string`, and object keys
  * in any case (deeply, including inside arrays) are renamed to the case `C`.
  * `S` is the `allowSymbols` argument (`false` by default), `X` the `transform` option of `toDot` and `toPath`,
- * and `P` the `separator` option of `toPath`.
+ * `P` the `separator` option of `toPath`, and `I` the keys in the `ignore` option.
  */
-export type CaseResult<T, C extends Case, S = false, X = undefined, P extends string = '/'> =
+export type CaseResult<T, C extends Case, S = false, X = undefined, P extends string = '/', I extends string = never> =
   T extends string ? string :
   T extends Array<unknown> ? {
-    [K in keyof T]: CaseResult<T[K], C, S, X, P>
+    [K in keyof T]: CaseResult<T[K], C, S, X, P, I>
   } :
   T extends object ? Prettify<{
-    [K in keyof T as boolean extends S ? string : string extends KeptSymbols<S> ? string : ApplyTransform<ConvertKey<K & string, C, KeptSymbols<S>, P>, X>]: CaseResult<T[K], C, S, X, P>
+    [K in keyof T as IgnoreKey<K, I, boolean extends S ? string : string extends KeptSymbols<S> ? string : ApplyTransform<ConvertKey<K & string, C, KeptSymbols<S>, P>, X>>]: CaseResult<T[K], C, S, X, P, I>
   }> :
   T
 ;

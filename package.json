@@ -19,6 +19,9 @@
     "provenance": true
   },
   "sideEffects": false,
+  "engines": {
+    "node": ">=22"
+  },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -51,9 +54,11 @@
     "test:browser": "vitest run --project browser",
     "test:bun": "bunx --bun vitest run --project node",
     "test:deno": "deno run -A node_modules/vitest/vitest.mjs run --project node",
-    "test:ts-legacy": "node node_modules/typescript-4.1/bin/tsc -p test/typescript-4.1",
+    "test:ts-legacy": "node node_modules/typescript-4.7/bin/tsc -p test/typescript-4.7",
+    "test:worker": "node scripts/test-worker.js",
     "lint:jsr": "deno publish --dry-run --allow-dirty",
-    "test:ci": "pnpm run ci && pnpm run test:ts-legacy && pnpm run test:browser && pnpm run test:bun && pnpm run test:deno && pnpm run lint:jsr"
+    "test:ci": "pnpm run ci && pnpm run test:ts-legacy && pnpm run test:browser && pnpm run test:bun && pnpm run test:deno && pnpm run test:worker && pnpm run lint:jsr",
+    "benchmark": "pnpm run build && pnpm --dir bench install --frozen-lockfile && pnpm --dir bench run all"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
@@ -65,7 +70,7 @@
     "publint": "^0.3.24",
     "tsdown": "^0.23.0",
     "typescript": "^7.0.2",
-    "typescript-4.1": "npm:typescript@4.1.6",
+    "typescript-4.7": "npm:typescript@4.7.4",
     "vitest": "^5.0.1"
   },
   "keywords": [

@@ -3,25 +3,11 @@ export function isString(input: unknown): input is string {
 }
 
 export function isObject(input: unknown): input is object {
-  return typeof input === 'object' && input?.constructor === Object;
+  if (typeof input !== 'object' || input === null) return false;
+  const proto = Object.getPrototypeOf(input);
+  return proto !== null && proto.constructor === Object;
 }
 
 export function isArray(input: unknown): input is Array<unknown> {
   return Array.isArray(input);
-}
-
-export function Lowercase(str: string): string {
-  return str.toLowerCase();
-}
-
-export function Uppercase(str: string): string {
-  return str.toUpperCase();
-}
-
-export function Capitalize(str: string): string {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-export function Uncapitalize(str: string): string {
-  return str.charAt(0).toLowerCase() + str.slice(1);
 }

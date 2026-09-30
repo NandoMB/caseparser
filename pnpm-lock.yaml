@@ -196,9 +196,9 @@ importers:
       typescript:
         specifier: ^7.0.2
         version: 7.0.2
-      typescript-4.1:
-        specifier: npm:typescript@4.1.6
-        version: typescript@4.1.6
+      typescript-4.7:
+        specifier: npm:typescript@4.7.4
+        version: typescript@4.7.4
       vitest:
         specifier: ^5.0.1
         version: 5.0.1(@types/node@26.6.2)(@vitest/browser-playwright@5.0.1)(@vitest/coverage-istanbul@5.0.1)(@vitest/ui@5.0.1)(vite@8.3.0(@types/node@26.6.2)(yaml@2.9.1))
@@ -1414,8 +1414,8 @@ packages:
       unrun:
         optional: true
 
-  typescript@4.1.6:
-    resolution: {integrity: sha512-pxnwLxeb/Z5SP80JDRzVjh58KsM6jZHRAOtTpS7sXLS4ogXNKC9ANxHHZqLLeVHZN35jCtI4JdmLLbLiC1kBow==}
+  typescript@4.7.4:
+    resolution: {integrity: sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==}
     engines: {node: '>=4.2.0'}
     hasBin: true
 
@@ -2617,7 +2617,7 @@ snapshots:
       - oxc-resolver
       - vue-tsc
 
-  typescript@4.1.6: {}
+  typescript@4.7.4: {}
 
   typescript@5.6.1-rc: {}
 
