@@ -1,5 +1,11 @@
 # caseparser
 
+## 6.0.1
+
+### Patch Changes
+
+- 115c578: New README with the caseparser logo and a demo GIF, and plainer, easier-to-read docs.
+
 ## 6.0.0
 
 ### Major Changes
